@@ -24,6 +24,9 @@ public class XOServer extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
+        stage.setTitle("TIC TAC TOE SERVER");   //ADDED NEW
+        stage.setResizable(false);  //ADDED NEW
+        stage.centerOnScreen();     //ADDED NEW
         stage.show();
     }
 

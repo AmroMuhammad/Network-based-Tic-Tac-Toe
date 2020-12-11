@@ -29,6 +29,9 @@ public class GameHandler extends Thread {
     static Vector<GameHandler> clientVector = new Vector<>();
     private DatabaseConnection databaseConnection;
     private String[] parsedMsg;
+    public static int onlinePlayers;
+    public static int offlinePlayers;
+    public static int playingPlayers;
     
     public GameHandler(Socket s) {
         try {
@@ -36,7 +39,9 @@ public class GameHandler extends Thread {
             dis = new DataInputStream(s.getInputStream());
             ps = new PrintStream(s.getOutputStream());
             clientVector.add(this);
-            
+            onlinePlayers = databaseConnection.numOnlinePlayers();
+            offlinePlayers = databaseConnection.numOfflinePlayers();
+            playingPlayers = databaseConnection.numPlayingPlayers();
             start();
         } catch (IOException ex) {
             Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,6 +66,7 @@ public class GameHandler extends Thread {
                         if (isPasswordCorrect(parsedMsg[1], parsedMsg[2])) {
                             setPlayerStatus(parsedMsg[1]);
                             System.out.println("username correct and password is correct"); //send true to client
+                            ++onlinePlayers;
                         } else {
                             System.out.println("username correct and password is not correct"); //send false to client to reset text fields as password is false
                         }
@@ -89,15 +95,6 @@ public class GameHandler extends Thread {
         databaseConnection.addUser(user, pass, ip);
     }
     
-//    public boolean isItClientReqisterRequest(String requestMessage) {   //parse recieved data to check whether request is to register or not
-//        parsedMsg = requestMessage.split("\\#");
-//        if (parsedMsg[0].equals("-*-*-")) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-    
     public boolean isUserExists(String user) {
         if (databaseConnection.checkUserExistance(user)) {
             return true;
@@ -106,14 +103,6 @@ public class GameHandler extends Thread {
         }
     }
     
-//    public boolean isItClientSignInRequest(String requestMessage) {   //parse recieved data to check whether request is to register or not
-//        parsedMsg = requestMessage.split("\\#");
-//        if (parsedMsg[0].equals("*-*-*")) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
     
     public boolean isPasswordCorrect(String user, String pass) {
         if (databaseConnection.checkUserPassword(user, pass)) {
@@ -133,8 +122,10 @@ public class GameHandler extends Thread {
             return 1;     //register request
         else if(parsedMsg[0].equals("*-*-*"))
             return 2;     //sign in request
+        else if(parsedMsg[0].equals("*/*/"))
+            return 3; //playing
         else
-            return 3; //forget password
+            return 4; //sign out
     }
 
 //    InetAddress inetAddress = InetAddress.getLocalHost();

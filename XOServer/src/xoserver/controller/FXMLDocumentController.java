@@ -10,7 +10,11 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -18,8 +22,19 @@ import javafx.scene.control.Label;
  */
 public class FXMLDocumentController implements Initializable {
     
-    @FXML
     private Label label;
+    @FXML
+    private RadioButton btnOn;
+    @FXML
+    private RadioButton btnOff;
+    @FXML
+    private Text txtServerStatus;
+    @FXML
+    private PieChart usersChart;
+    @FXML
+    private TextField txtTest1;
+    @FXML
+    private TextField txtTest2;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {

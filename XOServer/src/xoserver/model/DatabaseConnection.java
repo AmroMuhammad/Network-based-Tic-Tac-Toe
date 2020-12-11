@@ -120,4 +120,55 @@ public class DatabaseConnection {
         }
 
     }
+    
+        public int numOnlinePlayers(){
+        int online=0;
+        try {
+            
+            pst = con.prepareStatement("select * from users where status=true and playstatus=false", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            rs = pst.executeQuery();
+            rs.beforeFirst();
+            while(rs.next()){
+                ++online;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return online;
+    }
+    
+    public int numOfflinePlayers(){
+        int offline=0;
+        try {
+            
+            pst = con.prepareStatement("select * from users where status = false", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            rs = pst.executeQuery();
+            rs.beforeFirst();
+            while(rs.next()){
+                ++offline;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return offline;
+    }
+    
+    public int numPlayingPlayers(){
+        int playing=0;
+        try {
+            
+            pst = con.prepareStatement("select * from users where status=true AND playstatus=true", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            rs = pst.executeQuery();
+            rs.beforeFirst();
+            while(rs.next()){
+                ++playing;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return playing;
+    }
 }

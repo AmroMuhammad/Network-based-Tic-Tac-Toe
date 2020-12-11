@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="xoserver.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="498.0" prefWidth="680.0" style="-fx-background-color: #9BD8BB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xoserver.FXMLDocumentController">
    <children>
-      <RadioButton fx:id="btnOn" layoutX="102.0" layoutY="100.0" mnemonicParsing="false" text="ON" />
-      <RadioButton fx:id="btnOff" layoutX="102.0" layoutY="129.0" mnemonicParsing="false" text="OFF" />
-      <TextField fx:id="txtServerStatus" editable="false" layoutX="86.0" layoutY="52.0" />
+      <RadioButton fx:id="btnOn" layoutX="511.0" layoutY="266.0" mnemonicParsing="false" text="ON" textFill="#0a7c26" />
+      <RadioButton fx:id="btnOff" layoutX="511.0" layoutY="295.0" mnemonicParsing="false" text="OFF" textFill="RED" />
+      <Text fill="WHITE" layoutX="135.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TIC TAC TOE SERVER" textAlignment="CENTER" wrappingWidth="410.13671875">
+         <font>
+            <Font name="Cambria Math" size="40.0" />
+         </font>
+      </Text>
+      <Text fx:id="txtServerStatus" fill="WHITE" layoutX="422.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server is OFF" textAlignment="CENTER" wrappingWidth="220.13671875" AnchorPane.rightAnchor="37.86328125">
+         <font>
+            <Font name="Cambria Math" size="20.0" />
+         </font>
+      </Text>
+      <PieChart fx:id="usersChart" layoutX="74.0" layoutY="178.0" legendSide="LEFT" prefHeight="234.0" prefWidth="304.0" title="Users Chart" titleSide="BOTTOM" />
+      <TextField fx:id="txtTest1" layoutX="110.0" layoutY="14.0" />
+      <TextField fx:id="txtTest2" layoutX="290.0" layoutY="14.0" />
    </children>
 </AnchorPane>
