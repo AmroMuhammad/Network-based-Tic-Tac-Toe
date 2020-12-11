@@ -29,9 +29,6 @@ public class GameHandler extends Thread {
     static Vector<GameHandler> clientVector = new Vector<>();
     private DatabaseConnection databaseConnection;
     private String[] parsedMsg;
-    public static int onlinePlayers;
-    public static int offlinePlayers;
-    public static int playingPlayers;
     
     public GameHandler(Socket s) {
         try {
@@ -39,9 +36,6 @@ public class GameHandler extends Thread {
             dis = new DataInputStream(s.getInputStream());
             ps = new PrintStream(s.getOutputStream());
             clientVector.add(this);
-            onlinePlayers = databaseConnection.numOnlinePlayers();
-            offlinePlayers = databaseConnection.numOfflinePlayers();
-            playingPlayers = databaseConnection.numPlayingPlayers();
             start();
         } catch (IOException ex) {
             Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,6 +52,7 @@ public class GameHandler extends Thread {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2], parsedMsg[3]);
                         System.out.println("done added");
+                        ++MainServer.offlinePlayers;
                     } else {
                         System.out.println("user exists"); //send false to client to reset text fields as username exists
                     }
@@ -66,7 +61,7 @@ public class GameHandler extends Thread {
                         if (isPasswordCorrect(parsedMsg[1], parsedMsg[2])) {
                             setPlayerStatus(parsedMsg[1]);
                             System.out.println("username correct and password is correct"); //send true to client
-                            ++onlinePlayers;
+                            ++MainServer.onlinePlayers;
                         } else {
                             System.out.println("username correct and password is not correct"); //send false to client to reset text fields as password is false
                         }
@@ -118,16 +113,16 @@ public class GameHandler extends Thread {
     
     public int parsing(String requestMessage){
         parsedMsg = requestMessage.split("\\#");
-        if(parsedMsg[0].equals("-*-*-"))
+        if(parsedMsg[0].equals("REG"))
             return 1;     //register request
-        else if(parsedMsg[0].equals("*-*-*"))
+        else if(parsedMsg[0].equals("SIN"))
             return 2;     //sign in request
-        else if(parsedMsg[0].equals("*/*/"))
+        else if(parsedMsg[0].equals("PLAY"))
             return 3; //playing
+        else if(parsedMsg[0].equals("NPLAY"))
+            return 4; // finished playing
         else
-            return 4; //sign out
+            return 5; //sign out
     }
 
-//    InetAddress inetAddress = InetAddress.getLocalHost();
-//    System.out.println("IP Address:- " + inetAddress.getHostAddress());  //to get ip address for user (will be added later in client side)
 }

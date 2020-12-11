@@ -47,7 +47,7 @@ public class DatabaseConnection {
 
     public void addUser(String username, String password, String ip) {
         try {
-            pst = con.prepareStatement("insert into users (Username,password,ip) VALUES (?,?,?)");
+            pst = con.prepareStatement("insert into AMR.users (Username,password,ip) VALUES (?,?,?)");
             pst.setString(1, username);
             pst.setString(2, password);
             pst.setString(3, ip);
@@ -58,22 +58,9 @@ public class DatabaseConnection {
         }
     }
 
-//    public boolean checkUserExistance(String user){
-//        try {
-//            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-//                    ResultSet.CONCUR_UPDATABLE);
-//            rs = stmt.executeQuery("select * from users where USERNAME='user'" );
-//            if(rs == null)
-//                return false;
-//            
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//            return true;
-//    }
     public boolean checkUserExistance(String user) {
         try {
-            pst = con.prepareStatement("select username from users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("select username from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             pst.setString(1, user);
             rs = pst.executeQuery();
@@ -91,7 +78,7 @@ public class DatabaseConnection {
     public boolean checkUserPassword(String user, String pass) {
         try {
             String databasePass;
-            pst = con.prepareStatement("select password from users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("select password from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             pst.setString(1, user);
             rs = pst.executeQuery();
@@ -110,7 +97,7 @@ public class DatabaseConnection {
 
     public void setPlayerStatus(String user) {
         try {
-            pst = con.prepareStatement("update users set STATUS=? where username=?", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("update AMR.users set STATUS=? where username=?", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             pst.setBoolean(1, true);
             pst.setString(2, user);
@@ -125,7 +112,7 @@ public class DatabaseConnection {
         int online=0;
         try {
             
-            pst = con.prepareStatement("select * from users where status=true and playstatus=false", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("select * from AMR.users where status=true and playstatus=false", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             rs = pst.executeQuery();
             rs.beforeFirst();
@@ -142,7 +129,7 @@ public class DatabaseConnection {
         int offline=0;
         try {
             
-            pst = con.prepareStatement("select * from users where status = false", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("select * from AMR.users where status = false", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             rs = pst.executeQuery();
             rs.beforeFirst();
@@ -159,7 +146,7 @@ public class DatabaseConnection {
         int playing=0;
         try {
             
-            pst = con.prepareStatement("select * from users where status=true AND playstatus=true", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("select * from AMR.users where status=true AND playstatus=true", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             rs = pst.executeQuery();
             rs.beforeFirst();

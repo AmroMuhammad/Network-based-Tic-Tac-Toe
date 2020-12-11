@@ -50,13 +50,14 @@ public class ServerGUI extends AnchorPane{
         pieChartData =FXCollections.observableArrayList(
         new PieChart.Data("Offline",databaseConnection.numOfflinePlayers()),
         new PieChart.Data("Online",databaseConnection.numOnlinePlayers()),       
-        new PieChart.Data("playing",databaseConnection.numOnlinePlayers())               //initialize pie chart 
+        new PieChart.Data("playing",databaseConnection.numPlayingPlayers())               //initialize pie chart 
         );
         usersChart = new PieChart(pieChartData);
         usersChart.setVisible(false);
         usersChart.setAnimated(false);
                 
-        
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        refreshPieChart();
 
         setId("AnchorPane");
         setPrefHeight(498.0);
@@ -155,8 +156,7 @@ public class ServerGUI extends AnchorPane{
             }
         });
         
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        refreshPieChart();
+        
     }
   
     public void refreshPieChart(){
@@ -169,12 +169,12 @@ public class ServerGUI extends AnchorPane{
                      @Override
                      public void run() {
                          // put random number with current time
-                         pieChartData.set(0,new PieChart.Data("Offline",GameHandler.offlinePlayers));
-                         pieChartData.set(1,new PieChart.Data("Online",GameHandler.onlinePlayers));
-                         pieChartData.set(2,new PieChart.Data("playing",GameHandler.playingPlayers));
+                         pieChartData.set(0,new PieChart.Data("Offline",MainServer.offlinePlayers));
+                         pieChartData.set(1,new PieChart.Data("Online",MainServer.onlinePlayers));
+                         pieChartData.set(2,new PieChart.Data("playing",MainServer.playingPlayers));
                      }
                  });
              }
-         }, 15, 1, TimeUnit.SECONDS);
+         }, 0, 1, TimeUnit.SECONDS);
     }
 }

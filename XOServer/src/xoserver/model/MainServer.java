@@ -21,11 +21,19 @@ public class MainServer extends Thread {
     static Vector<GameHandler> socketVector;
     private ServerSocket mainSocket;
     private GameHandler handler;
+    private DatabaseConnection dbConnection;
+    public static int onlinePlayers;
+    public static int offlinePlayers;
+    public static int playingPlayers;
 
     public MainServer() {
         try {
             mainSocket = new ServerSocket(5008);
             socketVector = new Vector<>();
+            dbConnection = DatabaseConnection.getDatabaseInstance();
+            onlinePlayers = dbConnection.numOnlinePlayers();
+            offlinePlayers = dbConnection.numOfflinePlayers();
+            playingPlayers = dbConnection.numPlayingPlayers();
         } catch (IOException ex) {
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
         }
