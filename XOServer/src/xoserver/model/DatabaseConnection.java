@@ -142,20 +142,5 @@ public class DatabaseConnection {
         return offline;
     }
     
-    public int numPlayingPlayers(){
-        int playing=0;
-        try {
-            
-            pst = con.prepareStatement("select * from AMR.users where status=true AND playstatus=true", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            rs = pst.executeQuery();
-            rs.beforeFirst();
-            while(rs.next()){
-                ++playing;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return playing;
-    }
+    
 }

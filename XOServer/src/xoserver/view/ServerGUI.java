@@ -49,8 +49,7 @@ public class ServerGUI extends AnchorPane{
         databaseConnection.openConnection();  //initialize database with server
         pieChartData =FXCollections.observableArrayList(
         new PieChart.Data("Offline",databaseConnection.numOfflinePlayers()),
-        new PieChart.Data("Online",databaseConnection.numOnlinePlayers()),       
-        new PieChart.Data("playing",databaseConnection.numPlayingPlayers())               //initialize pie chart 
+        new PieChart.Data("Online",databaseConnection.numOnlinePlayers())     //initialize pie chart 
         );
         usersChart = new PieChart(pieChartData);
         usersChart.setVisible(false);
@@ -171,7 +170,6 @@ public class ServerGUI extends AnchorPane{
                          // put random number with current time
                          pieChartData.set(0,new PieChart.Data("Offline",MainServer.offlinePlayers));
                          pieChartData.set(1,new PieChart.Data("Online",MainServer.onlinePlayers));
-                         pieChartData.set(2,new PieChart.Data("playing",MainServer.playingPlayers));
                      }
                  });
              }

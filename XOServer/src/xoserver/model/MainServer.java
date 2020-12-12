@@ -33,7 +33,6 @@ public class MainServer extends Thread {
             dbConnection = DatabaseConnection.getDatabaseInstance();
             onlinePlayers = dbConnection.numOnlinePlayers();
             offlinePlayers = dbConnection.numOfflinePlayers();
-            playingPlayers = dbConnection.numPlayingPlayers();
         } catch (IOException ex) {
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
         }
