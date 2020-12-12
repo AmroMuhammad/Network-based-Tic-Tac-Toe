@@ -1,9 +1,11 @@
+package screen;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package screen;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +31,11 @@ public class FreeOnlinePlayersController implements Initializable {
     ObservableList list = FXCollections.observableArrayList();
     @FXML
     private javafx.scene.control.ListView listView;
-    
+     String Name;
+    public void set_playerName(String name)
+    {
+        Name = name;
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        loadDataTOListView(); 
@@ -58,11 +64,11 @@ public class FreeOnlinePlayersController implements Initializable {
        
        
          FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("GameBord.fxml"));
+        loader.setLocation(getClass().getResource("/xoClientView/GameBord.fxml"));
         Parent viewparent = loader.load();
         Scene viewscene = new Scene(viewparent);
         GameBordController controller = loader.getController();
-        controller.setText("player1" ,view1 ,"x" ,"o","online");
+        controller.setText(Name ,view1 ,"x" ,"o","online");
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();
@@ -73,7 +79,7 @@ public class FreeOnlinePlayersController implements Initializable {
      private void back_btn(ActionEvent event) throws IOException
      {
          FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ENTER.fxml"));
+        loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
         Parent viewparent = loader.load();
         Scene viewscene = new Scene(viewparent);
         ENTERController controller = loader.getController();

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #9BD8BA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.LocalUserNamesController">
+   <children>
+      <BorderPane prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #9BD8BA;">
+         <center>
+            <Pane prefHeight="500.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="173.0" layoutY="95.0" text="Player1">
+                     <font>
+                        <Font name="Cambria Math" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="173.0" layoutY="244.0" text="Player2">
+                     <font>
+                        <Font name="Cambria Math" size="25.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="player1" layoutX="169.0" layoutY="131.0" prefHeight="38.0" prefWidth="362.0" />
+                  <TextField fx:id="player2" layoutX="169.0" layoutY="280.0" prefHeight="35.0" prefWidth="362.0" />
+                  <Button layoutX="305.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleLocalPlayersAction" prefHeight="56.0" prefWidth="90.0" style="-fx-background-color: #3FAC76;" text="Start">
+                     <font>
+                        <Font name="Cambria Math" size="25.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back_btn" text="back" />
+                  <RadioButton layoutX="214.0" layoutY="184.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="55.0" selected="true" text="X" textFill="#f20606" fx:id="x">
+                     <font>
+                        <Font name="Bodoni MT Condensed Bold" size="25.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="rad_x" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="o" layoutX="367.0" layoutY="184.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="55.0" text="O" textFill="#f20606" toggleGroup="$rad_x">
+                     <font>
+                        <Font name="Broadway" size="25.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

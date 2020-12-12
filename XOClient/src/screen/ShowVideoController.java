@@ -1,9 +1,11 @@
+package screen;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package screen;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +45,7 @@ public class ShowVideoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
        String path = "F:\\vidoes2/VID-20201107-WA0012.mp4";  
           
-        //Instantiating Media class  
+        
          media = new Media(new File(path).toURI().toString());  
          mediaPlayer = new MediaPlayer(media);
          mediaView.setMediaPlayer(mediaPlayer);
@@ -58,7 +60,7 @@ public class ShowVideoController implements Initializable {
         FXMLLoader loader =new FXMLLoader();
           if(flag == "online")
           {
-             loader.setLocation(getClass().getResource("ENTER.fxml"));
+             loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
              Parent viewParent =loader.load();
              Scene viewscene =new Scene (viewParent);
              ENTERController controller =loader.getController(); 
@@ -68,7 +70,7 @@ public class ShowVideoController implements Initializable {
           }
           else if (flag == "local" || flag == "single")
           {
-              loader.setLocation(getClass().getResource("newGame.fxml"));
+              loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
              Parent viewParent =loader.load();
              Scene viewscene =new Scene (viewParent);
              NewGameController controller =loader.getController(); 

@@ -1,16 +1,29 @@
+package screen;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package screen;
 
+
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +36,15 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.naming.spi.DirStateFactory;
+import javax.swing.JOptionPane;
+import xoClientModel.Screen;
 
 /**
  * FXML Controller class
@@ -36,18 +53,15 @@ import javafx.util.Duration;
  */
 public class SignINController implements Initializable {
 
-    @FXML
-    private TextField userName_txt;
-    @FXML
-    private TextField password_txt;
-    @FXML
-    private Button signIN_btn;
-    @FXML
-    private Button signUP_btn;
+    
+    
     @FXML
     private AnchorPane root;
     @FXML
-    private Button signIN_btn1;
+    private Button gust_click;
+    @FXML
+    private Button network_btn;
+    
    
    
 
@@ -58,6 +72,7 @@ public class SignINController implements Initializable {
        if(!Screen.isSplashloaded){
        loadSplashScreen();
        }
+       
  
     }    
 
@@ -65,16 +80,16 @@ public class SignINController implements Initializable {
         
         try {
             Screen.isSplashloaded=true;
-            AnchorPane pane=FXMLLoader.load(getClass().getResource("splash.fxml"));
+            AnchorPane pane=FXMLLoader.load(getClass().getResource("/xoClientView/splash.fxml"));
             root.getChildren().setAll(pane);
            
-            FadeTransition fadeIn =new FadeTransition(Duration.seconds(3),pane);
+            FadeTransition fadeIn =new FadeTransition(Duration.seconds(1),pane);
             fadeIn.setFromValue(0);
             fadeIn.setToValue(1);
             fadeIn.setCycleCount(1);
             
             
-            FadeTransition fadeOut =new FadeTransition(Duration.seconds(4),pane);
+            FadeTransition fadeOut =new FadeTransition(Duration.seconds(1),pane);
             fadeOut.setFromValue(1);
             fadeOut.setToValue(0);
             fadeOut.setCycleCount(1);
@@ -86,7 +101,7 @@ public class SignINController implements Initializable {
             
             fadeOut.setOnFinished((e)->{
                try {
-                   AnchorPane parentConted =FXMLLoader.load(getClass().getResource("signIN.fxml"));
+                   AnchorPane parentConted =FXMLLoader.load(getClass().getResource("/xoClientView/signIN.fxml"));
                    root.getChildren().setAll(parentConted);
                 } catch (IOException ex) {
                     Logger.getLogger(SignINController.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,63 +115,15 @@ public class SignINController implements Initializable {
         }
     }
 
-    @FXML
-    private void signUP_click(ActionEvent event) {
-       
-        try {
-            FXMLLoader loader =new FXMLLoader();
-            loader.setLocation(getClass().getResource("signUP.fxml"));
-            Parent viewParent =loader.load();
-            Scene viewscene =new Scene (viewParent);
-            SignUPController controller =loader.getController();
-            Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setScene(viewscene);
-            window.show();
-        } catch (IOException ex) {
-            Logger.getLogger(SignINController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @FXML
-    
-    private void signIN_click (ActionEvent event) {
-        String name = userName_txt.getText();
-        String pass = password_txt.getText();
-        if(name.isEmpty() || pass.isEmpty() || name.contains(" ") || pass.contains(" "))
-        {
-     
-            Alert alert = new Alert(AlertType.ERROR, "please, insert your data in this fields", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.show();
-        }else
-        {
-            try {
-                // String Data  = "ABC#"+name+"#"+pass;
-                // System.out.println(Data);
-                //  new client(Data );
-                //System.out.println(C.mssg + "--------------------------------");
-                
-                
-                FXMLLoader loader =new FXMLLoader();
-                loader.setLocation(getClass().getResource("ENTER.fxml"));
-                Parent viewParent =loader.load();
-                Scene viewscene =new Scene (viewParent);
-                ENTERController controller =loader.getController();
-                Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-                window.setScene(viewscene);
-                window.show();
-            } catch (IOException ex) {
-                Logger.getLogger(SignINController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+   
         
-    }
+    
 
     @FXML
     private void guest_click(ActionEvent event) throws IOException {
-          System.out.println("you clicked me!");
+         
           FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("newGame.fxml"));
+          loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
           Parent viewParent =loader.load();
           Scene viewscene =new Scene (viewParent);
           NewGameController controller =loader.getController();
@@ -164,6 +131,89 @@ public class SignINController implements Initializable {
           window.setScene(viewscene);
           window.show();
     }
+
+    @FXML
+    private void network_click(ActionEvent event)  {
+        String ip = " ";
+        boolean ex_flag = true;
+        try{
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Dialog");
+        dialog.setContentText("Please enter the ip :");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+             System.out.println("the ip " + result.get());
+        }
+         ip  = result.get();
+        }catch(NoSuchElementException e)
+        {
+            System.out.println("exist");
+            ex_flag = false;
+        }
+        
+        
+        
+        
+        boolean flag = isIpv4(ip) ;
+        if(flag)
+        {
+            SocketAddress socketAddress = new InetSocketAddress(ip, 1);
+	    Socket socket = new Socket();
+        
+            try {
+                socket.connect(socketAddress,500);
+	        socket.close();
+                
+                FXMLLoader loader =new FXMLLoader();
+                loader.setLocation(getClass().getResource("/xoClientView/signIN2.fxml"));
+                Parent viewParent =loader.load();
+                Scene viewscene =new Scene (viewParent);
+                SignIN2Controller controller =loader.getController();
+                controller.ip_value(ip);
+                Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
+                window.setScene(viewscene);
+                window.show();
+                             
+            }
+             catch (SocketTimeoutException exception)
+             {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "this server not found.", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+            alert.show(); 
+            }
+            catch (IOException ex) {
+          
+                 System.out.println("ooooops");
+            } 
+        
+    
+        } 
+        else if (ex_flag) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error ");
+            alert.setHeaderText("Look, an Error Dialog");
+            alert.setContentText("Ooops,wrong ip");
+
+            alert.showAndWait();
+            
+        }
+        
+    }
+    
+    
+
+    public boolean isIpv4(String ipAddress) {
+    if (ipAddress == null) {
+        return false;
+    }
+    String ip = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
+            + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+            + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+            + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+    Pattern pattern = Pattern.compile(ip);
+    Matcher matcher = pattern.matcher(ipAddress);
+    return matcher.matches();
+     }
 
    
     

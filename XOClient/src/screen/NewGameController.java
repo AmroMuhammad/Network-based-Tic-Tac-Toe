@@ -1,9 +1,11 @@
+package screen;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package screen;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,9 +44,9 @@ public class NewGameController implements Initializable {
 
     @FXML
     private void back_click(ActionEvent event) throws IOException {
-          System.out.println("you clicked me!");
+         
           FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("signIN.fxml"));
+          loader.setLocation(getClass().getResource("/xoClientView/signIN.fxml"));
           Parent viewParent =loader.load();
           Scene viewscene =new Scene (viewParent);
           SignINController controller =loader.getController();
@@ -56,7 +58,7 @@ public class NewGameController implements Initializable {
     private void HandleSinglePlayer(ActionEvent event) throws IOException
     {
           FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("SingleUserName.fxml"));
+          loader.setLocation(getClass().getResource("/xoClientView/SingleUserName.fxml"));
           Parent viewParent =loader.load();
           Scene viewscene =new Scene (viewParent);
           SingleUserNameController controller =loader.getController();
@@ -68,7 +70,7 @@ public class NewGameController implements Initializable {
     private void HandleLocalPlayers(ActionEvent event) throws IOException
     {
           FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("LocalUserNames.fxml"));
+          loader.setLocation(getClass().getResource("/xoClientView/LocalUserNames.fxml"));
           Parent viewParent =loader.load();
           Scene viewscene =new Scene (viewParent);
           LocalUserNamesController controller =loader.getController();
@@ -79,11 +81,12 @@ public class NewGameController implements Initializable {
      @FXML
     private void RecordingAction(ActionEvent event) throws IOException {
        
-          FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("record.fxml"));
+         FXMLLoader loader =new FXMLLoader();
+          loader.setLocation(getClass().getResource("/xoClientView/record.fxml"));
           Parent viewParent =loader.load();
           Scene viewscene =new Scene (viewParent);
           RecordController controller =loader.getController();
+          controller.flag_value("network");
           Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
           window.setScene(viewscene);
           window.show();

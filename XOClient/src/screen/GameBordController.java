@@ -1,9 +1,11 @@
+package screen;
+
  /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package screen;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +54,7 @@ String flag ;
     private void ShowVideo(ActionEvent event) throws IOException
     {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ShowVideo.fxml"));
+        loader.setLocation(getClass().getResource("/xoClientView/ShowVideo.fxml"));
         Parent viewparent = loader.load();
         Scene viewscene = new Scene(viewparent);
         ShowVideoController controller = loader.getController();
