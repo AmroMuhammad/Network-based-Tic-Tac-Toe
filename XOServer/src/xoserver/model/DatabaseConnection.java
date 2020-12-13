@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
@@ -26,8 +27,10 @@ public class DatabaseConnection {
     private PreparedStatement pst;
     private Statement stmt;
     private ResultSet rs;
+    public static Vector<String> playerList;
 
     private DatabaseConnection() {
+        playerList = new Vector<>();
     }
 
     public static DatabaseConnection getDatabaseInstance() {
@@ -156,5 +159,32 @@ public class DatabaseConnection {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return score;
+    }
+    
+    public String getOnlinePlayersList(){
+            String players=null;
+            playerList.clear();
+        try {
+            pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = false", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            rs = pst.executeQuery();
+            rs.beforeFirst();
+            while (rs.next()) {
+                playerList.add(rs.getString(1));
+            }
+            
+            for(String s : playerList){
+                if(players == null)
+                    players = s;
+                else
+                    players = players +("#"+s);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println(players);
+        return players;
     }
 }

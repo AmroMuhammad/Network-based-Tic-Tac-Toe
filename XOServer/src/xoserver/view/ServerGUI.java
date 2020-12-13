@@ -124,7 +124,7 @@ public class ServerGUI extends AnchorPane{
             @Override
             public void handle(ActionEvent event) {
                 gameMain.start();
-                usersChart.setVisible(true); 
+                usersChart.setVisible(true);
             }
         });
 
