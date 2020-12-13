@@ -107,16 +107,16 @@ public class DatabaseConnection {
         }
 
     }
-    
-        public int numOnlinePlayers(){
-        int online=0;
+
+    public int numOnlinePlayers() {
+        int online = 0;
         try {
-            
+
             pst = con.prepareStatement("select * from AMR.users where status=true and playstatus=false", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             rs = pst.executeQuery();
             rs.beforeFirst();
-            while(rs.next()){
+            while (rs.next()) {
                 ++online;
             }
         } catch (SQLException ex) {
@@ -124,16 +124,16 @@ public class DatabaseConnection {
         }
         return online;
     }
-    
-    public int numOfflinePlayers(){
-        int offline=0;
+
+    public int numOfflinePlayers() {
+        int offline = 0;
         try {
-            
+
             pst = con.prepareStatement("select * from AMR.users where status = false", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             rs = pst.executeQuery();
             rs.beforeFirst();
-            while(rs.next()){
+            while (rs.next()) {
                 ++offline;
             }
         } catch (SQLException ex) {
@@ -141,6 +141,20 @@ public class DatabaseConnection {
         }
         return offline;
     }
-    
-    
+
+    public int getScore(String username) {
+        int score=0;
+        try {
+            pst = con.prepareStatement("select score from AMR.users where username = ?", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+            if(rs.next()){
+            score=rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return score;
+    }
 }

@@ -40,11 +40,16 @@ public class ENTERController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    public void NplayerName(String name)
+    public void nPlayerName(String name)
     {
         Name = name;
         playerName.setText(Name);
     }
+    public void nPlayerScore(int scr)
+    {
+        score.setText(""+scr);
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

@@ -65,7 +65,7 @@ public class GameHandler extends Thread {
                             setPlayerStatus(parsedMsg[1]);
                             System.out.println("username correct and password is correct"); //send true to client
                             ++MainServer.onlinePlayers;
-                            ps.println("SignIN Confirmed");
+                            ps.println("SignIN Confirmed#"+getScore(parsedMsg[1]));
                         } else {
                             System.out.println("username correct and password is not correct");
                             ps.println("SignIN not Confirmed");        //send false to client to reset text fields as password is false
@@ -132,5 +132,7 @@ public class GameHandler extends Thread {
         else
             return 5; //sign out
     }
-
+    public int getScore(String username){
+    return databaseConnection.getScore(username);
+    }
 }
