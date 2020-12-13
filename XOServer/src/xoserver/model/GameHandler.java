@@ -53,6 +53,7 @@ public class GameHandler extends Thread {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2], parsedMsg[3]);
                         System.out.println("done added");
                         ++MainServer.offlinePlayers;
+                        setPlayerStatus(parsedMsg[1]);
                         ps.println("Register Confirmed");
                     } else {
                         System.out.println("user exists");
@@ -64,11 +65,14 @@ public class GameHandler extends Thread {
                             setPlayerStatus(parsedMsg[1]);
                             System.out.println("username correct and password is correct"); //send true to client
                             ++MainServer.onlinePlayers;
+                            ps.println("SignIN Confirmed");
                         } else {
-                            System.out.println("username correct and password is not correct"); //send false to client to reset text fields as password is false
+                            System.out.println("username correct and password is not correct");
+                            ps.println("SignIN not Confirmed");        //send false to client to reset text fields as password is false
                         }
                     } else {
-                        System.out.println("username is not correct"); //send false to client to reset text fields as username doesn't exists
+                        System.out.println("username is not correct");
+                        ps.println("SignIN not Confirmed");      //send false to client to reset text fields as username doesn't exists
                     }
                 }
             } catch (IOException ex) {

@@ -43,10 +43,11 @@ public class ENTERController implements Initializable {
     public void NplayerName(String name)
     {
         Name = name;
+        playerName.setText(Name);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }    
 
    

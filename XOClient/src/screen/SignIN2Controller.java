@@ -104,7 +104,7 @@ public class SignIN2Controller implements Initializable {
                           } catch (IOException ex) {
                             Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
                           }
-                         String Data  = "ABC#"+name+"#"+pass;
+                         String Data  = "SIN#"+name+"#"+pass+"#"+SignUPController.getHostIPAddress();
                          System.out.println(Data);
                          ps.println(Data);
                          ps.flush();
@@ -117,7 +117,7 @@ public class SignIN2Controller implements Initializable {
                                         System.out.println( " my massege is ....."+msg);
                                         Platform.runLater(new Runnable() {
                                         @Override public void run() {
-                                        if(msg.equals("false"))
+                                        if(! msg.equals("SignIN Confirmed"))
                                         {
                         
                                             Alert alert = new Alert(Alert.AlertType.ERROR, "invalid username or password", ButtonType.OK);

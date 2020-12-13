@@ -93,7 +93,7 @@ public class SignUPController implements Initializable {
           
           String name =name_text.getText();
           String pass =pass_text.getText(); 
-          String str  = "REG"+"#"+pass+"#"+name+"#"+getHostIPAddress();   //added IP address of Host
+          String str  = "REG#"+name+"#"+pass+"#"+getHostIPAddress();   //added IP address of Host
            try {
             SClient = new Socket(ip,5008);
             dis = new DataInputStream(SClient.getInputStream());
@@ -243,7 +243,7 @@ public class SignUPController implements Initializable {
     }
    
    
-   public String getHostIPAddress(){
+   public static String getHostIPAddress(){
        String IPAddress = null;
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
