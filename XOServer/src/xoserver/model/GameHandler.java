@@ -47,14 +47,16 @@ public class GameHandler extends Thread {
         while (true) {
             try {
                 String msg = dis.readLine();
-                sendMessageToAll(msg);
+                //sendMessageToAll(msg);
                 if (parsing(msg) == 1) {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2], parsedMsg[3]);
                         System.out.println("done added");
                         ++MainServer.offlinePlayers;
+                        ps.println("Register Confirmed");
                     } else {
-                        System.out.println("user exists"); //send false to client to reset text fields as username exists
+                        System.out.println("user exists");
+                        ps.println("Register Not Confirmed");    //send false to client to reset text fields as username exists
                     }
                 } else if (parsing(msg) == 2) {
                     if (isUserExists(parsedMsg[1])) {
@@ -112,6 +114,8 @@ public class GameHandler extends Thread {
     }
     
     public int parsing(String requestMessage){
+        if(requestMessage.equals(null))
+            return -1;
         parsedMsg = requestMessage.split("\\#");
         if(parsedMsg[0].equals("REG"))
             return 1;     //register request

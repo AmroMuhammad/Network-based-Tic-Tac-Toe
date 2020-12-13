@@ -113,7 +113,7 @@ public class SignUPController implements Initializable {
                         System.out.println( " my massege is ....."+msg);
                         Platform.runLater(new Runnable() {
                             @Override public void run() {
-                        if(msg.equals("false"))
+                        if(! msg.equals("Register Confirmed"))
                         {
                         
                           Alert alert = new Alert(Alert.AlertType.ERROR, "This data is already exist. ", ButtonType.OK);
