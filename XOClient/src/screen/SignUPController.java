@@ -10,8 +10,10 @@ package screen;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,9 +93,9 @@ public class SignUPController implements Initializable {
           
           String name =name_text.getText();
           String pass =pass_text.getText(); 
-          String str  = "XYZ"+"#"+pass+"#"+name;
+          String str  = "REG"+"#"+pass+"#"+name+"#"+getHostIPAddress();   //added IP address of Host
            try {
-            SClient = new Socket(ip,1);
+            SClient = new Socket(ip,5008);
             dis = new DataInputStream(SClient.getInputStream());
             ps = new PrintStream(SClient.getOutputStream());
         } catch (IOException ex) {
@@ -238,7 +240,19 @@ public class SignUPController implements Initializable {
         } 
   
         return true; 
-    } 
+    }
+   
+   
+   public String getHostIPAddress(){
+       String IPAddress = null;
+        try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            IPAddress = inetAddress.getHostAddress();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return IPAddress;
+   }
 
   
 }

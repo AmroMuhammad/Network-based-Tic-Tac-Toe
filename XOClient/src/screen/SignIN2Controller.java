@@ -98,7 +98,7 @@ public class SignIN2Controller implements Initializable {
                          }
                   else{
                       try {
-                          SClient = new Socket(ip,1);
+                          SClient = new Socket(ip,5008);
                           dis = new DataInputStream(SClient.getInputStream());
                           ps = new PrintStream(SClient.getOutputStream());
                           } catch (IOException ex) {
