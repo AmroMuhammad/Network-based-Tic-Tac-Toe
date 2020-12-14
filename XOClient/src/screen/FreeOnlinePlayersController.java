@@ -7,9 +7,18 @@ package screen;
  */
 
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.stage.Stage;
 
 /**
@@ -27,28 +37,46 @@ import javafx.stage.Stage;
  * @author Dell
  */
 public class FreeOnlinePlayersController implements Initializable {
-
+    
+    private ScheduledExecutorService scheduledExecutorService;
     ObservableList list = FXCollections.observableArrayList();
     @FXML
     private javafx.scene.control.ListView listView;
      String Name;
+     String[] playerList;
     public void set_playerName(String name)
     {
         Name = name;
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       loadDataTOListView(); 
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        getPlayerList();
+        
     } 
     @FXML
     private void loadDataTOListView(){
-    list.removeAll(list);
-    String a = "marwa";
-    String b = "norhan";
-    String c = "amr";
-    String d = "abdelrahman";
-       list.addAll(a,b,c,d);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                    list.removeAll(list);
+    listView.getItems().clear();
+//    String a = "marwa";
+//    String b = "norhan";
+//    String c = "amr";
+//    String d = "abdelrahman";
+//       list.addAll(a,b,c,d);
+        for(String s : playerList){
+            System.out.println(s);
+            if(s.equals(Name))
+                continue;
+            list.add(s);
+        }
        listView.getItems().addAll(list);
+                
+            }
+        });
+
 }
     
      @FXML
@@ -88,7 +116,35 @@ public class FreeOnlinePlayersController implements Initializable {
         window.show(); 
      }
      
-         
+     public void getPlayerList(){
+        try {
+            Socket s = new Socket(SignINController.serverIP,5008);
+            DataInputStream dis = new DataInputStream(s.getInputStream());
+            PrintStream ps = new PrintStream(s.getOutputStream());
+              
+            scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+             @Override
+             public void run() {
+                 try {
+                     // Update the chart
+                     ps.println("PLIST");
+                     String msg = dis.readLine();
+                     parsingPlayerList(msg);
+                     System.out.println(msg);
+                     loadDataTOListView();
+                 } catch (IOException ex) {
+                     Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         }, 0, 5, TimeUnit.SECONDS);
+        } catch (IOException ex) {
+            Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
      
-    
+     public void parsingPlayerList(String recievedMsg){
+            playerList = recievedMsg.split("\\#");
+        }
+     
+
 }
