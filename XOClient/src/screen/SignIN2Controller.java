@@ -171,7 +171,8 @@ public class SignIN2Controller implements Initializable {
 
     public String SignInParser(String msg) {
         String [] parsedMsg = msg.split("\\#");
-        score=Integer.parseInt(parsedMsg[1]);
+        if(parsedMsg[0].equals("SignIN Confirmed"))
+            score=Integer.parseInt(parsedMsg[1]);
         return parsedMsg[0];
     }
 }
