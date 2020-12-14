@@ -59,7 +59,7 @@ public class FreeOnlinePlayersController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                    list.removeAll(list);
+    list.removeAll(list);
     listView.getItems().clear();
 //    String a = "marwa";
 //    String b = "norhan";

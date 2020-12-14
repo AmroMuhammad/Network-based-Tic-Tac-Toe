@@ -18,7 +18,7 @@ import org.apache.derby.jdbc.ClientDriver;
 
 /**
  *
- * @author Amr
+ * @author Amr & abdelrahman
  */
 public class DatabaseConnection {
 
@@ -165,8 +165,8 @@ public class DatabaseConnection {
             String players=null;
             playerList.clear();
         try {
-            pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = false", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = false", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);    //solved rollback exception and delay time
             rs = pst.executeQuery();
             rs.beforeFirst();
             while (rs.next()) {

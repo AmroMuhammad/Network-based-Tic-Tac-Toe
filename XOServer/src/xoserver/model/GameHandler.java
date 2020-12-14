@@ -7,7 +7,7 @@ package xoserver.model;
 
 /**
  *
- * @author Amr
+ * @author Amr & abdelrahman
  */
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -48,7 +48,8 @@ public class GameHandler extends Thread {
             try {
                 String msg = dis.readLine();
                 //sendMessageToAll(msg);
-                if (msg == null); else if (parsing(msg) == 1) {
+                if (msg == null); 
+                else if (parsing(msg) == 1) {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2], parsedMsg[3]);
                         System.out.println("done added");
