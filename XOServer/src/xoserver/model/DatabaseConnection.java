@@ -63,8 +63,8 @@ public class DatabaseConnection {
 
     public boolean checkUserExistance(String user) {
         try {
-            pst = con.prepareStatement("select username from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select username from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, user);
             rs = pst.executeQuery();
             if (!rs.next()) {
@@ -81,8 +81,8 @@ public class DatabaseConnection {
     public boolean checkUserPassword(String user, String pass) {
         try {
             String databasePass;
-            pst = con.prepareStatement("select password from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select password from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, user);
             rs = pst.executeQuery();
             rs.next();
@@ -148,8 +148,8 @@ public class DatabaseConnection {
     public int getScore(String username) {
         int score=0;
         try {
-            pst = con.prepareStatement("select score from AMR.users where username = ?", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select score from AMR.users where username = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, username);
             rs = pst.executeQuery();
             if(rs.next()){
