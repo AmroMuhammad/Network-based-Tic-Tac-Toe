@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -36,6 +37,24 @@ public class GameBordController implements Initializable {
 @FXML
     private Label player2Symbol;
 String flag ;
+    @FXML
+    private Button setBtnOne;
+    @FXML
+    private Button setBtnFour;
+    @FXML
+    private Button setBtnTwo;
+    @FXML
+    private Button setBtnFive;
+    @FXML
+    private Button setBtnSeven;
+    @FXML
+    private Button setBtnEight;
+    @FXML
+    private Button setBtnThree;
+    @FXML
+    private Button setBtnSix;
+    @FXML
+    private Button setBtnNine;
 
      public void setText(String text1 , String text2 , String text3 , String text4 , String FLAG)
     {
