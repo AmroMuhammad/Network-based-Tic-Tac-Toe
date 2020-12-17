@@ -5,9 +5,12 @@
  */
 package screen;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -67,9 +70,11 @@ public class LocalGameBoardController implements Initializable {
         player2Symbol.setText(text4);
         
         startGame = text3;
+        
       
     }
      private String startGame ;
+     private int xoWinner = -2;
      private int xCount =0;
      private int oCount =0;
      int butttonUsed [] = {0,0,0,0,0,0,0,0,0};
@@ -78,6 +83,7 @@ public class LocalGameBoardController implements Initializable {
     @FXML
     private void Done_btn(ActionEvent event) {
         try {
+            mediaPlayer.stop();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
             Parent viewparent = loader.load();
@@ -199,76 +205,79 @@ public class LocalGameBoardController implements Initializable {
         String b8 = btn_8.getText();
         String b9 = btn_9.getText();
         
-        
+       
         if(b1.equals(b2) &&  b1.equals(b3)&& (b1=="X"|| b1=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+ b1 + " wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_1 ,btn_2 ,btn_3);
             disable();
+            if (b1 == "X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
         
         }
         else if(b4.equals(b5) &&  b4.equals(b6) &&(b4=="X"|| b4=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+ b4 +" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_4 ,btn_5 ,btn_6);
             disable();
+            if (b4=="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
             
         }
         else if(b7.equals(b8)&& b7.equals(b9)&&(b7=="X"|| b7=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+b7+" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_7 ,btn_8 ,btn_9);
             disable();
+            if (b7=="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
         }
         else if(b1.equals(b4)&& b1.equals(b7)&&(b1=="X"|| b1=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+b1+" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_1 ,btn_4 ,btn_7);
             disable();
+            if (b1=="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
         }
         else if(b2.equals(b5)&& b2.equals(b8)&&(b2=="X"|| b2=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+b2+" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_2 ,btn_5 ,btn_8);
             disable();
+            if (b2 =="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
+            
         }
         else if(b3.equals(b6)&& b3.equals(b9)&&(b3=="X"|| b3=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+b3+" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_3 ,btn_6 ,btn_9);
             disable();
+            if (b3 =="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
+            
         }
         else if(b1.equals(b5)&& b1.equals(b9)&&(b1=="X"|| b1=="O"))
-        {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+b1+" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
+        { 
             color(btn_1 ,btn_5 ,btn_9);
             disable();
+            if (b1 =="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
+            
         }
         else if(b3.equals(b5)&& b3.equals(b7)&&(b3=="X"|| b3=="O"))
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player "+ b3 +" wins ", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
             color(btn_3 ,btn_5 ,btn_7);
             disable();
+            if (b3 =="X"){ xoWinner= 0;}
+            else {xoWinner= 1;}
+            VidioShow();
+            
+            
         }
-        
-          
-         else if (butttonUsed[0] == 1 &&  butttonUsed[1] == 1 &&
+        else if (butttonUsed[0] == 1 &&  butttonUsed[1] == 1 &&
                  butttonUsed[2] == 1 &&  butttonUsed[3] == 1 &&
                  butttonUsed[4] == 1 &&  butttonUsed[5] == 1 &&
                  butttonUsed[6] == 1 &&  butttonUsed[7] == 1 &&
@@ -278,8 +287,72 @@ public class LocalGameBoardController implements Initializable {
                alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                alert.show();
                disable();
+               
+              
+               
         }
- 
+    
+    }
+    public void VidioShow(){
+        
+         switch (xoWinner) {
+            case 0:{
+                
+                if(player1Symbol.getText().equals("X")){
+                    
+                    winner_loser_txt.setText(player1.getText()+" is winner");
+                    System.out.println(player1.getText());
+                }
+                else{
+                    
+                    winner_loser_txt.setText(player2.getText()+" is winner");
+                    System.out.println(player2.getText());
+                }
+               
+                break;
+            }
+            case 1:{
+                
+                if(player1Symbol.getText().equals("O")){
+                    
+                    winner_loser_txt.setText(player1.getText()+" is winner");
+                    System.out.println(player1.getText());
+                }
+                else{
+                    
+                    winner_loser_txt.setText(player2.getText()+" is winner");
+                    System.out.println(player2.getText());
+                }
+                break;
+            }
+            
+        }
+        
+       Timer timer = new Timer();
+       TimerTask task = new TimerTask()
+{
+        public void run()
+        {
+         pane2.setVisible(true);
+         Done_Btn.setVisible(true);
+         winner_loser_txt.setVisible(true);
+         mediaView.setVisible(true);
+         player1.setVisible(false);
+         player2.setVisible(false);
+         player1Symbol.setVisible(false);
+         player2Symbol.setVisible(false);
+         Btns.setVisible(false);
+         String path = "C:\\Users\\HP\\Desktop/vidio.mp4";  
+         media = new Media(new File(path).toURI().toString());  
+        // animateUsingScaleTransition(mediaView);
+         mediaPlayer = new MediaPlayer(media);
+         mediaView.setMediaPlayer(mediaPlayer);
+         mediaPlayer.setAutoPlay(true);
+       
+        }
+};
+    timer.schedule(task,500l); 
+    
     }
     
     public void disable ()
@@ -302,5 +375,4 @@ public class LocalGameBoardController implements Initializable {
    
     }
 
-    
 }
