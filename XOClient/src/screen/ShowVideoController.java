@@ -43,7 +43,7 @@ public class ShowVideoController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       String path = "F:\\vidoes2/VID-20201107-WA0012.mp4";  
+       String path = "F:\\SERIES\\Hunter X Hunter\\song.MP4";  
           
         
          media = new Media(new File(path).toURI().toString());  

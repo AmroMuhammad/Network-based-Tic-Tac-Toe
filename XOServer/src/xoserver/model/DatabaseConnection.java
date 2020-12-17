@@ -11,13 +11,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
 /**
  *
- * @author Amr
+ * @author Amr & abdelrahman
  */
 public class DatabaseConnection {
 
@@ -26,8 +27,10 @@ public class DatabaseConnection {
     private PreparedStatement pst;
     private Statement stmt;
     private ResultSet rs;
+    public static Vector<String> playerList;
 
     private DatabaseConnection() {
+        playerList = new Vector<>();
     }
 
     public static DatabaseConnection getDatabaseInstance() {
@@ -60,8 +63,8 @@ public class DatabaseConnection {
 
     public boolean checkUserExistance(String user) {
         try {
-            pst = con.prepareStatement("select username from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select username from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, user);
             rs = pst.executeQuery();
             if (!rs.next()) {
@@ -78,8 +81,8 @@ public class DatabaseConnection {
     public boolean checkUserPassword(String user, String pass) {
         try {
             String databasePass;
-            pst = con.prepareStatement("select password from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select password from AMR.users where USERNAME=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, user);
             rs = pst.executeQuery();
             rs.next();
@@ -145,8 +148,8 @@ public class DatabaseConnection {
     public int getScore(String username) {
         int score=0;
         try {
-            pst = con.prepareStatement("select score from AMR.users where username = ?", ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("select score from AMR.users where username = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, username);
             rs = pst.executeQuery();
             if(rs.next()){
@@ -156,5 +159,32 @@ public class DatabaseConnection {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return score;
+    }
+    
+    public String getOnlinePlayersList(){
+            String players=null;
+            playerList.clear();
+        try {
+            pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = false", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);    //solved rollback exception and delay time
+            rs = pst.executeQuery();
+            rs.beforeFirst();
+            while (rs.next()) {
+                playerList.add(rs.getString(1));
+            }
+            
+            for(String s : playerList){
+                if(players == null)
+                    players = "PLIST#"+s;
+                else
+                    players = players +("#"+s);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println(players);
+        return players;
     }
 }

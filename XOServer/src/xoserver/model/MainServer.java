@@ -14,18 +14,18 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Amr
+ * @author Amr & abdelrahman
  */
 public class MainServer extends Thread {
 
     static Vector<GameHandler> socketVector;
-    private ServerSocket mainSocket;
+    public ServerSocket mainSocket;
     private GameHandler handler;
     private DatabaseConnection dbConnection;
     public static int onlinePlayers;
     public static int offlinePlayers;
-    public static int playingPlayers;
 
+    
     public MainServer() {
         try {
             mainSocket = new ServerSocket(5008);

@@ -1,12 +1,10 @@
 package screen;
 
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -27,41 +28,81 @@ import javafx.stage.Stage;
  */
 public class GameBordController implements Initializable {
 
-  @FXML
+    @FXML
     private Label player1;
-@FXML
+    @FXML
     private Label player2;
-@FXML
+    @FXML
     private Label player1Symbol;
-@FXML
+    @FXML
     private Label player2Symbol;
-String flag ;
+    String flag;
+    @FXML
+    private Button btnOne;
+    @FXML
+    private Button btnFour;
+    @FXML
+    private Button btnTwo;
+    @FXML
+    private Button btnFive;
+    @FXML
+    private Button btnSeven;
+    @FXML
+    private Button btnEight;
+    @FXML
+    private Button btnThree;
+    @FXML
+    private Button btnSix;
+    @FXML
+    private Button btnNine;
+    @FXML
+    private Button showVideoBtn;
 
-     public void setText(String text1 , String text2 , String text3 , String text4 , String FLAG)
-    {
+    public void setText(String text1, String text2, String text3, String text4, String FLAG) {
         player1.setText(text1);
         player2.setText(text2);
         player1Symbol.setText(text3);
         player2Symbol.setText(text4);
         flag = FLAG;
-      
+
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    } 
+        showVideoBtn.setVisible(false);
+    }
+
     @FXML
-    private void ShowVideo(ActionEvent event) throws IOException
-    {
+    private void ShowVideo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/xoClientView/ShowVideo.fxml"));
         Parent viewparent = loader.load();
         Scene viewscene = new Scene(viewparent);
         ShowVideoController controller = loader.getController();
         controller.FlagValue(flag);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
-        window.show(); 
+        window.show();
     }
-    
+
+    @FXML
+    private void setBtn1(ActionEvent event) {
+        Image img = new Image("/Style/x.png");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(57.0);
+        view.setFitWidth(85.0);
+        view.setPreserveRatio(true);
+        showVideoBtn.fire();
+    }
+
+    @FXML
+    private void setBtn2(ActionEvent event) {
+        Image img = new Image("/Style/o.png");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(57.0);
+        view.setFitWidth(85.0);
+        view.setPreserveRatio(true);
+        btnTwo.setGraphic(view);
+    }
+
 }
