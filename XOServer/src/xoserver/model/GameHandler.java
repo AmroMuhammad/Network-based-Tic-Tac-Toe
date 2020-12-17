@@ -76,7 +76,10 @@ public class GameHandler extends Thread {
                         ps.println("SignIN not Confirmed");      //send false to client to reset text fields as username doesn't exists
                     }
                 } else if (parsing(msg) == 5) {
-                    ps.println(databaseConnection.getOnlinePlayersList()); //sends players list to player
+                    ps.println(getPlayersList()); //sends players list to player
+                }else if (parsing(msg) == 6) {
+                                    System.out.println(msg);
+                    sendMessageToAll(msg); //sends players list to player
                 }
             } catch (IOException ex) {
                 stop(); //handling exception when closing clients
@@ -134,12 +137,19 @@ public class GameHandler extends Thread {
             return 4; // finished playing
         } else if (parsedMsg[0].equals("PLIST")) {
             return 5; //request playing list
-        } else {
-            return 6; //sign out
+        } else if (parsedMsg[0].equals("DUWTP") || parsedMsg[0].equals("PREQ")) {
+            return 6; //request playing and answer
+        }
+        else {
+            return 7; //sign out
         }
     }
 
     public int getScore(String username) {
         return databaseConnection.getScore(username);
+    }
+    
+    public String getPlayersList() {
+        return databaseConnection.getOnlinePlayersList();
     }
 }

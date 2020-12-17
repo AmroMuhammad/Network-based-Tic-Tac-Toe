@@ -175,7 +175,7 @@ public class DatabaseConnection {
             
             for(String s : playerList){
                 if(players == null)
-                    players = s;
+                    players = "PLIST#"+s;
                 else
                     players = players +("#"+s);
 

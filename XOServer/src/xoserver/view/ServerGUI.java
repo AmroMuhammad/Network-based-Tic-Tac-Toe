@@ -1,5 +1,6 @@
 package xoserver.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -118,11 +119,12 @@ public class ServerGUI extends AnchorPane{
         
         
         togglingButtons();
-        gameMain = new MainServer();
+        
 
         btnOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                gameMain = new MainServer();
                 gameMain.start();
                 usersChart.setVisible(true);
             }
@@ -134,6 +136,11 @@ public class ServerGUI extends AnchorPane{
                 gameMain.stop();  //stops main server when server is down (so when client enters server he cant send)
                 gameMain.stopClients();  //stops sockets threads at clients side
                 usersChart.setVisible(false); 
+                try {
+                    gameMain.mainSocket.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(ServerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
    

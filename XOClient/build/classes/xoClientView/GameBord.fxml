@@ -49,54 +49,54 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="setBtnOne" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;">
+                        <Button fx:id="btnOne" mnemonicParsing="false" onAction="#setBtn1" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnFour" mnemonicParsing="false" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="1">
+                        <Button fx:id="btnFour" mnemonicParsing="false" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnTwo" mnemonicParsing="false" prefHeight="63.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1">
+                        <Button fx:id="btnTwo" mnemonicParsing="false" onAction="#setBtn2" prefHeight="63.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnFive" mnemonicParsing="false" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button fx:id="btnFive" mnemonicParsing="false" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnSeven" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="2">
+                        <Button fx:id="btnSeven" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnEight" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Button fx:id="btnEight" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnThree" mnemonicParsing="false" prefHeight="65.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2">
+                        <Button fx:id="btnThree" mnemonicParsing="false" prefHeight="65.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnSix" mnemonicParsing="false" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button fx:id="btnSix" mnemonicParsing="false" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="setBtnNine" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Button fx:id="btnNine" mnemonicParsing="false" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </Button>
                      </children>
                   </GridPane>
-                  <Button layoutX="29.0" layoutY="453.0" mnemonicParsing="false" onAction="#ShowVideo" text="show video" />
+                  <Button fx:id="showVideoBtn" layoutX="29.0" layoutY="453.0" mnemonicParsing="false" onAction="#ShowVideo" text="show video" />
                </children>
             </Pane>
          </center>

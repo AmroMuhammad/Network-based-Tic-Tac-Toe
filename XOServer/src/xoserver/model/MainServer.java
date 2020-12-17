@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class MainServer extends Thread {
 
     static Vector<GameHandler> socketVector;
-    private ServerSocket mainSocket;
+    public ServerSocket mainSocket;
     private GameHandler handler;
     private DatabaseConnection dbConnection;
     public static int onlinePlayers;
