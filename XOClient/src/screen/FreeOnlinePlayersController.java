@@ -26,11 +26,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
+import javax.swing.JPanel;
 
 /**
  * FXML Controller class
@@ -51,6 +54,8 @@ public class FreeOnlinePlayersController implements Initializable {
     DataInputStream dis2;
     PrintStream ps;
     PrintStream ps2;
+    @FXML
+    private ProgressIndicator waitingIndicator;
 
     public void set_playerName(String name) {
         userName = name;
@@ -59,6 +64,7 @@ public class FreeOnlinePlayersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            waitingIndicator.setVisible(false);
             s = new Socket(SignINController.serverIP, 5008);
             s2 = new Socket(SignINController.serverIP, 5008);
             dis = new DataInputStream(s.getInputStream());
@@ -72,7 +78,6 @@ public class FreeOnlinePlayersController implements Initializable {
         }
     }
 
-    @FXML
     private void loadDataTOListView() {
         Platform.runLater(new Runnable() {
             @Override
@@ -101,8 +106,11 @@ public class FreeOnlinePlayersController implements Initializable {
         } else {
             listView.setMouseTransparent( true );
             listView.setFocusTraversable( false );
+            waitingIndicator.setVisible(true);
+            waitingIndicator.setProgress(-1);
             new Thread() {
                 public void run() {
+                    
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
                     System.out.println("pressed on" + opponentName);
@@ -110,6 +118,7 @@ public class FreeOnlinePlayersController implements Initializable {
                     while (true) {
                         String recievedReqeustMsg = null;
                         try {
+                            
                             System.out.println(++d+"");    
                             recievedReqeustMsg =dis2.readLine();
                             parsing(recievedReqeustMsg);
@@ -143,6 +152,7 @@ public class FreeOnlinePlayersController implements Initializable {
                             listView.getSelectionModel().clearSelection();
                             listView.setMouseTransparent( false );
                             listView.setFocusTraversable( true );
+                            waitingIndicator.setVisible(false);
                             break;
                         } else {
                             System.out.println("shit");
