@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  */
 public class GameBordController implements Initializable {
 
-  @FXML
+@FXML
     private Label player1;
 @FXML
     private Label player2;
@@ -35,33 +35,21 @@ public class GameBordController implements Initializable {
     private Label player1Symbol;
 @FXML
     private Label player2Symbol;
-String flag ;
 
-     public void setText(String text1 , String text2 , String text3 , String text4 , String FLAG)
+
+     public void setText(String text1 , String text2 , String text3 , String text4 )
     {
         player1.setText(text1);
         player2.setText(text2);
         player1Symbol.setText(text3);
         player2Symbol.setText(text4);
-        flag = FLAG;
+        
       
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     } 
-    @FXML
-    private void ShowVideo(ActionEvent event) throws IOException
-    {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/xoClientView/ShowVideo.fxml"));
-        Parent viewparent = loader.load();
-        Scene viewscene = new Scene(viewparent);
-        ShowVideoController controller = loader.getController();
-        controller.FlagValue(flag);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(viewscene);
-        window.show(); 
-    }
+   
     
 }
