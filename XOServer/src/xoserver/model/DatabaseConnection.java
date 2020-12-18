@@ -98,7 +98,7 @@ public class DatabaseConnection {
         return false;
     }
 
-    public void setPlayerStatus(String user) {
+    public void signInPlayer(String user) {
         try {
             pst = con.prepareStatement("update AMR.users set STATUS=? where username=?", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
@@ -186,5 +186,19 @@ public class DatabaseConnection {
         
         System.out.println(players);
         return players;
+    }
+    
+        public void signOutPlayer(String user) {
+        try {
+            pst = con.prepareStatement("update AMR.users set STATUS=?,PLAYSTATUS=? where username=?", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            pst.setBoolean(1, false);
+            pst.setBoolean(2, false);
+            pst.setString(3, user);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

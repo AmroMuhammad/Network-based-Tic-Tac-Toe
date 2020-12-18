@@ -48,13 +48,12 @@ public class GameHandler extends Thread {
             try {
                 String msg = dis.readLine();
                 //sendMessageToAll(msg);
-                if (msg == null); 
-                else if (parsing(msg) == 1) {
+                if (msg == null); else if (parsing(msg) == 1) {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2], parsedMsg[3]);
                         System.out.println("done added");
                         ++MainServer.offlinePlayers;
-                        setPlayerStatus(parsedMsg[1]);
+                        signInPlayer(parsedMsg[1]);
                         ps.println("Register Confirmed");
                     } else {
                         System.out.println("user exists");
@@ -63,7 +62,7 @@ public class GameHandler extends Thread {
                 } else if (parsing(msg) == 2) {
                     if (isUserExists(parsedMsg[1])) {
                         if (isPasswordCorrect(parsedMsg[1], parsedMsg[2])) {
-                            setPlayerStatus(parsedMsg[1]);
+                            signInPlayer(parsedMsg[1]);
                             System.out.println("username correct and password is correct"); //send true to client
                             ++MainServer.onlinePlayers;
                             ps.println("SignIN Confirmed#" + getScore(parsedMsg[1]));
@@ -75,10 +74,12 @@ public class GameHandler extends Thread {
                         System.out.println("username is not correct");
                         ps.println("SignIN not Confirmed");      //send false to client to reset text fields as username doesn't exists
                     }
+                } else if (parsing(msg) == 3) {
+                    signOutPLayer(parsedMsg[1]);
                 } else if (parsing(msg) == 5) {
                     ps.println(getPlayersList()); //sends players list to player
-                }else if (parsing(msg) == 6) {
-                                    System.out.println(msg);
+                } else if (parsing(msg) == 6) {
+                    System.out.println(msg);
                     sendMessageToAll(msg); //sends players list to player
                 }
             } catch (IOException ex) {
@@ -118,8 +119,12 @@ public class GameHandler extends Thread {
         }
     }
 
-    public void setPlayerStatus(String user) {
-        databaseConnection.setPlayerStatus(user);
+    public void signInPlayer(String user) {
+        databaseConnection.signInPlayer(user);
+    }
+
+    public void signOutPLayer(String user) {
+        databaseConnection.signOutPlayer(user);
     }
 
     public int parsing(String requestMessage) {
@@ -131,16 +136,15 @@ public class GameHandler extends Thread {
             return 1;     //register request
         } else if (parsedMsg[0].equals("SIN")) {
             return 2;     //sign in request
-        } else if (parsedMsg[0].equals("PLAY")) {
-            return 3; //playing
+        } else if (parsedMsg[0].equals("SOUT")) {
+            return 3; //sign out request
         } else if (parsedMsg[0].equals("NPLAY")) {
             return 4; // finished playing
         } else if (parsedMsg[0].equals("PLIST")) {
             return 5; //request playing list
         } else if (parsedMsg[0].equals("DUWTP") || parsedMsg[0].equals("PREQ")) {
             return 6; //request playing and answer
-        }
-        else {
+        } else {
             return 7; //sign out
         }
     }
@@ -148,7 +152,7 @@ public class GameHandler extends Thread {
     public int getScore(String username) {
         return databaseConnection.getScore(username);
     }
-    
+
     public String getPlayersList() {
         return databaseConnection.getOnlinePlayersList();
     }
