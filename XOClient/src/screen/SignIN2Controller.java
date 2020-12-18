@@ -45,10 +45,11 @@ public class SignIN2Controller implements Initializable {
     private Button signUP_btn;
     @FXML
     private PasswordField password_txt;
-    Socket SClient;
+    Socket sClient;
     DataInputStream dis;
     PrintStream ps;
     String ip;
+    Thread th;
     private int score=0;
     /**
      * Initializes the controller class.
@@ -93,9 +94,9 @@ public class SignIN2Controller implements Initializable {
             alert.show();
         } else {
             try {
-                SClient = new Socket(ip, 5008);
-                dis = new DataInputStream(SClient.getInputStream());
-                ps = new PrintStream(SClient.getOutputStream());
+                sClient = new Socket(ip, 5008);
+                dis = new DataInputStream(sClient.getInputStream());
+                ps = new PrintStream(sClient.getOutputStream());
             } catch (IOException ex) {
                 Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -104,7 +105,7 @@ public class SignIN2Controller implements Initializable {
             ps.println(Data);
             ps.flush();
 
-            new Thread(new Runnable() {
+            th = new Thread(new Runnable() {
                 public void run() {
 
                     try {
@@ -122,6 +123,9 @@ public class SignIN2Controller implements Initializable {
                                 } else {
 
                                     try {
+                                        ps.close();
+                                        dis.close();
+                                        sClient.close();
                                         FXMLLoader loader = new FXMLLoader();
                                         loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
                                         Parent viewParent;
@@ -142,10 +146,12 @@ public class SignIN2Controller implements Initializable {
                         });
                     } catch (IOException ex) {
                         Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                    }finally{
+                        th.stop();
                     }
-
                 }
-            }).start();
+            });
+            th.start();
         }
 
     }
