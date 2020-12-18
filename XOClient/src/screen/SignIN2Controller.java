@@ -100,7 +100,7 @@ public class SignIN2Controller implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String Data = "SIN#" + name + "#" + pass + "#" + SignUPController.getHostIPAddress();
+            String Data = "SIN#" + name + "#" + pass;
             System.out.println(Data);
             ps.println(Data);
             ps.flush();

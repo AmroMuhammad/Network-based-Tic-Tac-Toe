@@ -61,7 +61,7 @@ public class SignUPController implements Initializable {
     @FXML
     private TextField passConf_txt_msg;
     
-    Socket SClient;
+    Socket sClient;
     DataInputStream dis;
     PrintStream ps;
     String ip;
@@ -93,11 +93,11 @@ public class SignUPController implements Initializable {
           
           String name =name_text.getText();
           String pass =pass_text.getText(); 
-          String str  = "REG#"+name+"#"+pass+"#"+getHostIPAddress();   //added IP address of Host
+          String str  = "REG#"+name+"#"+pass;   //added IP address of Host
            try {
-            SClient = new Socket(ip,5008);
-            dis = new DataInputStream(SClient.getInputStream());
-            ps = new PrintStream(SClient.getOutputStream());
+            sClient = new Socket(ip,5008);
+            dis = new DataInputStream(sClient.getInputStream());
+            ps = new PrintStream(sClient.getOutputStream());
         } catch (IOException ex) {
             Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -216,15 +216,6 @@ public class SignUPController implements Initializable {
   
         return m.matches(); 
     }
-    public static boolean isValidEmail(String email) 
-    { 
-        String emailRegex ="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-                          
-        Pattern pat = Pattern.compile(emailRegex); 
-        if (email == null) 
-            return false; 
-        return pat.matcher(email).matches(); 
-    } 
 
    public static boolean isaValidpassword(String password) 
     { 
@@ -240,19 +231,5 @@ public class SignUPController implements Initializable {
         } 
   
         return true; 
-    }
-   
-   
-   public static String getHostIPAddress(){
-       String IPAddress = null;
-        try {
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            IPAddress = inetAddress.getHostAddress();
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return IPAddress;
-   }
-
-  
+    } 
 }

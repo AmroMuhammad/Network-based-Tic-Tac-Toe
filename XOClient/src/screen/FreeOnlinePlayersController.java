@@ -91,14 +91,12 @@ public class FreeOnlinePlayersController implements Initializable {
                     list.add(s);
                 }
                 listView.getItems().addAll(list);
-
             }
         });
-
     }
 
     @FXML
-    private synchronized void handleMouseClickAction(javafx.scene.input.MouseEvent event) throws IOException {
+    private void handleMouseClickAction(javafx.scene.input.MouseEvent event) throws IOException {
         String opponentName = (String) listView.getSelectionModel().getSelectedItem();
         if (opponentName == null || opponentName.isEmpty()) {
             System.out.println("oooops it is empty");
@@ -110,7 +108,6 @@ public class FreeOnlinePlayersController implements Initializable {
             waitingIndicator.setProgress(-1);
             new Thread() {
                 public void run() {
-                    
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
                     System.out.println("pressed on" + opponentName);
@@ -176,7 +173,7 @@ public class FreeOnlinePlayersController implements Initializable {
         window.show();
     }
 
-    public synchronized void getPlayerList() {
+    public void getPlayerList() {
         new Thread(new Runnable() {
             @Override
             public void run() {

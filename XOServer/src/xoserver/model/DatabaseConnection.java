@@ -48,12 +48,11 @@ public class DatabaseConnection {
         }
     }
 
-    public void addUser(String username, String password, String ip) {
+    public void addUser(String username, String password) {
         try {
-            pst = con.prepareStatement("insert into AMR.users (Username,password,ip) VALUES (?,?,?)");
+            pst = con.prepareStatement("insert into AMR.users (Username,password) VALUES (?,?)");
             pst.setString(1, username);
             pst.setString(2, password);
-            pst.setString(3, ip);
             pst.executeUpdate();
 
         } catch (SQLException ex) {

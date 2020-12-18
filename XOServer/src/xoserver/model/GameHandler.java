@@ -50,7 +50,7 @@ public class GameHandler extends Thread {
                 //sendMessageToAll(msg);
                 if (msg == null); else if (parsing(msg) == 1) {
                     if (!isUserExists(parsedMsg[1])) {
-                        addUserToDatabase(parsedMsg[1], parsedMsg[2], parsedMsg[3]);
+                        addUserToDatabase(parsedMsg[1], parsedMsg[2]);
                         System.out.println("done added");
                         ++MainServer.offlinePlayers;
                         signInPlayer(parsedMsg[1]);
@@ -99,8 +99,8 @@ public class GameHandler extends Thread {
         databaseConnection.openConnection();
     }
 
-    public void addUserToDatabase(String user, String pass, String ip) {
-        databaseConnection.addUser(user, pass, ip);
+    public void addUserToDatabase(String user, String pass) {
+        databaseConnection.addUser(user, pass);
     }
 
     public boolean isUserExists(String user) {
