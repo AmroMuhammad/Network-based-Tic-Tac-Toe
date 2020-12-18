@@ -143,9 +143,11 @@ public class SignUPController implements Initializable {
                         ps.close();
                         try {
                             dis.close();
+                            sClient.close();
                         } catch (IOException ex) {
                             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
                         }
+
                         th.stop();
                     }
 
@@ -187,6 +189,15 @@ public class SignUPController implements Initializable {
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                ps.close();
+                dis.close();
+                sClient.close();
+                th.stop();
+            } catch (IOException ex) {
+                Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }

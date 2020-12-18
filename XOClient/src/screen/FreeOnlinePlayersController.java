@@ -5,7 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -54,6 +53,8 @@ public class FreeOnlinePlayersController implements Initializable {
     DataInputStream dis2;
     PrintStream ps;
     PrintStream ps2;
+    Thread requestThread;
+    Thread replyThread;
     @FXML
     private ProgressIndicator waitingIndicator;
 
@@ -72,7 +73,7 @@ public class FreeOnlinePlayersController implements Initializable {
             ps = new PrintStream(s.getOutputStream());
             ps2 = new PrintStream(s2.getOutputStream());
             System.out.println("opened everything");
-            getPlayerList();
+            getPlayerListAndPlayRequest();
         } catch (IOException ex) {
             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -102,22 +103,21 @@ public class FreeOnlinePlayersController implements Initializable {
             System.out.println("oooops it is empty");
             System.out.println("if " + userName + " and " + opponentName);
         } else {
-            listView.setMouseTransparent( true );
-            listView.setFocusTraversable( false );
+            listView.setMouseTransparent(true);
+            listView.setFocusTraversable(false);
             waitingIndicator.setVisible(true);
             waitingIndicator.setProgress(-1);
-            new Thread() {
+            requestThread = new Thread() {
                 public void run() {
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
                     System.out.println("pressed on" + opponentName);
-                    int d=0;
+                    int d = 0;
                     while (true) {
                         String recievedReqeustMsg = null;
                         try {
-                            
-                            System.out.println(++d+"");    
-                            recievedReqeustMsg =dis2.readLine();
+                            System.out.println(++d + "");
+                            recievedReqeustMsg = dis2.readLine();
                             parsing(recievedReqeustMsg);
                         } catch (IOException ex) {
                             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,25 +139,37 @@ public class FreeOnlinePlayersController implements Initializable {
                                         System.out.println("javafx.stage.Stage@482c88ed");
                                         window.setScene(viewscene);
                                         window.show();
+
                                     } catch (IOException ex) {
                                         Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+                                    } finally {
+                                        try {
+                                            dis2.close();
+                                            ps2.close();
+                                            s2.close();
+                                            ps.close();
+                                            dis.close();
+                                            s.close();
+                                            requestThread.stop();
+                                            replyThread.stop();
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
                                     }
                                 }
                             });
                         } else if (parsedMsg[0].equals("PREQ") && parsedMsg[1].equals("reject") && parsedMsg[2].equals(userName)) {
                             System.out.println("rejection received");
                             listView.getSelectionModel().clearSelection();
-                            listView.setMouseTransparent( false );
-                            listView.setFocusTraversable( true );
+                            listView.setMouseTransparent(false);
+                            listView.setFocusTraversable(true);
                             waitingIndicator.setVisible(false);
-                            break;
-                        } else {
-                            System.out.println("shit");
+                            requestThread.stop();
                         }
                     }
                 }
-            }.start();
-
+            };
+            requestThread.start();
         }
     }
 
@@ -171,10 +183,19 @@ public class FreeOnlinePlayersController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();
+        dis2.close();
+        ps2.close();
+        s2.close();
+        ps.close();
+        dis.close();
+        s.close();
+        requestThread.stop();
+        replyThread.stop();
+
     }
 
-    public void getPlayerList() {
-        new Thread(new Runnable() {
+    public void getPlayerListAndPlayRequest() {
+        replyThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 ps.println("PLIST");
@@ -194,7 +215,16 @@ public class FreeOnlinePlayersController implements Initializable {
                                         ps.println(sentMsg);
                                         Platform.runLater(new Runnable() {
                                             public void run() {
-                                                showBoardForOpponent(oppName, userName);
+                                                try {
+                                                    ps.close();
+                                                    dis.close();
+                                                    s.close();
+                                                    showBoardForOpponent(oppName, userName);
+                                                } catch (IOException ex) {
+                                                    Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+                                                } finally {
+                                                    replyThread.stop();
+                                                }
                                             }
                                         });
                                     } else {
@@ -206,8 +236,6 @@ public class FreeOnlinePlayersController implements Initializable {
                                 }
                             });
                         } else if (parsedMsg[0].equals("PLIST")) {
-                            //System.out.println("show play list");
-                            //System.out.println(msg);
                             loadDataTOListView();
                             ps.println("PLIST");
                         }
@@ -221,7 +249,8 @@ public class FreeOnlinePlayersController implements Initializable {
                     }
                 }
             }
-        }).start();
+        });
+        replyThread.start();
     }
 
     public void parsing(String recievedMsg) {

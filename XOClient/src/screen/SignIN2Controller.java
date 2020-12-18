@@ -50,7 +50,8 @@ public class SignIN2Controller implements Initializable {
     PrintStream ps;
     String ip;
     Thread th;
-    private int score=0;
+    private int score = 0;
+
     /**
      * Initializes the controller class.
      */
@@ -114,7 +115,7 @@ public class SignIN2Controller implements Initializable {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                String parsedMsg=SignInParser(msg);
+                                String parsedMsg = SignInParser(msg);
                                 if (!parsedMsg.equals("SignIN Confirmed")) {
 
                                     Alert alert = new Alert(Alert.AlertType.ERROR, "invalid username or password", ButtonType.OK);
@@ -146,7 +147,7 @@ public class SignIN2Controller implements Initializable {
                         });
                     } catch (IOException ex) {
                         Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
-                    }finally{
+                    } finally {
                         th.stop();
                     }
                 }
@@ -171,14 +172,24 @@ public class SignIN2Controller implements Initializable {
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                ps.close();
+                dis.close();
+                sClient.close();
+                th.stop();
+            } catch (IOException ex) {
+                Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
 
     public String SignInParser(String msg) {
-        String [] parsedMsg = msg.split("\\#");
-        if(parsedMsg[0].equals("SignIN Confirmed"))
-            score=Integer.parseInt(parsedMsg[1]);
+        String[] parsedMsg = msg.split("\\#");
+        if (parsedMsg[0].equals("SignIN Confirmed")) {
+            score = Integer.parseInt(parsedMsg[1]);
+        }
         return parsedMsg[0];
     }
 }
