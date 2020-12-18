@@ -61,7 +61,7 @@ public class SignINController implements Initializable {
     private Button gust_click;
     @FXML
     private Button network_btn;
-    
+    public static String serverIP;
    
    
 
@@ -158,6 +158,7 @@ public class SignINController implements Initializable {
         if(flag)
         {
             SocketAddress socketAddress = new InetSocketAddress(ip, 5008);
+            serverIP=ip;
 	    Socket socket = new Socket();
         
             try {

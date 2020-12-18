@@ -38,8 +38,7 @@ public class ENTERController implements Initializable {
     private Button newGame_txt;
     @FXML
     private Button record_txt;
-    String Name ;
-    int s ;
+    String Name ;  
     /**
      * Initializes the controller class.
      */
@@ -50,7 +49,6 @@ public class ENTERController implements Initializable {
     }
     public void nPlayerScore(int scr)
     {
-        s = scr;
         score.setText(""+scr);
     }
     
@@ -101,7 +99,7 @@ public class ENTERController implements Initializable {
             Parent viewParent =loader.load();
             Scene viewscene =new Scene (viewParent);
             FreeOnlinePlayersController controller =loader.getController();
-            controller.set_playerName(Name ,s );
+            controller.set_playerName(Name);
             Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
             window.setScene(viewscene);
             window.show();
