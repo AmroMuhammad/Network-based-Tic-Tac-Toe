@@ -5,8 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -42,14 +40,14 @@ import xoClientModel.signINBase;
  * @author HP
  */
 public class SignUPController implements Initializable {
-    
+
     public ActionEvent ec;
     @FXML
     private TextField pass_text;
-    
+
     @FXML
     private Button signUPP_btn;
-    
+
     @FXML
     private TextField name_text;
     @FXML
@@ -60,176 +58,166 @@ public class SignUPController implements Initializable {
     private TextField pass_txt_msg;
     @FXML
     private TextField passConf_txt_msg;
-    
+
     Socket sClient;
     DataInputStream dis;
     PrintStream ps;
     String ip;
+    Thread th;
+
     /**
      * Initializes the controller class.
      */
-     @Override
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
-   
-    }   
 
-   public void ip_value(String IP)
-    {
-       ip = IP; 
     }
-   
+
+    public void ip_value(String IP) {
+        ip = IP;
+    }
+
     @FXML
-    private void btnCLICK(ActionEvent event)  {
-          
-          boolean fn = isValidUsername(name_text.getText());
-          boolean fp = isaValidpassword(pass_text.getText());
-          boolean fpc = false;
-          if( pass_text.getText().equals(passconf_text.getText()) ){ fpc =true;}
-          //////////////////////////
-          
-          
-        if (fpc && fp && fn ){
-            
-          
-          String name =name_text.getText();
-          String pass =pass_text.getText(); 
-          String str  = "REG#"+name+"#"+pass;   //added IP address of Host
-           try {
-            sClient = new Socket(ip,5008);
-            dis = new DataInputStream(sClient.getInputStream());
-            ps = new PrintStream(sClient.getOutputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-           System.out.println(str);
-                  ps.println(str);
-                  ps.flush();
-                  
-        new Thread(new Runnable() {
-            public void run(){
-              
+    private void btnCLICK(ActionEvent event) {
+
+        boolean fn = isValidUsername(name_text.getText());
+        boolean fp = isaValidpassword(pass_text.getText());
+        boolean fpc = false;
+        if (pass_text.getText().equals(passconf_text.getText())) {
+            fpc = true;
+        }
+        //////////////////////////
+
+        if (fpc && fp && fn) {
+
+            String name = name_text.getText();
+            String pass = pass_text.getText();
+            String str = "REG#" + name + "#" + pass;   //added IP address of Host
+            try {
+                sClient = new Socket(ip, 5008);
+                dis = new DataInputStream(sClient.getInputStream());
+                ps = new PrintStream(sClient.getOutputStream());
+            } catch (IOException ex) {
+                Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(str);
+            ps.println(str);
+            ps.flush();
+
+            th = new Thread(new Runnable() {
+                public void run() {
+
                     try {
                         String msg = dis.readLine();
-                        System.out.println( " my massege is ....."+msg);
+                        System.out.println(" my massege is ....." + msg);
                         Platform.runLater(new Runnable() {
-                            @Override public void run() {
-                        if(! msg.equals("Register Confirmed"))
-                        {
-                        
-                          Alert alert = new Alert(Alert.AlertType.ERROR, "This data is already exist. ", ButtonType.OK);
-                          alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-                          alert.show();
-                        }
-                        else
-                        {
-                     
-                
-                            try {
-                               FXMLLoader loader =new FXMLLoader();
-                            loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
-                            Parent viewParent =loader.load();
-                            Scene viewscene =new Scene (viewParent);
-                            ENTERController controller =loader.getController();
-                            controller.nPlayerName(name_text.getText());
-                            Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-                            window.setScene(viewscene);
-                             window.show();
-                            } catch (IOException ex) {
-                                Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                
-                        }
+                            @Override
+                            public void run() {
+                                if (!msg.equals("Register Confirmed")) {
+
+                                    Alert alert = new Alert(Alert.AlertType.ERROR, "This data is already exist. ", ButtonType.OK);
+                                    alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                                    alert.show();
+                                } else {
+
+                                    try {
+                                        FXMLLoader loader = new FXMLLoader();
+                                        loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
+                                        Parent viewParent = loader.load();
+                                        Scene viewscene = new Scene(viewParent);
+                                        ENTERController controller = loader.getController();
+                                        controller.nPlayerName(name_text.getText());
+                                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                        window.setScene(viewscene);
+                                        window.show();
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                }
                             }
                         });
                     } catch (IOException ex) {
                         Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        ps.close();
+                        try {
+                            dis.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        th.stop();
                     }
-                    
-            }
-            }).start();
-       
-          }
-        
-            if(!fn)
-            { 
-              name_txt_msg.setText("Invalid Name");
-            }
-            else 
-            {
-              name_txt_msg.clear();
-            }  
-            if (!fp)
-            {
-                pass_txt_msg.setText("Invalid password");
-            }
-            else {
-                pass_txt_msg.clear();
-            }
-            if (fpc )
-            {
-                passConf_txt_msg.setText("confirmed passowrd");
-            }
-            else 
-                {
-                passConf_txt_msg.setText("Not confirmed passowrd");
+
                 }
-                   
-    
+            });
+            th.start();
+        }
+
+        if (!fn) {
+            name_txt_msg.setText("Invalid Name");
+        } else {
+            name_txt_msg.clear();
+        }
+        if (!fp) {
+            pass_txt_msg.setText("Invalid password");
+        } else {
+            pass_txt_msg.clear();
+        }
+        if (fpc) {
+            passConf_txt_msg.setText("confirmed passowrd");
+        } else {
+            passConf_txt_msg.setText("Not confirmed passowrd");
+        }
+
     }
-    
-    
-    
 
     @FXML
-    private void back_click(ActionEvent event)  {
-          
-          FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/signIN2.fxml"));
-          Parent viewParent;
+    private void back_click(ActionEvent event) {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/signIN2.fxml"));
+        Parent viewParent;
         try {
             viewParent = loader.load();
-            Scene viewscene =new Scene (viewParent);
-            SignIN2Controller controller =loader.getController();
-            Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene viewscene = new Scene(viewParent);
+            SignIN2Controller controller = loader.getController();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
         }
-          
-    }
-    
-    
-    
-    public static boolean isValidUsername(String name) 
-    { 
-        String regex = "^[A-Za-z]\\w{2,29}$"; 
-        Pattern p = Pattern.compile(regex); 
- 
-        if (name == null) { 
-            return false; 
-        }
-        if (name.length()>=30) { 
-            return false; 
-        }
-        Matcher m = p.matcher(name); 
-  
-        return m.matches(); 
+
     }
 
-   public static boolean isaValidpassword(String password) 
-    { 
-        if (!((password.length() >= 5) 
-              && (password.length() <= 29))) { 
-            return false; 
-        } 
-        if (password.contains(" ")) { 
-            return false; 
-        } 
-        if ((password.contains("#"))) { 
-            return false;  
-        } 
-  
-        return true; 
-    } 
+    public static boolean isValidUsername(String name) {
+        String regex = "^[A-Za-z]\\w{2,29}$";
+        Pattern p = Pattern.compile(regex);
+
+        if (name == null) {
+            return false;
+        }
+        if (name.length() >= 30) {
+            return false;
+        }
+        Matcher m = p.matcher(name);
+
+        return m.matches();
+    }
+
+    public static boolean isaValidpassword(String password) {
+        if (!((password.length() >= 5)
+                && (password.length() <= 29))) {
+            return false;
+        }
+        if (password.contains(" ")) {
+            return false;
+        }
+        if ((password.contains("#"))) {
+            return false;
+        }
+
+        return true;
+    }
 }
