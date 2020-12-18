@@ -21,7 +21,7 @@
                         <Font name="Cambria Math" size="25.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="playerName" layoutX="125.0" layoutY="151.0" prefHeight="38.0" prefWidth="417.0" />
+                  <TextField fx:id="playerName" layoutX="125.0" layoutY="151.0" prefHeight="38.0" prefWidth="446.0" />
                   <RadioButton layoutX="239.0" layoutY="235.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="55.0" selected="true" text="X" textFill="#f20606" fx:id="x">
                      <font>
                         <Font name="Bodoni MT Condensed Bold" size="25.0" />
@@ -35,12 +35,25 @@
                         <Font name="Broadway" size="25.0" />
                      </font>
                   </RadioButton>
-                  <Button fx:id="SingleStart" layoutX="306.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleStartSinglePlayer" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #3FAC76;" text="Start">
+                  <Button fx:id="SingleStart" layoutX="306.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleStartSinglePlayer" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #3FAC76;" text="Start">
                      <font>
                         <Font name="Cambria Math" size="25.0" />
                      </font>
                   </Button>
                   <Button layoutX="21.0" layoutY="26.0" mnemonicParsing="false" onAction="#back_btn" text="back" />
+                  <RadioButton fx:id="easy" layoutX="239.0" layoutY="296.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="92.0" selected="true" text="easy" textFill="#f20606">
+                     <font>
+                        <Font name="Bodoni MT Condensed Bold" size="25.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="level" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="hard" layoutX="403.0" layoutY="296.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="94.0" text="hard" textFill="#f20606" toggleGroup="$level">
+                     <font>
+                        <Font name="Bodoni MT Condensed Bold" size="25.0" />
+                     </font>
+                  </RadioButton>
                </children>
             </Pane>
          </center>

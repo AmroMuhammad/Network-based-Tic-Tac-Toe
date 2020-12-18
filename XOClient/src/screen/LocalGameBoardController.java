@@ -17,7 +17,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -51,7 +54,7 @@ public class LocalGameBoardController implements Initializable {
     private Pane pane2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }
     
      public void setText(String text1 , String text2 , String text3 , String text4 )
