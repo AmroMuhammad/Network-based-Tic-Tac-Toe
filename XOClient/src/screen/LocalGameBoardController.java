@@ -54,7 +54,15 @@ public class LocalGameBoardController implements Initializable {
     private Pane pane2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        boolean yes = false;
+	Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
+	//dlg.setTitle("Move Directory");
+	dlg.setHeaderText("Record Game");
+	dlg.setContentText("Do you want record this game ?");
+	dlg.getButtonTypes().clear();
+	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+	dlg.showAndWait();
+	yes = dlg.getResult() == ButtonType.YES;
     }
     
      public void setText(String text1 , String text2 , String text3 , String text4 )
