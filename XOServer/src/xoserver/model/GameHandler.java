@@ -56,7 +56,7 @@ public class GameHandler extends Thread {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2]);
                         System.out.println("done added");
-                        ++MainServer.offlinePlayers;
+                        ++MainServer.onlinePlayers;
                         signInPlayer(parsedMsg[1]);
                         ps.println("Register Confirmed");
                     } else {
@@ -69,6 +69,7 @@ public class GameHandler extends Thread {
                             signInPlayer(parsedMsg[1]);
                             System.out.println("username correct and password is correct"); //send true to client
                             ++MainServer.onlinePlayers;
+                            --MainServer.offlinePlayers;
                             ps.println("SignIN Confirmed#" + getScore(parsedMsg[1]));
                         } else {
                             System.out.println("username correct and password is not correct");
@@ -80,6 +81,8 @@ public class GameHandler extends Thread {
                     }
                 } else if (parsing(msg) == 3) {
                     signOutPLayer(parsedMsg[1]);
+                    ++MainServer.offlinePlayers;
+                    --MainServer.onlinePlayers;
                 } else if (parsing(msg) == 5) {
                     ps.println(getPlayersList()); //sends players list to player
                 } else if (parsing(msg) == 6) {

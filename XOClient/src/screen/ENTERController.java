@@ -77,6 +77,11 @@ public class ENTERController implements Initializable {
     private void log_out(ActionEvent event)  {
         
         try {
+            String logoutMessage = "SOUT#"+Name;
+            SignIN2Controller.ps.println(logoutMessage);
+            SignIN2Controller.dis.close();
+            SignIN2Controller.ps.close();
+            SignIN2Controller.sClient.close();
             FXMLLoader loader =new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/signIN.fxml"));
             Parent viewParent =loader.load();
