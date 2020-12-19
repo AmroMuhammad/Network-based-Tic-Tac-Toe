@@ -58,10 +58,6 @@ public class SignUPController implements Initializable {
     private TextField pass_txt_msg;
     @FXML
     private TextField passConf_txt_msg;
-
-    Socket sClient;
-    DataInputStream dis;
-    PrintStream ps;
     String ip;
     Thread th;
 
@@ -92,23 +88,16 @@ public class SignUPController implements Initializable {
 
             String name = name_text.getText();
             String pass = pass_text.getText();
-            String str = "REG#" + name + "#" + pass;   //added IP address of Host
-            try {
-                sClient = new Socket(ip, 5008);
-                dis = new DataInputStream(sClient.getInputStream());
-                ps = new PrintStream(sClient.getOutputStream());
-            } catch (IOException ex) {
-                Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String str = "REG#" + name + "#" + pass;   //added IP address of Host        
             System.out.println(str);
-            ps.println(str);
-            ps.flush();
+            SignIN2Controller.ps.println(str);
+            SignIN2Controller.ps.flush();
 
             th = new Thread(new Runnable() {
                 public void run() {
 
                     try {
-                        String msg = dis.readLine();
+                        String msg = SignIN2Controller.dis.readLine();
                         System.out.println(" my massege is ....." + msg);
                         Platform.runLater(new Runnable() {
                             @Override
@@ -140,17 +129,8 @@ public class SignUPController implements Initializable {
                     } catch (IOException ex) {
                         Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
                     } finally {
-                        ps.close();
-                        try {
-                            dis.close();
-                            sClient.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
                         th.stop();
                     }
-
                 }
             });
             th.start();
@@ -190,14 +170,7 @@ public class SignUPController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                ps.close();
-                dis.close();
-                sClient.close();
                 th.stop();
-            } catch (IOException ex) {
-                Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
 
     }

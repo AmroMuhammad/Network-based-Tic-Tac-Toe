@@ -47,11 +47,8 @@ public class FreeOnlinePlayersController implements Initializable {
     String userName;
     String[] parsedMsg;
     boolean flag = false;
-    Socket s;
     Socket s2;
-    DataInputStream dis;
     DataInputStream dis2;
-    PrintStream ps;
     PrintStream ps2;
     Thread requestThread;
     Thread replyThread;
@@ -66,11 +63,8 @@ public class FreeOnlinePlayersController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             waitingIndicator.setVisible(false);
-            s = new Socket(SignINController.serverIP, 5008);
             s2 = new Socket(SignINController.serverIP, 5008);
-            dis = new DataInputStream(s.getInputStream());
             dis2 = new DataInputStream(s2.getInputStream());
-            ps = new PrintStream(s.getOutputStream());
             ps2 = new PrintStream(s2.getOutputStream());
             System.out.println("opened everything");
             getPlayerListAndPlayRequest();
@@ -147,9 +141,6 @@ public class FreeOnlinePlayersController implements Initializable {
                                             dis2.close();
                                             ps2.close();
                                             s2.close();
-                                            ps.close();
-                                            dis.close();
-                                            s.close();
                                             requestThread.stop();
                                             replyThread.stop();
                                         } catch (IOException ex) {
@@ -186,9 +177,6 @@ public class FreeOnlinePlayersController implements Initializable {
         dis2.close();
         ps2.close();
         s2.close();
-        ps.close();
-        dis.close();
-        s.close();
         requestThread.stop();
         replyThread.stop();
 
@@ -198,10 +186,10 @@ public class FreeOnlinePlayersController implements Initializable {
         replyThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                ps.println("PLIST");
+                SignIN2Controller.ps.println("PLIST");
                 while (true) {
                     try {
-                        String msg = dis.readLine();
+                        String msg = SignIN2Controller.dis.readLine();
                         parsing(msg);
                         if (parsedMsg[0].equals("DUWTP") && parsedMsg[1].equals(userName)) {
                             final String oppName = parsedMsg[2];
@@ -212,17 +200,12 @@ public class FreeOnlinePlayersController implements Initializable {
                                     if (confirmationToPlay() == true) {
                                         System.out.println("acception sent");
                                         String sentMsg = new String("PREQ#accept#" + oppName + "#" + userName);
-                                        ps.println(sentMsg);
+                                        SignIN2Controller.ps.println(sentMsg);
                                         Platform.runLater(new Runnable() {
                                             public void run() {
                                                 try {
-                                                    ps.close();
-                                                    dis.close();
-                                                    s.close();
                                                     showBoardForOpponent(oppName, userName);
-                                                } catch (IOException ex) {
-                                                    Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
-                                                } finally {
+                                                }  finally {
                                                     replyThread.stop();
                                                 }
                                             }
@@ -231,13 +214,13 @@ public class FreeOnlinePlayersController implements Initializable {
                                         System.out.println("rejection sent");
                                         String sentMsg = new String("PREQ#reject#" + oppName + "#" + userName);
                                         System.out.println(sentMsg);
-                                        ps.println(sentMsg);
+                                        SignIN2Controller.ps.println(sentMsg);
                                     }
                                 }
                             });
                         } else if (parsedMsg[0].equals("PLIST")) {
                             loadDataTOListView();
-                            ps.println("PLIST");
+                            SignIN2Controller.ps.println("PLIST");
                         }
                         try {
                             Thread.sleep(5000);

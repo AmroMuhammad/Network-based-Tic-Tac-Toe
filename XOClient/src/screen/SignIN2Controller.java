@@ -45,9 +45,9 @@ public class SignIN2Controller implements Initializable {
     private Button signUP_btn;
     @FXML
     private PasswordField password_txt;
-    Socket sClient;
-    DataInputStream dis;
-    PrintStream ps;
+    public static Socket sClient;
+    public static DataInputStream dis;
+    public static PrintStream ps;
     String ip;
     Thread th;
     private int score = 0;
@@ -124,9 +124,6 @@ public class SignIN2Controller implements Initializable {
                                 } else {
 
                                     try {
-                                        ps.close();
-                                        dis.close();
-                                        sClient.close();
                                         FXMLLoader loader = new FXMLLoader();
                                         loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
                                         Parent viewParent;
@@ -173,14 +170,8 @@ public class SignIN2Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                ps.close();
-                dis.close();
-                sClient.close();
                 th.stop();
-            } catch (IOException ex) {
-                Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
+             
         }
 
     }

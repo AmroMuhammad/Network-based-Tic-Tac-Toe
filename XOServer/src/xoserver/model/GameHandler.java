@@ -29,12 +29,14 @@ public class GameHandler extends Thread {
     static Vector<GameHandler> clientVector = new Vector<>();
     private DatabaseConnection databaseConnection;
     private String[] parsedMsg;
+    Socket clientSocket;
 
     public GameHandler(Socket s) {
         try {
+            clientSocket = s;
             databaseConnection = DatabaseConnection.getDatabaseInstance();
-            dis = new DataInputStream(s.getInputStream());
-            ps = new PrintStream(s.getOutputStream());
+            dis = new DataInputStream(clientSocket.getInputStream());
+            ps = new PrintStream(clientSocket.getOutputStream());
             clientVector.add(this);
             start();
         } catch (IOException ex) {
@@ -48,7 +50,9 @@ public class GameHandler extends Thread {
             try {
                 String msg = dis.readLine();
                 //sendMessageToAll(msg);
-                if (msg == null); else if (parsing(msg) == 1) {
+                if (msg == null) {
+                    checkClientSocket();       //check if userSocket open or not.
+                } else if (parsing(msg) == 1) {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2]);
                         System.out.println("done added");
@@ -155,5 +159,23 @@ public class GameHandler extends Thread {
 
     public String getPlayersList() {
         return databaseConnection.getOnlinePlayersList();
+    }
+
+    public void checkClientSocket() {
+        try {
+            if (clientSocket.getInputStream().read() == -1) {
+                try {
+                    ps.close();
+                    dis.close();
+                    clientVector.remove(this);
+                    clientSocket.close();
+                    this.stop();
+                } catch (IOException ex) {
+                    Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
