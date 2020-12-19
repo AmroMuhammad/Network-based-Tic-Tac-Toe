@@ -56,7 +56,7 @@ public class FreeOnlinePlayersController implements Initializable {
     private ProgressIndicator waitingIndicator;
 
     public void set_playerName(String name) {
-        userName = name;
+        userName = ENTERController.Name;
     }
 
     @Override
@@ -112,6 +112,7 @@ public class FreeOnlinePlayersController implements Initializable {
                         try {
                             System.out.println(++d + "");
                             recievedReqeustMsg = dis2.readLine();
+                            System.out.println(recievedReqeustMsg);
                             parsing(recievedReqeustMsg);
                         } catch (IOException ex) {
                             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
@@ -123,14 +124,12 @@ public class FreeOnlinePlayersController implements Initializable {
                                     try {
                                         System.out.println("acception received");
                                         FXMLLoader loader = new FXMLLoader();
-                                        loader.setLocation(getClass().getResource("/xoClientView/GameBord.fxml"));
+                                        loader.setLocation(getClass().getResource("/xoClientView/NetworkGameBoard.fxml"));
                                         Parent viewparent = loader.load();
                                         Scene viewscene = new Scene(viewparent);
-                                        GameBordController controller = loader.getController();
-                                        controller.setText(userName, opponentName, "x", "o");
+                                        NetworkGameBoardController controller = loader.getController();
+                                        controller.setText(userName, opponentName, "x", "o",opponentName,userName);
                                         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                        System.out.println("stage: " + window.toString());
-                                        System.out.println("javafx.stage.Stage@482c88ed");
                                         window.setScene(viewscene);
                                         window.show();
 
@@ -260,11 +259,11 @@ public class FreeOnlinePlayersController implements Initializable {
     public void showBoardForOpponent(String opp, String mainPlayer) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/xoClientView/GameBord.fxml"));
+            loader.setLocation(getClass().getResource("/xoClientView/NetworkGameBoard.fxml"));
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
-            GameBordController controller = loader.getController();
-            controller.setText(opp, mainPlayer, "x", "o");
+            NetworkGameBoardController controller = loader.getController();
+            controller.setText(opp, mainPlayer, "x", "o",opp,mainPlayer);
             Stage window = (Stage) listView.getScene().getWindow();
             window.setScene(viewscene);
             window.show();
