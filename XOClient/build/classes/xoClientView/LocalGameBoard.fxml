@@ -50,7 +50,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button fx:id="btn_1" mnemonicParsing="false" onAction="#btn_1" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;">
+                        <Button fx:id="Btn1" mnemonicParsing="false" onAction="#Btn_action" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -58,7 +58,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_4" mnemonicParsing="false" onAction="#btn_4" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="1">
+                        <Button fx:id="Btn4" mnemonicParsing="false" onAction="#Btn_action" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -66,7 +66,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_2" mnemonicParsing="false" onAction="#btn_2" prefHeight="63.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1">
+                        <Button fx:id="Btn2" mnemonicParsing="false" onAction="#Btn_action" prefHeight="63.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -74,7 +74,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_5" mnemonicParsing="false" onAction="#btn_5" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button fx:id="Btn5" mnemonicParsing="false" onAction="#Btn_action" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -82,7 +82,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_7" mnemonicParsing="false" onAction="#btn_7" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="2">
+                        <Button fx:id="Btn7" mnemonicParsing="false" onAction="#Btn_action" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -90,7 +90,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_8" mnemonicParsing="false" onAction="#btn_8" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Button fx:id="Btn8" mnemonicParsing="false" onAction="#Btn_action" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -98,7 +98,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_3" mnemonicParsing="false" onAction="#btn_3" prefHeight="65.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2">
+                        <Button fx:id="Btn3" mnemonicParsing="false" onAction="#Btn_action" prefHeight="65.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -106,7 +106,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_6" mnemonicParsing="false" onAction="#btn_6" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button fx:id="Btn6" mnemonicParsing="false" onAction="#Btn_action" prefHeight="58.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -114,7 +114,7 @@
                               <Font name="Cambria Math" size="30.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_9" mnemonicParsing="false" onAction="#btn_9" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Button fx:id="Btn9" mnemonicParsing="false" onAction="#Btn_action" prefHeight="57.0" prefWidth="85.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
