@@ -152,7 +152,7 @@ public class FreeOnlinePlayersController implements Initializable {
                                         Parent viewparent = loader.load();
                                         Scene viewscene = new Scene(viewparent);
                                         NetworkGameBoardController controller = loader.getController();
-                                        controller.setText(userName, opponentName, "x", "o",opponentName,userName);
+                                        controller.setText(userName, opponentName, "X", "O",opponentName,userName);
                                         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                         window.setScene(viewscene);
                                         window.show();
@@ -296,7 +296,7 @@ public class FreeOnlinePlayersController implements Initializable {
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
             NetworkGameBoardController controller = loader.getController();
-            controller.setText(opp, mainPlayer, "x", "o",opp,mainPlayer);
+            controller.setText(opp, mainPlayer, "X", "O",opp,mainPlayer);
             Stage window = (Stage) listViewOnline.getScene().getWindow();
             window.setScene(viewscene);
             window.show();
