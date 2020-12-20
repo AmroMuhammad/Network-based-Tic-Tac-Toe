@@ -5,9 +5,12 @@
  */
 package screen;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,7 +56,7 @@ public class LocalGameBoardController implements Initializable {
     private GridPane Btns;
     @FXML
     private Pane pane2;
-    
+    public ArrayList<Integer> gameMoves = new ArrayList<>();
     private String startGame ;
     int xoWinner=-2;
     int buttonUsed [] = {0,0,0,0,0,0,0,0,0};
@@ -114,6 +117,7 @@ public class LocalGameBoardController implements Initializable {
                 btn.setText(startGame);
                 buttonUsed[number-1]=2;
             }
+            gameMoves.add(number);
         choese();
         WinnerGame();
         }
@@ -131,8 +135,8 @@ public class LocalGameBoardController implements Initializable {
                 else {xoWinner= 1;}
                 disable();
                 winnerName();
-                VidioShow("C:\\Users\\HP\\Desktop/vidio.mp4");
-           
+                VidioShow("F:\\\\vidoes2/VID-20201107-WA0012.mp4");
+               
             }
             else
             {
@@ -140,12 +144,15 @@ public class LocalGameBoardController implements Initializable {
                         && buttonUsed[4] != 0 && buttonUsed[5] != 0 && buttonUsed[6] != 0 && buttonUsed[7] != 0 
                         && buttonUsed[8] != 0)
                 {
+                    xoWinner = -1;
+                    winnerName();
                     disable();
                     winner_loser_txt.setText("No players wins ");
-                    VidioShow("C:\\Users\\HP\\Desktop/vidio.mp4");
+                    VidioShow("F:\\\\vidoes2/VID-20201107-WA0012.mp4");
                     break;
                     
                 }
+               
             }
         }
     }
@@ -163,7 +170,13 @@ public class LocalGameBoardController implements Initializable {
     }
     
      public void winnerName(){
-        
+        String Data ="" ;
+        for (int i = 0; i < gameMoves.size();i++ )
+        {
+           Data += gameMoves.get(i) + "#";
+            System.out.println("moveeeeee" + Data);
+        }
+        System.out.println(Data);
          switch (xoWinner) {
             case 0:{
                 
@@ -171,11 +184,12 @@ public class LocalGameBoardController implements Initializable {
                     
                     winner_loser_txt.setText(player1.getText()+" is winner");
                     System.out.println(player1.getText());
+                    Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + "X@"+player2.getText()+"@O@";
                 }
                 else{
-                    
                     winner_loser_txt.setText(player2.getText()+" is winner");
                     System.out.println(player2.getText());
+                    Data += player1Symbol.getText()+"&"+ player2.getText() + "@" + "X@"+player1.getText()+"@O@";
                 }
                
                 break;
@@ -183,23 +197,40 @@ public class LocalGameBoardController implements Initializable {
             case 1:{
                 
                 if(player1Symbol.getText().equals("O")){
-                    
                     winner_loser_txt.setText(player1.getText()+" is winner");
                     System.out.println(player1.getText());
+                    Data +=player1Symbol.getText()+"&"+  player1.getText()+ "@" + "O@"+player2.getText()+"@X@";
                 }
                 else{
-                    
                     winner_loser_txt.setText(player2.getText()+" is winner");
                     System.out.println(player2.getText());
+                    Data +=player1Symbol.getText()+"&"+ player2.getText() + "@" + "O@"+player1.getText()+"@X@";
                 }
+                break;
+            }
+            case -1: {
+                Data += player1Symbol.getText()+"&"+ player1.getText() + "@"+ player1Symbol.getText() +"@"+player2.getText()+"@"+ player2Symbol.getText()+"@";
                 break;
             }
             
         }
+         System.out.println(Data);
+        BufferedWriter out ;
+       
+     try {
+         out = new BufferedWriter(
+         new FileWriter("GameRecord.txt", true));
+         out.write(Data + "!");
+         out.close();  
+     } catch (IOException ex) {
+         Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+     }
+            
     
     }
      
     public void VidioShow(String vidioPath){
+         
         Timer timer = new Timer();
         TimerTask task = new TimerTask()
         {
