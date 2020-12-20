@@ -6,27 +6,27 @@
 
 <AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #9BD8BA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.RecordController">
    <children>
-      <Button fx:id="game1_btn" layoutX="234.0" layoutY="107.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 1" textFill="WHITE">
+      <Button fx:id="Btn1" layoutX="234.0" layoutY="107.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 1" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="game2_btn" layoutX="234.0" layoutY="167.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 2" textFill="WHITE">
+      <Button fx:id="Btn2" layoutX="234.0" layoutY="167.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 2" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="game3_btn" layoutX="234.0" layoutY="228.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 3" textFill="WHITE">
+      <Button fx:id="Btn3" layoutX="234.0" layoutY="228.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 3" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="game4_btn" layoutX="234.0" layoutY="286.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 4" textFill="WHITE">
+      <Button fx:id="Btn4" layoutX="234.0" layoutY="286.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 4" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="game5_btn" layoutX="234.0" layoutY="347.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 5" textFill="WHITE">
+      <Button fx:id="Btn5" layoutX="234.0" layoutY="347.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="43.0" prefWidth="233.0" style="-fx-background-color: #3FAC76;" text="GAME 5" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>

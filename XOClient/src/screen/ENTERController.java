@@ -57,8 +57,6 @@ public class ENTERController implements Initializable {
      
     }    
 
-   
-
     @FXML
     private void recordAction(ActionEvent event) throws IOException {
         
@@ -73,7 +71,7 @@ public class ENTERController implements Initializable {
           window.setScene(viewscene);
           window.show();
     }
-     @FXML
+
     private void log_out(ActionEvent event)  {
         
         try {
@@ -97,7 +95,6 @@ public class ENTERController implements Initializable {
     
     @FXML
     private void NewGameAction(ActionEvent event)  {
-       
         try {
             FXMLLoader loader =new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/FreeOnlinePlayers.fxml"));
