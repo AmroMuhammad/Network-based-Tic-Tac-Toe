@@ -24,7 +24,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -59,6 +61,7 @@ public class LocalGameBoardController implements Initializable {
     public ArrayList<Integer> gameMoves = new ArrayList<>();
     private String startGame ;
     int xoWinner=-2;
+    boolean yes = false;
     int buttonUsed [] = {0,0,0,0,0,0,0,0,0};
     int[][] winningPositions = {
         {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
@@ -68,7 +71,16 @@ public class LocalGameBoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+	Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
+	//dlg.setTitle("Move Directory");
+	dlg.setHeaderText("Record Game");
+	dlg.setContentText("Do you want record this game ?");
+	dlg.getButtonTypes().clear();
+	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+	dlg.showAndWait();
+	yes = dlg.getResult() == ButtonType.YES;
+        System.out.println("arert" + yes);
     }
     
      public void setText(String text1 , String text2 , String text3 , String text4 )
@@ -215,18 +227,18 @@ public class LocalGameBoardController implements Initializable {
             
         }
          System.out.println(Data);
-        BufferedWriter out ;
-       
-     try {
-         out = new BufferedWriter(
-         new FileWriter("GameRecord.txt", true));
-         out.write(Data + "!");
-         out.close();  
-     } catch (IOException ex) {
-         Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
-     }
+         if(yes){
+           BufferedWriter out ;
+           try {
+              out = new BufferedWriter(
+              new FileWriter("GameRecord.txt", true));
+              out.write(Data + "!");
+              out.close();  
+            } catch (IOException ex) {
+                  Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-    
+          }
     }
      
     public void VidioShow(String vidioPath){
