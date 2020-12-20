@@ -41,11 +41,16 @@ import javax.swing.JPanel;
  */
 public class FreeOnlinePlayersController implements Initializable {
 
-    ObservableList list = FXCollections.observableArrayList();
+    ObservableList onlineList = FXCollections.observableArrayList();
+    ObservableList playingList = FXCollections.observableArrayList();
     @FXML
-    private javafx.scene.control.ListView listView;
+    private javafx.scene.control.ListView listViewOnline;
+    @FXML
+    private javafx.scene.control.ListView listViewPlaying;
     String userName;
     String[] parsedMsg;
+    String[] parsedOnlineList;
+    String[] parsedPlayingList;
     boolean flag = false;
     Socket s2;
     DataInputStream dis2;
@@ -62,6 +67,8 @@ public class FreeOnlinePlayersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            listViewPlaying.setMouseTransparent(true);
+            listViewPlaying.setFocusTraversable(false);
             waitingIndicator.setVisible(false);
             s2 = new Socket(SignINController.serverIP, 5008);
             dis2 = new DataInputStream(s2.getInputStream());
@@ -73,32 +80,49 @@ public class FreeOnlinePlayersController implements Initializable {
         }
     }
 
-    private void loadDataTOListView() {
+    private void loadOnlineToListView() {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                list.removeAll(list);
-                listView.getItems().clear();
-                for (String s : parsedMsg) {
+                onlineList.removeAll(onlineList);
+                listViewOnline.getItems().clear();
+                for (String s : parsedOnlineList) {
                     if (s.equals(userName) || s.equals("PLIST")) {
                         continue;
                     }
-                    list.add(s);
+                    onlineList.add(s);
                 }
-                listView.getItems().addAll(list);
+                listViewOnline.getItems().addAll(onlineList);
+            }
+        });
+    }
+    
+    private void loadPlayingToListView() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                playingList.removeAll(playingList);
+                listViewPlaying.getItems().clear();
+                for (String s : parsedPlayingList) {
+                    if (s.equals(userName) || s.equals("PLIST")) {
+                        continue;
+                    }
+                    playingList.add(s);
+                }
+                listViewPlaying.getItems().addAll(playingList);
             }
         });
     }
 
     @FXML
     private void handleMouseClickAction(javafx.scene.input.MouseEvent event) throws IOException {
-        String opponentName = (String) listView.getSelectionModel().getSelectedItem();
+        String opponentName = (String) listViewOnline.getSelectionModel().getSelectedItem();
         if (opponentName == null || opponentName.isEmpty()) {
             System.out.println("oooops it is empty");
             System.out.println("if " + userName + " and " + opponentName);
         } else {
-            listView.setMouseTransparent(true);
-            listView.setFocusTraversable(false);
+            listViewOnline.setMouseTransparent(true);
+            listViewOnline.setFocusTraversable(false);
             waitingIndicator.setVisible(true);
             waitingIndicator.setProgress(-1);
             requestThread = new Thread() {
@@ -118,7 +142,7 @@ public class FreeOnlinePlayersController implements Initializable {
                             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         System.out.println(recievedReqeustMsg);
-                        if (parsedMsg[0].equals("PREQ") && parsedMsg[1].equals("accept") && parsedMsg[2].equals(userName)) {
+                        if (parsedOnlineList[0].equals("PREQ") && parsedOnlineList[1].equals("accept") && parsedOnlineList[2].equals(userName)) {
                             Platform.runLater(new Runnable() {
                                 public void run() {
                                     try {
@@ -148,11 +172,11 @@ public class FreeOnlinePlayersController implements Initializable {
                                     }
                                 }
                             });
-                        } else if (parsedMsg[0].equals("PREQ") && parsedMsg[1].equals("reject") && parsedMsg[2].equals(userName)) {
+                        } else if (parsedOnlineList[0].equals("PREQ") && parsedOnlineList[1].equals("reject") && parsedOnlineList[2].equals(userName)) {
                             System.out.println("rejection received");
-                            listView.getSelectionModel().clearSelection();
-                            listView.setMouseTransparent(false);
-                            listView.setFocusTraversable(true);
+                            listViewOnline.getSelectionModel().clearSelection();
+                            listViewOnline.setMouseTransparent(false);
+                            listViewOnline.setFocusTraversable(true);
                             waitingIndicator.setVisible(false);
                             requestThread.stop();
                         }
@@ -176,7 +200,7 @@ public class FreeOnlinePlayersController implements Initializable {
         dis2.close();
         ps2.close();
         s2.close();
-        requestThread.stop();
+        //requestThread.stop();
         replyThread.stop();
 
     }
@@ -190,8 +214,8 @@ public class FreeOnlinePlayersController implements Initializable {
                     try {
                         String msg = SignIN2Controller.dis.readLine();
                         parsing(msg);
-                        if (parsedMsg[0].equals("DUWTP") && parsedMsg[1].equals(userName)) {
-                            final String oppName = parsedMsg[2];
+                        if (parsedOnlineList[0].equals("DUWTP") && parsedOnlineList[1].equals(userName)) {
+                            final String oppName = parsedOnlineList[2];
                             System.out.println("play request for me  " + oppName);
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -217,8 +241,9 @@ public class FreeOnlinePlayersController implements Initializable {
                                     }
                                 }
                             });
-                        } else if (parsedMsg[0].equals("PLIST")) {
-                            loadDataTOListView();
+                        } else if (parsedOnlineList[0].equals("PLIST")) {
+                            loadOnlineToListView();
+                            loadPlayingToListView();
                             SignIN2Controller.ps.println("PLIST");
                         }
                         try {
@@ -236,8 +261,16 @@ public class FreeOnlinePlayersController implements Initializable {
     }
 
     public void parsing(String recievedMsg) {
-        parsedMsg = recievedMsg.split("\\#");
+        if(recievedMsg.contains(".")){
+        parsedMsg = recievedMsg.split("\\.");
+        parsedOnlineList = parsedMsg[0].split("\\#");
+        parsedPlayingList = parsedMsg[1].split("\\#");
+        }
+        else{
+        parsedOnlineList = recievedMsg.split("\\#");
+        }
     }
+    
 
     public boolean confirmationToPlay() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -264,7 +297,7 @@ public class FreeOnlinePlayersController implements Initializable {
             Scene viewscene = new Scene(viewparent);
             NetworkGameBoardController controller = loader.getController();
             controller.setText(opp, mainPlayer, "x", "o",opp,mainPlayer);
-            Stage window = (Stage) listView.getScene().getWindow();
+            Stage window = (Stage) listViewOnline.getScene().getWindow();
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {

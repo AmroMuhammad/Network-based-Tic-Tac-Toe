@@ -165,7 +165,8 @@ public class GameHandler extends Thread {
     }
 
     public String getPlayersList() {
-        return databaseConnection.getOnlinePlayersList();
+        System.out.println(databaseConnection.getOnlinePlayersList()+"."+databaseConnection.getPlayingPlayersList());
+        return databaseConnection.getOnlinePlayersList()+"."+databaseConnection.getPlayingPlayersList();
     }
 
     public void checkClientSocket() {

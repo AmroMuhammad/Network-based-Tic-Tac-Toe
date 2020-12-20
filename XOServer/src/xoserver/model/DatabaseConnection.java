@@ -54,6 +54,7 @@ public class DatabaseConnection {
             pst.setString(1, username);
             pst.setString(2, password);
             pst.executeUpdate();
+            pst.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,12 +69,20 @@ public class DatabaseConnection {
             rs = pst.executeQuery();
             if (!rs.next()) {
                 System.out.println("false");
+                pst.close();
+                rs.close();
                 return false;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("true");
+        try {
+            pst.close();
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return true;
     }
 
@@ -88,9 +97,17 @@ public class DatabaseConnection {
             databasePass = rs.getString(1);
 
             if (databasePass.equals(pass)) {
+                pst.close();
+                rs.close();
                 return true;
             }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            pst.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -104,6 +121,7 @@ public class DatabaseConnection {
             pst.setBoolean(1, true);
             pst.setString(2, user);
             pst.executeUpdate();
+            pst.close();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,6 +142,12 @@ public class DatabaseConnection {
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            pst.close();
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return online;
     }
 
@@ -141,6 +165,12 @@ public class DatabaseConnection {
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            pst.close();
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return offline;
     }
 
@@ -154,6 +184,12 @@ public class DatabaseConnection {
             if(rs.next()){
             score=rs.getInt(1);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            pst.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -184,6 +220,45 @@ public class DatabaseConnection {
         }
         
         System.out.println(players);
+        try {
+            pst.close();
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return players;
+    }
+    
+    public String getPlayingPlayersList(){
+            String players=null;
+            playerList.clear();
+        try {
+            pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = true", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);    //solved rollback exception and delay time
+            rs = pst.executeQuery();
+            rs.beforeFirst();
+            while (rs.next()) {
+                playerList.add(rs.getString(1));
+            }
+            
+            for(String s : playerList){
+                if(players == null)
+                    players = "PLIST#"+s;
+                else
+                    players = players +("#"+s);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println(players);
+        try {
+            pst.close();
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return players;
     }
     
@@ -195,6 +270,7 @@ public class DatabaseConnection {
             pst.setBoolean(2, false);
             pst.setString(3, user);
             pst.executeUpdate();
+            pst.close();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
