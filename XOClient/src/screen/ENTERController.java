@@ -72,6 +72,7 @@ public class ENTERController implements Initializable {
           window.show();
     }
 
+    @FXML
     private void log_out(ActionEvent event)  {
         
         try {

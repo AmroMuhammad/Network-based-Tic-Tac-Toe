@@ -5,7 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +33,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.lang.ClassLoader;
 
 /**
  * FXML Controller class
@@ -40,12 +41,13 @@ import javafx.util.Duration;
  * @author Dell
  */
 public class SingleGameBordController implements Initializable {
- @FXML
-    private Label player1 , player2, player1Symbol ,player2Symbol;
 
-@FXML
-    private Button Btn1,Btn2,Btn3,Btn4,Btn5,Btn6,Btn7,Btn8,Btn9;
-   @FXML
+    @FXML
+    private Label player1, player2, player1Symbol, player2Symbol;
+
+    @FXML
+    private Button Btn1, Btn2, Btn3, Btn4, Btn5, Btn6, Btn7, Btn8, Btn9;
+    @FXML
     private MediaView mediaView;
     private MediaPlayer mediaPlayer;
     private Media media;
@@ -57,34 +59,56 @@ public class SingleGameBordController implements Initializable {
     private GridPane Btns;
     @FXML
     private Pane pane2;
-    String flag ;
-    int turnFlag = 0;
+    String flag;
+    int turnFlag = 0;//0 me / 1 pc
     int oScore, xScore, tieScore = 0;
     int isWinner = -2;// 0 => x is winner / 1 => o is winner / -1 draw
     String finalResult;
     int cpuMove = 0;
-    int i = 1;
+    int player=-1;
+    int pc=-1;
+    //0 first player
+    //1 computer
+    //2 empty
+    int[] gameState = new int[]{2, 2, 2, 2, 2, 2, 2, 2, 2};
+    /*
+    {2, 2, 2, 2, 0, 2, 2, 2, 2};
+    {2, 1, 2, 2, 0, 2, 2, 2, 2};
+    */
+    int[][] winningPositions = {
+        {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
+        {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
+        {0, 4, 8}, {2, 4, 6}
+    };
 
-   public ArrayList<Integer> gameMoves = new ArrayList<>();
+    public ArrayList<Integer> gameMoves = new ArrayList<>();
+    int statePointer = 0;
+    boolean activePlayer = true;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         // TODO
-    }  
-     public void setText(String text1 , String text2 , String text3 , String text4 )
-    {
+    }
+
+    public void setText(String text1, String text2, String text3, String text4) {
         player1.setText(text1);
         player2.setText(text2);
         player1Symbol.setText(text3);
+        if(text3.equals("X")){
+        player=0;
+        pc=1;
+        }
+        else{
+        player=1;
+        pc=0;
+        }
         player2Symbol.setText(text4);
-        
-      
     }
-
-   
 
     @FXML
     private void Done_btn(ActionEvent event) {
-       
+
         try {
             mediaPlayer.stop();
             FXMLLoader loader = new FXMLLoader();
@@ -92,7 +116,7 @@ public class SingleGameBordController implements Initializable {
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
             NewGameController controller = loader.getController();
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
@@ -100,396 +124,66 @@ public class SingleGameBordController implements Initializable {
         }
 
     }
-    
+
     @FXML
-    private void Btn1_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn1.getText())) {
-            gameMoves.add(1);
-            Btn1.setText(getTurn());
-            Btn1.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(1);
-
-            nextCpuMove();
-
-        }
+    private void Btn_action(ActionEvent event) {
+        Platform.runLater(() -> {
+            Button btn = (Button) event.getSource();
+            String[] ID = btn.getId().split("n");//Btn1
+            int number = Integer.parseInt(ID[1]);
+            setTurn();
+            if (btn.getText().equals("")) {
+                gameMoves.add(number);
+                btn.setText(getTurn());
+                btn.setDisable(true);
+                gameState[number - 1] = 0;
+                System.out.println("my MOVE " + number);
+                System.out.println("ME: "+Winner(player));
+                if(Winner(player)||isDraw()){
+                endGame();
+                }
+                else{
+                nextCpuMove();
+                }
+            }
+        });
     }
-     @FXML
-     private void Btn2_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn2.getText())) {
-            gameMoves.add(2);
-            Btn2.setText(getTurn());
-            Btn2.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(2);
 
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-     private void Btn3_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn3.getText())) {
-            gameMoves.add(3);
-            Btn3.setText(getTurn());
-            Btn3.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(3);
-
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-     private void Btn4_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn4.getText())) {
-            gameMoves.add(4);
-            Btn4.setText(getTurn());
-            Btn4.setDisable(true);
-//                    checkWinner();
-           gameMoves.add(4);
-
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-     private void Btn5_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn5.getText())) {
-            gameMoves.add(5);
-            Btn5.setText(getTurn());
-            Btn5.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(5);
-
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-     private void Btn6_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn6.getText())) {
-            gameMoves.add(6);
-            Btn6.setText(getTurn());
-            Btn6.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(6);
-
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-     private void Btn7_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn7.getText())) {
-            gameMoves.add(7);
-            Btn7.setText(getTurn());
-            Btn7.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(7);
-
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-     private void Btn8_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn8.getText())) {
-            gameMoves.add(8);
-            Btn8.setText(getTurn());
-            Btn8.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(8);
-
-            nextCpuMove();
-
-        }
-    }
-      @FXML
-      private void Btn9_action(ActionEvent event){
-        setTurn();
-        if ("".equals(Btn9.getText())) {
-            gameMoves.add(9);
-            Btn9.setText(getTurn());
-            Btn9.setDisable(true);
-//                    checkWinner();
-            gameMoves.add(9);
-
-            nextCpuMove();
-
-        }
-    }
-      
-       public void nextCpuMove() {
-           checkTie2();
-           if(gameMoves.contains(1) && gameMoves.contains(2)&& gameMoves.contains(3)&&gameMoves.contains(4)&&gameMoves.contains(5) && gameMoves.contains(6)&& gameMoves.contains(7)&&gameMoves.contains(8)&&gameMoves.contains(9)){
-            System.out.println("draw");
-            isWinner = -1;
-
+    public void nextCpuMove() {
+        if (isDraw()) {
             endGame();
-        }
-           else{
-        
-
-        System.out.println(gameMoves.size() + " size of moves : ");
-       // if (!chk) {
-            checkWinner();
+        } else {
+            //checkWinner();
             cpuMove = generateRand();
             System.out.println("this is cpu next move :" + cpuMove);
             if (gameMoves.contains(cpuMove)) {
-
-                System.out.println( "cpu couldnt play in this move :" + cpuMove);
+                System.out.println("cpu couldn't play in this move :" + cpuMove);
                 nextCpuMove();
-//                if(gameMoves.size() == 9){
-//                    System.out.println("tie");   
-//                }
-
             } else {
-
-                switch (cpuMove) {
-                    case 1:
-                        if ("".equals(Btn1.getText())) {
-
-                            setTurn();
-                            Btn1.setText(getTurn());
-                            Btn1.setDisable(true);
-                            gameMoves.add(1);
-
-                            checkWinner();
-
+                System.out.println("ELSE");
+                int number = cpuMove;
+                Button btn;
+                btn = getBtn(number);
+                Platform.runLater(() -> {
+                    if (btn.getText().equals("")) {
+                        gameMoves.add(number);
+                        setTurn();
+                        btn.setText(getTurn());
+                        btn.setDisable(true);
+                        gameState[number - 1] = 1;
+                        System.out.println("CPU: " + Winner(pc));
+                        if(Winner(pc)){
+                        endGame();
                         }
-                        break;
-                    case 2:
-
-                        if ("".equals(Btn2.getText())) {
-                            setTurn();
-                            Btn2.setText(getTurn());
-                            Btn2.setDisable(true);
-                            gameMoves.add(2);
-                            checkWinner();
-
-                        }
-                        break;
-                    case 3:
-                        if ("".equals(Btn3.getText())) {
-                            setTurn();
-                            Btn3.setText(getTurn());
-                            Btn3.setDisable(true);
-                            gameMoves.add(3);
-                            checkWinner();
-
-                        }
-                        break;
-                    case 4:
-                        if ("".equals(Btn4.getText())) {
-                            setTurn();
-                            Btn4.setText(getTurn());
-                            Btn4.setDisable(true);
-                            gameMoves.add(4);
-                            checkWinner();
-
-                        }
-                        break;
-                    case 5:
-                        if ("".equals(Btn5.getText())) {
-                            setTurn();
-                            Btn5.setText(getTurn());
-                            Btn5.setDisable(true);
-                            gameMoves.add(5);
-                            checkWinner();
-
-                        }
-                        break;
-                    case 6:
-//                        checkWinner();
-                        if ("".equals(Btn6.getText())) {
-                            setTurn();
-                            Btn6.setText(getTurn());
-                            Btn6.setDisable(true);
-                            gameMoves.add(6);
-                            checkWinner();
-
-                        }
-                        break;
-                    case 7:
-//                        checkWinner();
-                        if ("".equals(Btn7.getText())) {
-                            setTurn();
-                            Btn7.setText(getTurn());
-                            Btn7.setDisable(true);
-                            gameMoves.add(7);
-                            checkWinner();
-
-                        }
-                        break;
-                    case 8:
-//                 checkWinner();
-                        if ("".equals(Btn8.getText())) {
-                            setTurn();
-
-                            Btn8.setText(getTurn());
-                            Btn8.setDisable(true);
-                            gameMoves.add(8);
-                            checkWinner();
-
-                        }
-                        break;
-
-                    case 9:
-//                        checkWinner();
-                        if ("".equals(Btn9.getText())) {
-                            setTurn();
-                            Btn9.setText(getTurn());
-                            Btn9.setDisable(true);
-                            gameMoves.add(9);
-                            checkWinner();
-
-                        }
-                        break;
-
-                }
+                    }
+                });
             }
-       // }
-    }
-       }
-
-    public void checkWinner() {
-
-        if ("X".equals(Btn1.getText()) && "X".equals(Btn4.getText()) && "X".equals(Btn7.getText())) {
-            System.out.println("X is the winner");
-            isWinner = 0;
-            color(Btn1, Btn4, Btn7);
-            endGame();
         }
-        if ("O".equals(Btn1.getText()) && "O".equals(Btn4.getText()) && "O".equals(Btn7.getText())) {
-            System.out.println("O is the winner");
-             color(Btn1, Btn4, Btn7);
-            isWinner = 1;
-            endGame();
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        if ("X".equals(Btn2.getText()) && "X".equals(Btn5.getText()) && "X".equals(Btn8.getText())) {
-            System.out.println("X is the winner");
-            isWinner = 0;
-            color(Btn2, Btn5, Btn8);
-            endGame();
-
-        }
-        if ("O".equals(Btn2.getText()) && "O".equals(Btn5.getText()) && "O".equals(Btn8.getText())) {
-            System.out.println("O is the winner");
-             color(Btn2, Btn5, Btn8);
-            isWinner = 1;
-            endGame();
-        }
-        ///////////////////////////////////////////////////////////////////////
-        if ("X".equals(Btn3.getText()) && "X".equals(Btn6.getText()) && "X".equals(Btn9.getText())) {
-            System.out.println("X is the winner");
-            color(Btn3, Btn6, Btn9);
-            isWinner = 0;
-            endGame();
-        }
-        if ("O".equals(Btn3.getText()) && "O".equals(Btn6.getText()) && "O".equals(Btn9.getText())) {
-            System.out.println("O is the winner");
-            color(Btn3, Btn6, Btn9);
-            isWinner = 1;
-            endGame();
-        }
-
-        if ("X".equals(Btn3.getText()) && "X".equals(Btn5.getText()) && "X".equals(Btn7.getText())) {
-            System.out.println("X is the winner");
-            color(Btn3, Btn5, Btn7);
-            isWinner = 0;
-            endGame();
-        }
-        if ("O".equals(Btn3.getText()) && "O".equals(Btn5.getText()) && "O".equals(Btn7.getText())) {
-            System.out.println("O is the winner");
-            color(Btn3, Btn5, Btn7);
-            isWinner = 1;
-            endGame();
-        }
-
-        //////////////////////////////////////////////////
-        if ("X".equals(Btn1.getText()) && "X".equals(Btn5.getText()) && "X".equals(Btn9.getText())) {
-            System.out.println("X is the winner");
-            color(Btn1, Btn5, Btn9);
-            isWinner = 0;
-            endGame();
-        }
-        if ("O".equals(Btn1.getText()) && "O".equals(Btn5.getText()) && "O".equals(Btn9.getText())) {
-            System.out.println("O is the winner");
-             color(Btn1, Btn5, Btn9);
-            isWinner = 1;
-            endGame();
-        }
-
-        if ("X".equals(Btn1.getText()) && "X".equals(Btn2.getText()) && "X".equals(Btn3.getText())) {
-            System.out.println("X is the winner");
-             color(Btn1, Btn2, Btn3);
-            isWinner = 0;
-            endGame();
-        }
-        if ("O".equals(Btn1.getText()) && "O".equals(Btn2.getText()) && "O".equals(Btn3.getText())) {
-            System.out.println("O is the winner");
-            color(Btn1, Btn2, Btn3);
-            isWinner = 1;
-            endGame();
-        }
-
-        ////////////////////////////////////
-        if ("X".equals(Btn4.getText()) && "X".equals(Btn5.getText()) && "X".equals(Btn6.getText())) {
-            System.out.println("X is the winner");
-             color(Btn4, Btn5, Btn6);
-            isWinner = 0;
-            endGame();
-        }
-        if ("O".equals(Btn4.getText()) && "O".equals(Btn5.getText()) && "O".equals(Btn6.getText())) {
-            System.out.println("O is the winner");
-             color(Btn4, Btn5, Btn6);
-            isWinner = 1;
-            endGame();
-        }
-        ///////////////////////////////////////////
-        if ("X".equals(Btn7.getText()) && "X".equals(Btn8.getText()) && "X".equals(Btn9 .getText())) {
-            System.out.println("X is the winner");
-             color(Btn7, Btn8, Btn9);
-            isWinner = 0;
-            endGame();
-        }
-        if ("O".equals(Btn7.getText()) && "O".equals(Btn8.getText()) && "O".equals(Btn9.getText())) {
-            System.out.println("O is the winner");
-            isWinner = 1;
-             color(Btn7, Btn8, Btn9);
-            endGame();
-        }
-        if(gameMoves.contains(1) && gameMoves.contains(2)&& gameMoves.contains(3)&&gameMoves.contains(4)&&gameMoves.contains(5) && gameMoves.contains(6)&& gameMoves.contains(7)&&gameMoves.contains(8)&&gameMoves.contains(9)){
-            System.out.println("draw");
-            isWinner = 1;
-//                tieScore++;
-            endGame();
-        }
-
-        if (!"".equals(Btn1.getText()) && !"".equals(Btn2.getText()) && !"".equals(Btn3.getText()) && !"".equals(Btn4.getText()) && !"".equals(Btn5.getText()) && !"".equals(Btn6.getText()) && !"".equals(Btn7.getText()) && !"".equals(Btn8.getText()) && !"".equals(Btn9.getText())) {
-             isWinner = -1;
-//                tieScore++;
-            endGame();
-            
-        }
-
     }
 
     public void endGame() {
 
-        System.out.println("iswinner = " + isWinner);
-
+        System.out.println("end game iswinner = " + isWinner);
         Btn1.setDisable(true);
         Btn2.setDisable(true);
         Btn3.setDisable(true);
@@ -499,85 +193,58 @@ public class SingleGameBordController implements Initializable {
         Btn7.setDisable(true);
         Btn8.setDisable(true);
         Btn9.setDisable(true);
-
         switch (isWinner) {
-            case 0:{
+            case 0: {
                 finalResult = "Player X is the winner \n";
-                if(player1Symbol.getText().equals("X")){
-                    winner_loser_txt.setText(player1.getText()+" is winner");
+                if (player1Symbol.getText().equals("X")) {
+                    winner_loser_txt.setText(player1.getText() + " is winner");
+                } else {
+                    winner_loser_txt.setText(player2.getText() + " is winner");
                 }
-                else{
-                    winner_loser_txt.setText(player2.getText()+" is winner");
-                }
-               
+
                 break;
             }
-            case 1:{
+            case 1: {
                 finalResult = "Player O is the winner \n";
-                if(player1Symbol.getText().equals("O")){
-                    winner_loser_txt.setText(player1.getText()+" is winner");
-                }
-                else{
-                    winner_loser_txt.setText(player2.getText()+" is winner");
+                if (player1Symbol.getText().equals("O")) {
+                    winner_loser_txt.setText(player1.getText() + " is winner");
+                } else {
+                    winner_loser_txt.setText(player2.getText() + " is winner");
                 }
                 break;
             }
-            case -1:{
+            case -1: {
                 finalResult = "That's a Draw \n";
-                 winner_loser_txt.setText("That's a Draw ");
+                winner_loser_txt.setText("That's a Draw ");
                 break;
             }
         }
-    //   String path = "F:\\vidoes2/VID-20201107-WA0012.mp4";
-     /*  Timer timer = new Timer();
-       TimerTask task = new TimerTask()
-{
-        public void run()
-        {
-         pane2.setVisible(true);
-         Done_Btn.setVisible(true);
-         winner_loser_txt.setVisible(true);
-         mediaView.setVisible(true);
-         player1.setVisible(false);
-         player2.setVisible(false);
-         player1Symbol.setVisible(false);
-         player2Symbol.setVisible(false);
-         Btns.setVisible(false);
-         String path = "F:\\vidoes2/VID-20201107-WA0012.mp4";  
-         media = new Media(new File(path).toURI().toString());  
+
+        pane2.setVisible(true);
+        Done_Btn.setVisible(true);
+        winner_loser_txt.setVisible(true);
+        mediaView.setVisible(true);
+        player1.setVisible(false);
+        player2.setVisible(false);
+        player1Symbol.setVisible(false);
+        player2Symbol.setVisible(false);
+        Btns.setVisible(false);
+        String path = "build/classes/Style/video.mp4";
+        media = new Media(new File(path).toURI().toString());
         // animateUsingScaleTransition(mediaView);
-         mediaPlayer = new MediaPlayer(media);
-         mediaView.setMediaPlayer(mediaPlayer);
-         mediaPlayer.setAutoPlay(true);
-         
-               
-        }
-};
-    timer.schedule(task,500l);  */ 
-         pane2.setVisible(true);
-         Done_Btn.setVisible(true);
-         winner_loser_txt.setVisible(true);
-         mediaView.setVisible(true);
-         player1.setVisible(false);
-         player2.setVisible(false);
-         player1Symbol.setVisible(false);
-         player2Symbol.setVisible(false);
-         Btns.setVisible(false);
-         String path = "F:\\vidoes2/VID-20201107-WA0012.mp4";  
-         media = new Media(new File(path).toURI().toString());  
-        // animateUsingScaleTransition(mediaView);
-         mediaPlayer = new MediaPlayer(media);
-         mediaView.setMediaPlayer(mediaPlayer);
-         mediaPlayer.setAutoPlay(true);
-         
-      
+        mediaPlayer = new MediaPlayer(media);
+        mediaView.setMediaPlayer(mediaPlayer);
+        mediaPlayer.setAutoPlay(true);
+
     }
 
     public void setTurn() {
 
         if (turnFlag == 0) {
+            System.out.println("X Turn");
             turnFlag = 1;
         } else {
+            System.out.println("O Turn");
             turnFlag = 0;
         }
     }
@@ -588,31 +255,86 @@ public class SingleGameBordController implements Initializable {
         } else {
             return player1Symbol.getText();//"O";
         }
-
     }
 
     public int generateRand() {
-
         return (int) (Math.random() * ((9 - 1) + 1)) + 1;
     }
 
-    public void checkTie2() {
-        if (Btn1.getText() != "" && Btn2.getText() != "" && Btn3.getText() != "" && Btn4.getText() != "" && Btn5.getText() != "" && Btn6.getText() != "" && Btn7.getText() != "" && Btn8.getText() != "" && Btn9.getText() != "") {
-            isWinner = -1;
-//            tieScore++;
-            endGame();
-        }
+    public boolean Winner(int player) {
+        boolean winnerResult = false;
+        for (int[] win : winningPositions) {
+            if (gameState[win[0]] == gameState[win[1]] && gameState[win[1]] == gameState[win[2]] && gameState[win[0]] != 2) {
+                winnerResult = true;
+                isWinner=player;
+                System.out.println("the winner is: " + player);
 
+            }
+        }
+        return winnerResult;
     }
-    public void color(Button b1,Button b2 , Button b3)
-    {
+
+    public boolean isDraw() {
+        
+        boolean draw = false;
+        if (Btn1.isDisabled()&&Btn2.isDisabled()&&Btn3.isDisabled()
+                &&Btn4.isDisabled()&&Btn5.isDisabled()&&Btn6.isDisabled()
+                &&Btn7.isDisabled()&&Btn8.isDisabled()&&Btn9.isDisabled()) {
+            System.out.println("draw");
+            isWinner = -1;
+            draw = true;
+            System.out.println("welcome to isDraw");
+        }
+        return draw;
+    }
+
+    public Button getBtn(int id) {
+        Button btn;
+        switch (id) {
+            case 1:
+                btn = Btn1;
+                break;
+            case 2:
+                btn = Btn2;
+                break;
+            case 3:
+                btn = Btn3;
+                break;
+            case 4:
+                btn = Btn4;
+                break;
+            case 5:
+                btn = Btn5;
+                break;
+            case 6:
+                btn = Btn6;
+                break;
+            case 7:
+                btn = Btn7;
+                break;
+            case 8:
+                btn = Btn8;
+                break;
+            case 9:
+                btn = Btn9;
+                break;
+            default:
+                btn = Btn1;
+                break;
+
+        }
+        return btn;
+    }
+
+    public void color(Button b1, Button b2, Button b3) {
         b1.setStyle("-fx-background-color: red");
         b2.setStyle("-fx-background-color: red");
         b3.setStyle("-fx-background-color: red");
     }
-   private void animateUsingScaleTransition(MediaView heart) {
+
+    private void animateUsingScaleTransition(MediaView heart) {
         ScaleTransition scaleTransition = new ScaleTransition(
-            Duration.seconds(1), heart
+                Duration.seconds(1), heart
         );
         scaleTransition.setFromX(1);
         scaleTransition.setFromY(1);
@@ -625,6 +347,4 @@ public class SingleGameBordController implements Initializable {
         scaleTransition.play();
     }
 
-    
-    
 }

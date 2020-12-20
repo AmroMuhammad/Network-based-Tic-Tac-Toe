@@ -143,7 +143,7 @@ public class HardSingleGameBordController implements Initializable {
                                 player1Symbol.setVisible(false);
                                 player2Symbol.setVisible(false);
                                 Btns.setVisible(false);
-                                String path = "F:\\vidoes2/VID-20201107-WA0012.mp4";  
+                                String path = "build/classes/Style/video.mp4";  
                                 media = new Media(new File(path).toURI().toString());  
         //                      animateUsingScaleTransition(mediaView);
                                 mediaPlayer = new MediaPlayer(media);
