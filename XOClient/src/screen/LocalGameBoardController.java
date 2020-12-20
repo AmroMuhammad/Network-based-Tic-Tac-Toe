@@ -147,25 +147,32 @@ public class LocalGameBoardController implements Initializable {
                 else {xoWinner= 1;}
                 disable();
                 winnerName();
-                VidioShow("F:\\\\vidoes2/VID-20201107-WA0012.mp4");
-               
+                VidioShow("build/classes/Style/video.mp4");
+                break;
+           
             }
-            else
-            {
-                if(buttonUsed[0] != 0 && buttonUsed[1] != 0 && buttonUsed[2] != 0 && buttonUsed[3] != 0
+            else if( buttonUsed[0] != 0 && buttonUsed[1] != 0 && buttonUsed[2] != 0 && buttonUsed[3] != 0
                         && buttonUsed[4] != 0 && buttonUsed[5] != 0 && buttonUsed[6] != 0 && buttonUsed[7] != 0 
-                        && buttonUsed[8] != 0)
+                        && buttonUsed[8] != 0 )
                 {
-                    xoWinner = -1;
-                    winnerName();
-                    disable();
-                    winner_loser_txt.setText("No players wins ");
-                    VidioShow("F:\\\\vidoes2/VID-20201107-WA0012.mp4");
-                    break;
-                    
-                }
+                    if (buttonUsed[win[0]] == buttonUsed[win[1]] && buttonUsed[win[1]] == buttonUsed[win[2]] ) {
                
-            }
+                        if (buttonUsed[win[0]]==1){ xoWinner= 0;}
+                        else {xoWinner= 1;}
+                        disable();
+                        winnerName();
+                        VidioShow("build/classes/Style/video.mp4");
+                        break;
+                    } else{
+                         xoWinner = -1;
+                         winnerName();
+                         disable();
+                         winner_loser_txt.setText("No players wins ");
+                         VidioShow("build/classes/Style/video.mp4");
+                         break;
+                    }
+                }
+            
         }
     }
     
@@ -238,7 +245,7 @@ public class LocalGameBoardController implements Initializable {
                   Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-          }
+            }
     }
      
     public void VidioShow(String vidioPath){
