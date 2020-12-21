@@ -8,6 +8,7 @@ package screen;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,27 +58,12 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     private GridPane Btns;
     @FXML
     private Pane pane2;
-    int s;
+    int player1Score = -1;
+    int player2Score = -1;
     String name;
     String opponent, mainPlayer;
     Thread th;
     String[] parsedMsg;
-
-    //////////////////////////////////////////////////////////////////////////////
-    public void setText(String text1, String text2, String text3, String text4, String opponent, String player) {
-        player1.setText(text1);
-        player2.setText(text2);
-        player1Symbol.setText(text3);
-        player2Symbol.setText(text4);
-        name = text1;
-        startGame = text3;
-        this.opponent = opponent;
-        mainPlayer = player;
-        if(opponent.equals(text1)){
-        disable();
-        }
-    }
-    //////////////////////////////////////////////////////////////////////////////
 
     private String startGame;
     private int xoWinner = 0;
@@ -94,13 +80,35 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
         {0, 4, 8}, {2, 4, 6}
     };
+    String gameMoves = "";
+    boolean secPlayer = false;
+
+    //////////////////////////////////////////////////////////////////////////////
+    public void setText(String text1, String text2, String text3, String text4, String opponent, String player) {
+        player1.setText(text1);
+        player2.setText(text2);
+        player1Symbol.setText(text3);
+        player2Symbol.setText(text4);
+        name = text1;
+        startGame = text3;
+        this.opponent = opponent;
+        mainPlayer = player;
+        player1Score = 7;
+        if (opponent.equals(text1)) {
+            name = player;
+            secPlayer = true;
+            disable();
+            player2Score = 11;
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         pane2.setVisible(false);
         th = new Thread(this);
         th.start();
-        
+
     }
 
     @FXML
@@ -112,40 +120,45 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             Parent viewParent = loader.load();
             Scene viewscene = new Scene(viewParent);
             ENTERController controller = loader.getController();
-            controller.nPlayerScore(s);
+            if (!secPlayer) {
+                controller.nPlayerScore(player1Score);
+            } else {
+                controller.nPlayerScore(player2Score);
+            }
             controller.nPlayerName(name);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            th.stop();
         }
     }
 
     @FXML
     private void Btn(ActionEvent event) {
-        System.out.println("hi from btn press");
         Platform.runLater(() -> {
             Button btn = (Button) event.getSource();
             String[] ID = btn.getId().split("n");
             int number = Integer.parseInt(ID[1]);
             if (butttonUsed[number - 1] == 0) {
                 btn.setText(startGame);
-
-                System.out.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent);
+                gameMoves += number + "#";
+                gameMoves += startGame;
+                gameMoves += "#";
+                //System.out.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent);
                 SignIN2Controller.ps.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent + "#" + xoWinner);
-
                 //System.out.println("after press: " + xoWinner);
                 butttonUsed[number - 1] = 1;
                 gameState[number - 1] = xoWinner;
+                winnerGame();
                 choese();
 
-                for (int arr : gameState) {
+                /*for (int arr : gameState) {
                     System.out.print(arr);
                 }
-                System.out.println("");
-
-                winnerGame();
+                System.out.println("");*/
                 disable();
             }
         });
@@ -166,17 +179,30 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         for (int[] win : winningPositions) {
             if (gameState[win[0]] == gameState[win[1]] && gameState[win[1]] == gameState[win[2]] && gameState[win[0]] != 2) {
                 flag = false;
+                System.out.println("gameMoves WON: " + xoWinner);
+                if (xoWinner == 0) {
+                    player1Score++;
+                    player2Score--;
+                    if(player2Score<0){
+                    player2Score=0;
+                    }
+                } else if (xoWinner == 1) {
+                    player2Score++;
+                    player1Score--;
+                    if(player1Score<0){
+                    player1Score=0;
+                    }
+                }
                 disable();
                 VidioShow();
             }
-
         }
-
         if (isDraw() && flag) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "NO Players wins ", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
             alert.show();
             disable();
+
         }
 
     }
@@ -234,32 +260,24 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         switch (xoWinner) {
             case 0: {
 
-                if (player1Symbol.getText().equals("X")) {
-
-                    winner_loser_txt.setText(player1.getText() + " is winner");
-                    System.out.println(player1.getText());
-                } else {
-
-                    winner_loser_txt.setText(player2.getText() + " is winner");
+                winner_loser_txt.setText(player1.getText() + " is winner");
+                System.out.println(player1.getText());
+                if (secPlayer) {
+                    winner_loser_txt.setText(player2.getText() + " is loser");
                     System.out.println(player2.getText());
                 }
-
                 break;
             }
+
             case 1: {
-
-                if (player1Symbol.getText().equals("O")) {
-
-                    winner_loser_txt.setText(player1.getText() + " is winner");
+                winner_loser_txt.setText(player2.getText() + " is winner");
+                System.out.println(player2.getText());
+                if (!secPlayer) {
+                    winner_loser_txt.setText(player1.getText() + " is loser");
                     System.out.println(player1.getText());
-                } else {
-
-                    winner_loser_txt.setText(player2.getText() + " is winner");
-                    System.out.println(player2.getText());
                 }
-                break;
             }
-
+            break;
         }
 
         Timer timer = new Timer();
@@ -274,7 +292,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 player1Symbol.setVisible(false);
                 player2Symbol.setVisible(false);
                 Btns.setVisible(false);
-                String path = "build/classes/Style/video.mp4";
+                String path = "E:\\present.mp4";
                 media = new Media(new File(path).toURI().toString());
                 // animateUsingScaleTransition(mediaView);
                 mediaPlayer = new MediaPlayer(media);
@@ -327,7 +345,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
             try {
                 msg = SignIN2Controller.dis.readLine();
-                System.out.println("recieved MSG: " + msg);
+                //println("recieved MSG: " + msg);
                 parsing(msg);
                 if (parsedMsg[0].equals("GAME") && parsedMsg[5].equals(mainPlayer)) {
                     //xoWinner=1;
@@ -340,6 +358,10 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                         Button btn;
                         btn = getBtn(pos);
                         btn.setText(sign);
+                        gameMoves += pos + "#";
+                        gameMoves += sign;
+                        gameMoves += "#";
+
                         winnerGame();
                         choese();
                     });

@@ -57,6 +57,7 @@ public class FreeOnlinePlayersController implements Initializable {
     PrintStream ps2;
     Thread requestThread;
     Thread replyThread;
+    boolean threadFlag=false;
     @FXML
     private ProgressIndicator waitingIndicator;
 
@@ -87,7 +88,7 @@ public class FreeOnlinePlayersController implements Initializable {
                 onlineList.removeAll(onlineList);
                 listViewOnline.getItems().clear();
                 for (String s : parsedOnlineList) {
-                    if (s.equals(userName) || s.equals("PLIST")) {
+                    if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST")) {
                         continue;
                     }
                     onlineList.add(s);
@@ -104,11 +105,12 @@ public class FreeOnlinePlayersController implements Initializable {
                 playingList.removeAll(playingList);
                 listViewPlaying.getItems().clear();
                 for (String s : parsedPlayingList) {
-                    if (s.equals(userName) || s.equals("PLIST")) {
+                    if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST")) {
                         continue;
                     }
                     playingList.add(s);
                 }
+                
                 listViewPlaying.getItems().addAll(playingList);
             }
         });
@@ -127,6 +129,7 @@ public class FreeOnlinePlayersController implements Initializable {
             waitingIndicator.setProgress(-1);
             requestThread = new Thread() {
                 public void run() {
+                    threadFlag=true;
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
                     System.out.println("pressed on" + opponentName);
@@ -200,8 +203,9 @@ public class FreeOnlinePlayersController implements Initializable {
         dis2.close();
         ps2.close();
         s2.close();
-        //requestThread.stop();
         replyThread.stop();
+        if(threadFlag)
+            requestThread.stop();
 
     }
 
@@ -212,9 +216,12 @@ public class FreeOnlinePlayersController implements Initializable {
                 SignIN2Controller.ps.println("PLIST");
                 while (true) {
                     try {
+                        System.out.println("welcome from while");
                         String msg = SignIN2Controller.dis.readLine();
+                        System.out.println("MSG: "+msg);
                         parsing(msg);
                         if (parsedOnlineList[0].equals("DUWTP") && parsedOnlineList[1].equals(userName)) {
+                            
                             final String oppName = parsedOnlineList[2];
                             System.out.println("play request for me  " + oppName);
                             Platform.runLater(new Runnable() {
@@ -241,7 +248,7 @@ public class FreeOnlinePlayersController implements Initializable {
                                     }
                                 }
                             });
-                        } else if (parsedOnlineList[0].equals("PLIST")) {
+                        } else if (parsedOnlineList[0].equals("PLIST")||parsedOnlineList[0].equals("LIST")) {
                             loadOnlineToListView();
                             loadPlayingToListView();
                             SignIN2Controller.ps.println("PLIST");

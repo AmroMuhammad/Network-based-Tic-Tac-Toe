@@ -155,8 +155,15 @@ public class GameHandler extends Thread {
             return 5; //request playing list
         } else if (parsedMsg[0].equals("DUWTP") || parsedMsg[0].equals("PREQ")) {
             return 6; //request playing and answer
-        } else {
-            return 7; //sign out
+        } 
+        else if(parsedMsg[0].equals("PLN")){
+        return 7;
+        }else if(parsedMsg[0].equals("NPLN")){
+        return 8;
+        }else if(parsedMsg[0].equals("SCR")){
+        return 9;
+        }else {//7=PLN 8=NPLN 9=SCR
+            return 10; //sign out
         }
     }
 
