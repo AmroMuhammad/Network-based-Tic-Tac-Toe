@@ -57,7 +57,10 @@ public class FreeOnlinePlayersController implements Initializable {
     PrintStream ps2;
     Thread requestThread;
     Thread replyThread;
-    boolean threadFlag=false;
+    boolean threadFlag = false;
+    ///////////////////////////////////////////////////done by AN
+    int score;
+    ///////////////////////////////////////////////////done by AN
     @FXML
     private ProgressIndicator waitingIndicator;
 
@@ -65,6 +68,12 @@ public class FreeOnlinePlayersController implements Initializable {
         userName = ENTERController.Name;
     }
 
+    ///////////////////////////////////////////////////done by AN
+    public void setScore(int scr) {
+        score = scr;
+    }
+
+    ///////////////////////////////////////////////////done by AN
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -97,7 +106,7 @@ public class FreeOnlinePlayersController implements Initializable {
             }
         });
     }
-    
+
     private void loadPlayingToListView() {
         Platform.runLater(new Runnable() {
             @Override
@@ -110,7 +119,7 @@ public class FreeOnlinePlayersController implements Initializable {
                     }
                     playingList.add(s);
                 }
-                
+
                 listViewPlaying.getItems().addAll(playingList);
             }
         });
@@ -129,7 +138,7 @@ public class FreeOnlinePlayersController implements Initializable {
             waitingIndicator.setProgress(-1);
             requestThread = new Thread() {
                 public void run() {
-                    threadFlag=true;
+                    threadFlag = true;
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
                     System.out.println("pressed on" + opponentName);
@@ -155,7 +164,7 @@ public class FreeOnlinePlayersController implements Initializable {
                                         Parent viewparent = loader.load();
                                         Scene viewscene = new Scene(viewparent);
                                         NetworkGameBoardController controller = loader.getController();
-                                        controller.setText(userName, opponentName, "X", "O",opponentName,userName);
+                                        controller.setText(userName, opponentName, "X", "O", opponentName, userName, score);
                                         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                         window.setScene(viewscene);
                                         window.show();
@@ -197,6 +206,8 @@ public class FreeOnlinePlayersController implements Initializable {
         Parent viewparent = loader.load();
         Scene viewscene = new Scene(viewparent);
         ENTERController controller = loader.getController();
+        controller.nPlayerName(userName);
+        controller.nPlayerScore(score);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();
@@ -204,8 +215,9 @@ public class FreeOnlinePlayersController implements Initializable {
         ps2.close();
         s2.close();
         replyThread.stop();
-        if(threadFlag)
+        if (threadFlag) {
             requestThread.stop();
+        }
 
     }
 
@@ -218,10 +230,10 @@ public class FreeOnlinePlayersController implements Initializable {
                     try {
                         System.out.println("welcome from while");
                         String msg = SignIN2Controller.dis.readLine();
-                        System.out.println("MSG: "+msg);
+                        System.out.println("MSG: " + msg);
                         parsing(msg);
                         if (parsedOnlineList[0].equals("DUWTP") && parsedOnlineList[1].equals(userName)) {
-                            
+
                             final String oppName = parsedOnlineList[2];
                             System.out.println("play request for me  " + oppName);
                             Platform.runLater(new Runnable() {
@@ -235,7 +247,7 @@ public class FreeOnlinePlayersController implements Initializable {
                                             public void run() {
                                                 try {
                                                     showBoardForOpponent(oppName, userName);
-                                                }  finally {
+                                                } finally {
                                                     replyThread.stop();
                                                 }
                                             }
@@ -248,13 +260,13 @@ public class FreeOnlinePlayersController implements Initializable {
                                     }
                                 }
                             });
-                        } else if (parsedOnlineList[0].equals("PLIST")||parsedOnlineList[0].equals("LIST")) {
+                        } else if (parsedOnlineList[0].equals("PLIST") || parsedOnlineList[0].equals("LIST")) {
                             loadOnlineToListView();
                             loadPlayingToListView();
                             SignIN2Controller.ps.println("PLIST");
                         }
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -268,16 +280,14 @@ public class FreeOnlinePlayersController implements Initializable {
     }
 
     public void parsing(String recievedMsg) {
-        if(recievedMsg.contains(".")){
-        parsedMsg = recievedMsg.split("\\.");
-        parsedOnlineList = parsedMsg[0].split("\\#");
-        parsedPlayingList = parsedMsg[1].split("\\#");
-        }
-        else{
-        parsedOnlineList = recievedMsg.split("\\#");
+        if (recievedMsg.contains(".")) {
+            parsedMsg = recievedMsg.split("\\.");
+            parsedOnlineList = parsedMsg[0].split("\\#");
+            parsedPlayingList = parsedMsg[1].split("\\#");
+        } else {
+            parsedOnlineList = recievedMsg.split("\\#");
         }
     }
-    
 
     public boolean confirmationToPlay() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -303,7 +313,7 @@ public class FreeOnlinePlayersController implements Initializable {
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
             NetworkGameBoardController controller = loader.getController();
-            controller.setText(opp, mainPlayer, "X", "O",opp,mainPlayer);
+            controller.setText(opp, mainPlayer, "X", "O", opp, mainPlayer, score);
             Stage window = (Stage) listViewOnline.getScene().getWindow();
             window.setScene(viewscene);
             window.show();

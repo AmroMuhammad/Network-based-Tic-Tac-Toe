@@ -93,6 +93,18 @@ public class GameHandler extends Thread {
                     System.out.println(msg);
                     sendMessageToAll(msg); //sends players list to player
                 }
+                else if (parsing(msg) == 7) {
+                    //System.out.println("PLAYING"); 
+                    setPlaying(parsedMsg[1]);
+                }
+                else if (parsing(msg) == 8) {
+                    //System.out.println("NOT PLAYING");
+                    setNotPlaying(parsedMsg[1]);
+                }else if (parsing(msg) == 9) {
+                    System.out.println("added to the DB: "+parsedMsg[1]+" "+parsedMsg[2]);
+                    int scr=Integer.parseInt(parsedMsg[2]);
+                    setScore(parsedMsg[1],scr);
+                }
             } catch (IOException ex) {
                 stop(); //handling exception when closing clients
                 Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,7 +149,19 @@ public class GameHandler extends Thread {
     public void signOutPLayer(String user) {
         databaseConnection.signOutPlayer(user);
     }
-
+    ////////////////////////////////////////////////////////////////////////////done by me AN
+    public void setPlaying(String user){
+    databaseConnection.setPlaying(user);
+    }
+    
+    public void setNotPlaying(String user){
+    databaseConnection.setNotPlaying(user);
+    }
+    
+    public void setScore(String user,int scr){
+    databaseConnection.setScore(user, scr);
+    }
+    ////////////////////////////////////////////////////////////////////////////
     public int parsing(String requestMessage) {
         if (requestMessage.equals(null)) {
             return -1;

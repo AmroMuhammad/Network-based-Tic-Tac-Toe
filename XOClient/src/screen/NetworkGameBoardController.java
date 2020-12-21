@@ -84,7 +84,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     boolean secPlayer = false;
 
     //////////////////////////////////////////////////////////////////////////////
-    public void setText(String text1, String text2, String text3, String text4, String opponent, String player) {
+    public void setText(String text1, String text2, String text3, String text4, String opponent, String player, int score) {
         player1.setText(text1);
         player2.setText(text2);
         player1Symbol.setText(text3);
@@ -93,13 +93,17 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         startGame = text3;
         this.opponent = opponent;
         mainPlayer = player;
-        player1Score = 7;
+        player1Score = score;
+        System.out.println("SCORE 1: " + score);
         if (opponent.equals(text1)) {
             name = player;
             secPlayer = true;
             disable();
-            player2Score = 11;
+            player2Score = score;
+            System.out.println("SCORE 2: " + score);
         }
+        SignIN2Controller.ps.println("PLN#" + mainPlayer);
+        SignIN2Controller.ps.println("PLN#" + opponent);
     }
     //////////////////////////////////////////////////////////////////////////////
 
@@ -114,6 +118,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     @FXML
     private void Done_btn(ActionEvent event) {
         try {
+            SignIN2Controller.ps.println("NPLN#" + opponent);
             mediaPlayer.stop();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
@@ -122,8 +127,10 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             ENTERController controller = loader.getController();
             if (!secPlayer) {
                 controller.nPlayerScore(player1Score);
+                //SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player1Score);
             } else {
                 controller.nPlayerScore(player2Score);
+                //SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
             }
             controller.nPlayerName(name);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -149,6 +156,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 gameMoves += "#";
                 //System.out.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent);
                 SignIN2Controller.ps.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent + "#" + xoWinner);
+
                 //System.out.println("after press: " + xoWinner);
                 butttonUsed[number - 1] = 1;
                 gameState[number - 1] = xoWinner;
@@ -183,16 +191,26 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 if (xoWinner == 0) {
                     player1Score++;
                     player2Score--;
-                    if(player2Score<0){
-                    player2Score=0;
+                    if (player2Score < 0) {
+                        player2Score = 0;
                     }
+
                 } else if (xoWinner == 1) {
                     player2Score++;
                     player1Score--;
-                    if(player1Score<0){
-                    player1Score=0;
+                    if (player1Score < 0) {
+                        player1Score = 0;
                     }
+
                 }
+                if (!secPlayer) {
+                //controller.nPlayerScore(player1Score);
+                SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player1Score);
+            } else {
+                //controller.nPlayerScore(player2Score);
+                SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
+            }
+
                 disable();
                 VidioShow();
             }

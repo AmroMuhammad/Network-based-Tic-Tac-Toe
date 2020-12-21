@@ -195,7 +195,46 @@ public class DatabaseConnection {
         }
         return score;
     }
+    ////////////////////////////////////////////////////////////////////////////done by AN
+    public void setPlaying(String user){
+     try {
+            pst = con.prepareStatement("update AMR.users set PLAYSTATUS=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pst.setBoolean(1, true);
+            pst.setString(2, user);
+            pst.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
+    public void setNotPlaying(String user){
+     try {
+            pst = con.prepareStatement("update AMR.users set PLAYSTATUS=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pst.setBoolean(1, false);
+            pst.setString(2, user);
+            pst.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void setScore(String user,int scr){
+     try {
+            pst = con.prepareStatement("update AMR.users set SCORE=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pst.setInt(1, scr);
+            pst.setString(2, user);
+            pst.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
     public String getOnlinePlayersList(){
             String players=null;
             playerList.clear();
