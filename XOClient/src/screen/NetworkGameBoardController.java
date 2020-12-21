@@ -62,7 +62,8 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     int player2Score = -1;
     String name;
     String opponent, mainPlayer;
-    Thread th;
+    public static Thread th;
+    public static boolean isPlayThreadOn=false;
     String[] parsedMsg;
 
     private String startGame;
@@ -109,6 +110,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        isPlayThreadOn=true;
         pane2.setVisible(false);
         th = new Thread(this);
         th.start();

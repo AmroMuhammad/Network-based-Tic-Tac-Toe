@@ -42,6 +42,7 @@ public class ENTERController implements Initializable {
     ///////////////////////////////////////////done by AN
     int playerScore;
     ///////////////////////////////////////////done by AN
+    public static boolean isOnline=false;
     /**
      * Initializes the controller class.
      */
@@ -61,7 +62,7 @@ public class ENTERController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
+        isOnline=true;
     }    
 
     @FXML

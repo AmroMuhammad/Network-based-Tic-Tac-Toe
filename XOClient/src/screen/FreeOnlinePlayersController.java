@@ -55,9 +55,10 @@ public class FreeOnlinePlayersController implements Initializable {
     Socket s2;
     DataInputStream dis2;
     PrintStream ps2;
-    Thread requestThread;
-    Thread replyThread;
-    boolean threadFlag = false;
+    public static Thread requestThread;
+    public static Thread replyThread;
+    public static boolean isRequestThreadOn = false;
+    public static boolean isReplyThreadOn = false;
     ///////////////////////////////////////////////////done by AN
     int score;
     ///////////////////////////////////////////////////done by AN
@@ -138,7 +139,7 @@ public class FreeOnlinePlayersController implements Initializable {
             waitingIndicator.setProgress(-1);
             requestThread = new Thread() {
                 public void run() {
-                    threadFlag = true;
+                    isRequestThreadOn = true;
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
                     System.out.println("pressed on" + opponentName);
@@ -215,7 +216,7 @@ public class FreeOnlinePlayersController implements Initializable {
         ps2.close();
         s2.close();
         replyThread.stop();
-        if (threadFlag) {
+        if (isRequestThreadOn) {
             requestThread.stop();
         }
 
@@ -226,6 +227,7 @@ public class FreeOnlinePlayersController implements Initializable {
             @Override
             public void run() {
                 SignIN2Controller.ps.println("PLIST");
+                isReplyThreadOn=true;
                 while (true) {
                     try {
                         System.out.println("welcome from while");
