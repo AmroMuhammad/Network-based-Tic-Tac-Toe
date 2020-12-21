@@ -80,7 +80,7 @@ public class LocalGameBoardController implements Initializable {
 	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
 	dlg.showAndWait();
 	yes = dlg.getResult() == ButtonType.YES;
-        System.out.println("arert" + yes);
+       
     }
     
      public void setText(String text1 , String text2 , String text3 , String text4 )
@@ -147,6 +147,7 @@ public class LocalGameBoardController implements Initializable {
                 else {xoWinner= 1;}
                 disable();
                 winnerName();
+                set_color();
                 VidioShow("build/classes/Style/video.mp4");
                 break;
            
@@ -161,6 +162,7 @@ public class LocalGameBoardController implements Initializable {
                         else {xoWinner= 1;}
                         disable();
                         winnerName();
+                        set_color();
                         VidioShow("build/classes/Style/video.mp4");
                         break;
                     } else{
@@ -193,7 +195,7 @@ public class LocalGameBoardController implements Initializable {
         for (int i = 0; i < gameMoves.size();i++ )
         {
            Data += gameMoves.get(i) + "#";
-            System.out.println("moveeeeee" + Data);
+           
         }
         System.out.println(Data);
          switch (xoWinner) {
@@ -246,33 +248,72 @@ public class LocalGameBoardController implements Initializable {
             }
             
             }
-    }
-     
-    public void VidioShow(String vidioPath){
          
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-        public void run()
-        {
-         pane2.setVisible(true);
-         Done_Btn.setVisible(true);
-         winner_loser_txt.setVisible(true); 
-         mediaView.setVisible(true);
-         player1.setVisible(false);
-         player2.setVisible(false);
-         player1Symbol.setVisible(false);
-         player2Symbol.setVisible(false);
-         Btns.setVisible(false);
-         String path = vidioPath;  
-         media = new Media(new File(path).toURI().toString());  
-        // animateUsingScaleTransition(mediaView);
-         mediaPlayer = new MediaPlayer(media);
-         mediaView.setMediaPlayer(mediaPlayer);
-         mediaPlayer.setAutoPlay(true);
-         }
-        };
-        timer.schedule(task,500l); 
+    }
+      public void set_color(){
+          if(Btn1.getText().equals(Btn2.getText())&&Btn2.getText().equals(Btn3.getText()) && !Btn1.getText().isEmpty())
+          {
+            color(Btn1,Btn2,Btn3);  
+          }
+          else if(Btn4.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn6.getText())&& !Btn4.getText().isEmpty())
+          {
+              color(Btn4,Btn5,Btn6);
+          }
+          else if(Btn7.getText().equals(Btn8.getText())&&Btn8.getText().equals(Btn9.getText())&& !Btn7.getText().isEmpty())
+          {
+              color(Btn7,Btn8,Btn9);
+          }
+          else if(Btn1.getText().equals(Btn4.getText())&&Btn4.getText().equals(Btn7.getText())&& !Btn1.getText().isEmpty())
+          {
+              color(Btn1,Btn4,Btn7);
+          }
+          else if(Btn2.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn8.getText())&& !Btn2.getText().isEmpty())
+          {
+              color(Btn2,Btn5,Btn8);
+          }
+          else if(Btn3.getText().equals(Btn6.getText())&&Btn6.getText().equals(Btn9.getText())&& !Btn3.getText().isEmpty())
+          {
+              color(Btn3,Btn6,Btn9);
+          }
+           else if(Btn1.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn9.getText())&& !Btn1.getText().isEmpty())
+          {
+              color(Btn1,Btn5,Btn9);
+          }
+           else if(Btn3.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn7.getText())&& !Btn3.getText().isEmpty())
+          {
+              color(Btn3,Btn5,Btn7);
+          }
+      }
+     
+    public void VidioShow(String Path){
+         
+        new Thread(new Runnable() {
+            public void run(){
+                try {
+                  Thread.sleep(1000);
+                }catch (InterruptedException ex) {
+                Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        pane2.setVisible(true);
+                        Done_Btn.setVisible(true);
+                        winner_loser_txt.setVisible(true);
+                        mediaView.setVisible(true);
+                        player1.setVisible(false);
+                        player2.setVisible(false);
+                        player1Symbol.setVisible(false);
+                        player2Symbol.setVisible(false);
+                        Btns.setVisible(false);   
+                        media = new Media(new File(Path).toURI().toString());  
+ //                     animateUsingScaleTransition(mediaView);
+                        mediaPlayer = new MediaPlayer(media);
+                        mediaView.setMediaPlayer(mediaPlayer);
+                        mediaPlayer.setAutoPlay(true);
+                    }
+                });
+            }
+        }).start(); 
        
         
     }

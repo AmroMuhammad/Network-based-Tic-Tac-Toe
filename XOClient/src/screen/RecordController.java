@@ -65,6 +65,7 @@ public class RecordController implements Initializable {
         fr = new FileReader("GameRecord.txt");
         BufferedReader br=new BufferedReader(fr); 
         L = br.readLine();
+        System.out.println("l is --- : "+ L);
     } catch (FileNotFoundException ex) {
         Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IOException ex) {
@@ -83,6 +84,13 @@ public class RecordController implements Initializable {
             int number = Integer.parseInt(ID[1]);
             System.out.println(ID);
         try {
+        if(L == null)
+            {
+               Alert alert = new Alert(Alert.AlertType.INFORMATION, "No game recording available.", ButtonType.OK);
+                          alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                          alert.show();  
+            }
+        else {
             lines = parsing_lines(L);
             FXMLLoader loader =new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/GameBord.fxml"));
@@ -101,6 +109,7 @@ public class RecordController implements Initializable {
                           alert.show();
                           flag_switch = false;
             }
+        }
           
         } catch (IOException ex) {
             Logger.getLogger(RecordController.class.getName()).log(Level.SEVERE, null, ex);

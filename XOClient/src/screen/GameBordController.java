@@ -58,6 +58,7 @@ public class GameBordController implements Initializable {
  private String[] BeginSymbol;
  private String[] playerinfo;
  String Data;
+ 
      public void setText(String text1 , String text2 , String text3 , String text4 )
     {
         player1.setText(text1);
@@ -69,7 +70,7 @@ public class GameBordController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
+     
     }
     
      public String[] parsing1(String Message){
@@ -89,7 +90,7 @@ public class GameBordController implements Initializable {
      public void GameRecord(String line){
         Data = line;
         set_Game(Data);
-         System.out.println("done");
+        System.out.println("done");
          
     }
      
@@ -106,7 +107,7 @@ public class GameBordController implements Initializable {
             player1Symbol.setText(playerinfo[1]);
             player2.setText(playerinfo[2]);
             player2Symbol.setText(playerinfo[3]);
-                System.out.println(BeginSymbol[0]+"--------------------"+BeginSymbol[1]);
+            System.out.println(BeginSymbol[0]+"--------------------"+BeginSymbol[1]);
             if(BeginSymbol[0].equals("X"))
                 flag = true;
             else
@@ -254,11 +255,51 @@ public class GameBordController implements Initializable {
                     } catch (InterruptedException ex) {
                 Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-            
-        }  
+             
+        }
+          set_color();
                 }
            }).start(); 
  
+    }
+      public void set_color(){
+          if(Btn1.getText().equals(Btn2.getText())&&Btn2.getText().equals(Btn3.getText()) && !Btn1.getText().isEmpty())
+          {
+            color(Btn1,Btn2,Btn3);  
+          }
+          else if(Btn4.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn6.getText())&& !Btn4.getText().isEmpty())
+          {
+              color(Btn4,Btn5,Btn6);
+          }
+          else if(Btn7.getText().equals(Btn8.getText())&&Btn8.getText().equals(Btn9.getText())&& !Btn7.getText().isEmpty())
+          {
+              color(Btn7,Btn8,Btn9);
+          }
+          else if(Btn1.getText().equals(Btn4.getText())&&Btn4.getText().equals(Btn7.getText())&& !Btn1.getText().isEmpty())
+          {
+              color(Btn1,Btn4,Btn7);
+          }
+          else if(Btn2.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn8.getText())&& !Btn2.getText().isEmpty())
+          {
+              color(Btn2,Btn5,Btn8);
+          }
+          else if(Btn3.getText().equals(Btn6.getText())&&Btn6.getText().equals(Btn9.getText())&& !Btn3.getText().isEmpty())
+          {
+              color(Btn3,Btn6,Btn9);
+          }
+           else if(Btn1.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn9.getText())&& !Btn1.getText().isEmpty())
+          {
+              color(Btn1,Btn5,Btn9);
+          }
+           else if(Btn3.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn7.getText())&& !Btn3.getText().isEmpty())
+          {
+              color(Btn3,Btn5,Btn7);
+          }
+      }
+       public void color(Button b1, Button b2, Button b3) {
+        b1.setStyle("-fx-background-color: #cc00cc");
+        b2.setStyle("-fx-background-color: #cc00cc");
+        b3.setStyle("-fx-background-color: #cc00cc");
     }
        @FXML
     private void Back_btn(ActionEvent event) 

@@ -13,6 +13,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,7 +62,7 @@ public class HardSingleGameBordController implements Initializable {
 
     int moveNum = 0;
     HardLevel.Move bestMove;
-    int oScore, xScore, tieScore = 0;
+    String path;
     Button[][] board = new Button[3][3];
         
    
@@ -114,49 +117,21 @@ public class HardSingleGameBordController implements Initializable {
                         if (result == 10) {
                             System.out.println("You lost :(");
                             winner_loser_txt.setText(player1.getText()+ " is loser");
-                            x = 1;
                             set_color();
+                            path = "build/classes/Style/video.mp4";//loser
+                            show_video(path);
                         } else if (result == -10) {
                             System.out.println("You won ^^");
-                            winner_loser_txt.setText(player1.getText() + "is winner");
-                            x = 1;
+                            winner_loser_txt.setText(player1.getText() + "is winner");//winner
                             set_color();
+                            path = "build/classes/Style/video.mp4";
+                            show_video(path);
                         } else if (HardLevel.isMoveLeft(board) == false) {
                             System.out.println("No One Wins !");
-                            winner_loser_txt.setText("That's Draw");
-                            x = 1;
-                        }
-                        if( x == 1)
-                        {
-                           
-                           Timer timer = new Timer();
-                           TimerTask task = new TimerTask()
-                            {
-                            public void run()
-                            {
-                                pane2.setVisible(true);
-                                Done_Btn.setVisible(true);
-                                winner_loser_txt.setVisible(true);
-                                mediaView.setVisible(true);
-                                player1.setVisible(false);
-                                player2.setVisible(false);
-                                player1Symbol.setVisible(false);
-                                player2Symbol.setVisible(false);
-                                Btns.setVisible(false);
-                                String path = "build/classes/Style/video.mp4";  
-                                media = new Media(new File(path).toURI().toString());  
-        //                      animateUsingScaleTransition(mediaView);
-                                mediaPlayer = new MediaPlayer(media);
-                                mediaView.setMediaPlayer(mediaPlayer);
-                                mediaPlayer.setAutoPlay(true);
-         
-               
-                            }
-
-                          };
-                                timer.schedule(task,500l);
-                        }
-                        
+                            winner_loser_txt.setText("That's Draw");//draw
+                            path = "build/classes/Style/video.mp4";
+                            show_video(path);
+                        } 
                     }
                 });
             }
@@ -178,32 +153,63 @@ public class HardSingleGameBordController implements Initializable {
   
 
         
-                    public void set_color(){
-                           if(Evaluation.winRow == 123 )
-                            {
-                                 board[0][Evaluation.winCol].setStyle("-fx-background-color: red");
-                                 board[1][Evaluation.winCol].setStyle("-fx-background-color: red");
-                                 board[2][Evaluation.winCol].setStyle("-fx-background-color: red");
-                             }
-                             else if(Evaluation.winCol == 123)
-                             {
-                                 board[Evaluation.winRow][0].setStyle("-fx-background-color: red");
-                                 board[Evaluation.winRow][1].setStyle("-fx-background-color: red");
-                                 board[Evaluation.winRow][2].setStyle("-fx-background-color: red"); 
-                             }
-                             else if(Evaluation.winRow == 20)
-                             {
-                                 board[0][0].setStyle("-fx-background-color: red");
-                                 board[1][1].setStyle("-fx-background-color: red");
-                                 board[2][2].setStyle("-fx-background-color: red");
-                             }
-                             else if(Evaluation.winRow == 40)
-                             {
-                                 board[0][2].setStyle("-fx-background-color: red");
-                                 board[1][1].setStyle("-fx-background-color: red");
-                                 board[2][0].setStyle("-fx-background-color: red");
-                             }
+    public void set_color(){
+        if(Evaluation.winRow == 123 )
+          {
+            board[0][Evaluation.winCol].setStyle("-fx-background-color: red");
+            board[1][Evaluation.winCol].setStyle("-fx-background-color: red");
+            board[2][Evaluation.winCol].setStyle("-fx-background-color: red");
+          }
+        else if(Evaluation.winCol == 123)
+          {
+            board[Evaluation.winRow][0].setStyle("-fx-background-color: red");
+            board[Evaluation.winRow][1].setStyle("-fx-background-color: red");
+            board[Evaluation.winRow][2].setStyle("-fx-background-color: red"); 
+          }
+        else if(Evaluation.winRow == 20)
+          {
+            board[0][0].setStyle("-fx-background-color: red");
+            board[1][1].setStyle("-fx-background-color: red");
+            board[2][2].setStyle("-fx-background-color: red");
+          }
+        else if(Evaluation.winRow == 40)
+          {
+            board[0][2].setStyle("-fx-background-color: red");
+            board[1][1].setStyle("-fx-background-color: red");
+            board[2][0].setStyle("-fx-background-color: red");
+          }
                            
+    }
+                    
+    public void show_video(String path)
+    {
+        new Thread(new Runnable() {
+            public void run(){
+                try {
+                  Thread.sleep(1000);
+                }catch (InterruptedException ex) {
+                Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        pane2.setVisible(true);
+                        Done_Btn.setVisible(true);
+                        winner_loser_txt.setVisible(true);
+                        mediaView.setVisible(true);
+                        player1.setVisible(false);
+                        player2.setVisible(false);
+                        player1Symbol.setVisible(false);
+                        player2Symbol.setVisible(false);
+                        Btns.setVisible(false);   
+                        media = new Media(new File(path).toURI().toString());  
+        //                     animateUsingScaleTransition(mediaView);
+                        mediaPlayer = new MediaPlayer(media);
+                        mediaView.setMediaPlayer(mediaPlayer);
+                        mediaPlayer.setAutoPlay(true);
+                    }
+                });
+            }
+        }).start(); 
     }
 
    
