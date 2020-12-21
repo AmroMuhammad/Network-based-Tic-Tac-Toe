@@ -43,8 +43,10 @@ public class NewGameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            File file = new File("GameRecord.txt");
+            File file = new File("localGameRecord.txt");
+            File file2 = new File("singleGameRecord.txt");
             file.createNewFile();
+            file2.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(NewGameController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -240,7 +240,7 @@ public class LocalGameBoardController implements Initializable {
            BufferedWriter out ;
            try {
               out = new BufferedWriter(
-              new FileWriter("GameRecord.txt", true));
+              new FileWriter("localGameRecord.txt", true));
               out.write(Data + "!");
               out.close();  
             } catch (IOException ex) {

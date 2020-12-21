@@ -44,8 +44,9 @@ public class RecordController implements Initializable {
     String flag;
     public String [] lines;
     BufferedReader br;
+    BufferedReader br2;
     FileReader fr; 
-    String L;
+    String L ,L2;
     /**
      * Initializes the controller class.
      */
@@ -60,12 +61,15 @@ public class RecordController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         FileReader fr;    
+         FileReader fr;
+         FileReader fr2;
     try {
-        fr = new FileReader("GameRecord.txt");
+        fr = new FileReader("localGameRecord.txt");
         BufferedReader br=new BufferedReader(fr); 
         L = br.readLine();
-        System.out.println("l is --- : "+ L);
+        fr2 = new FileReader("singleGameRecord.txt");
+        BufferedReader br2 =new BufferedReader(fr2); 
+        L2 = br2.readLine();
     } catch (FileNotFoundException ex) {
         Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IOException ex) {
@@ -79,19 +83,28 @@ public class RecordController implements Initializable {
     @FXML
     private void Btn_click(ActionEvent event) {
             boolean flag_switch = true;
+            String line = "";
             Button btn = (Button) event.getSource();
             String[] ID = btn.getId().split("n");
             int number = Integer.parseInt(ID[1]);
             System.out.println(ID);
+            if(ID[0].equals("Bt"))
+            {
+                line = L;
+            }
+            else
+            {
+               line = L2; 
+            }
         try {
-        if(L == null)
+        if(line == null)
             {
                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No game recording available.", ButtonType.OK);
                           alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                           alert.show();  
             }
         else {
-            lines = parsing_lines(L);
+            lines = parsing_lines(line);
             FXMLLoader loader =new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/GameBord.fxml"));
             Parent viewParent =loader.load();

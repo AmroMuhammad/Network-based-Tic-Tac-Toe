@@ -5,11 +5,14 @@
  */
 package screen;
 
+import java.io.BufferedWriter;
 import xoClientModel.HardLevel;
 import xoClientModel.Evaluation;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,7 +26,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -59,12 +64,12 @@ public class HardSingleGameBordController implements Initializable {
     
     String flag ;
     
-
+     boolean yes;
     int moveNum = 0;
     HardLevel.Move bestMove;
     String path;
     Button[][] board = new Button[3][3];
-        
+     public ArrayList<Integer> gameMoves = new ArrayList<>();  
    
       public void setText(String text1 , String text2 , String text3 , String text4 )
     {
@@ -83,6 +88,13 @@ public class HardSingleGameBordController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
    
      
+        Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
+	dlg.setHeaderText("Record Game");
+	dlg.setContentText("Do you want record this game ?");
+	dlg.getButtonTypes().clear();
+	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+	dlg.showAndWait();
+	yes = dlg.getResult() == ButtonType.YES;
         
         board [0][0] = Btn1;
         board [0][1] = Btn2;
@@ -100,7 +112,10 @@ public class HardSingleGameBordController implements Initializable {
             for (Button btn : btns) {
 
                 btn.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-
+                    Button btnA = (Button) event.getSource();
+                    String[] ID = btnA.getId().split("n");
+                    int number = Integer.parseInt(ID[1]);
+                    gameMoves.add(number);
                     btn.setText(player1Symbol.getText());
                     System.out.println("xxx");
                     btn.setMouseTransparent(true);
@@ -108,30 +123,98 @@ public class HardSingleGameBordController implements Initializable {
                         bestMove = HardLevel.findBestMove(board);
                         board[bestMove.row][bestMove.col].setText(player2Symbol.getText());
                         board[bestMove.row][bestMove.col].setMouseTransparent(true);
+                        if(bestMove.row == 0)
+                        {
+                            switch(bestMove.col){
+                                case 0:
+                                    gameMoves.add(1);
+                                    break;
+                                case 1:
+                                    gameMoves.add(2);
+                                    break;
+                                case 2:
+                                    gameMoves.add(3);
+                                    break;
+                                    
+                            }
+                        }
+                       else if(bestMove.row == 1)
+                        {
+                            switch(bestMove.col){
+                                case 0:
+                                    gameMoves.add(4);
+                                    break;
+                                case 1:
+                                    gameMoves.add(5);
+                                    break;
+                                case 2:
+                                    gameMoves.add(6);
+                                    break;
+                                    
+                            }
+                        }
+                        else if(bestMove.row == 2)
+                        {
+                            switch(bestMove.col){
+                                case 0:
+                                    gameMoves.add(7);
+                                    break;
+                                case 1:
+                                    gameMoves.add(8);
+                                    break;
+                                case 2:
+                                    gameMoves.add(9);
+                                    break;
+                                    
+                            }
+                        }
                     }
                     
                     moveNum += 2;
                     if (moveNum >= 5) {
-                                  int x = 0;
+                                 
                         int result = Evaluation.evaluate(board);
-                        if (result == 10) {
+                        if(result == 10 || result == -10 || HardLevel.isMoveLeft(board) == false)
+                        {
+                             String Data ="" ;
+                          for (int i = 0; i < gameMoves.size();i++ )
+                            {
+                              Data += gameMoves.get(i) + "#";
+                            } 
+                          if (result == 10) {
                             System.out.println("You lost :(");
                             winner_loser_txt.setText(player1.getText()+ " is loser");
+                            Data += player1Symbol.getText()+"&"+ player2.getText()+ "@" + player2Symbol.getText()+"@"+player1.getText()+"@"+player1Symbol.getText()+"@";
                             set_color();
                             path = "build/classes/Style/video.mp4";//loser
                             show_video(path);
-                        } else if (result == -10) {
+                          } else if (result == -10) {
                             System.out.println("You won ^^");
                             winner_loser_txt.setText(player1.getText() + "is winner");//winner
+                            Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + player1Symbol.getText()+"@"+player2.getText()+"@"+player2Symbol.getText()+"@";
                             set_color();
                             path = "build/classes/Style/video.mp4";
                             show_video(path);
-                        } else if (HardLevel.isMoveLeft(board) == false) {
+                          } else if (HardLevel.isMoveLeft(board) == false) {
                             System.out.println("No One Wins !");
                             winner_loser_txt.setText("That's Draw");//draw
+                            Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + player1Symbol.getText()+"@"+player2.getText()+"@"+player2Symbol.getText()+"@";
                             path = "build/classes/Style/video.mp4";
                             show_video(path);
-                        } 
+                          }
+                          if(yes){
+                            BufferedWriter out ;
+                            try {
+                              out = new BufferedWriter(
+                              new FileWriter("singleGameRecord.txt", true));
+                              out.write(Data + "!");
+                              out.close();  
+                            } catch (IOException ex) {
+                              Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+            
+                          }
+                        }
                     }
                 });
             }

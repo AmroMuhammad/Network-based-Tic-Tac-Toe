@@ -5,7 +5,9 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.lang.ClassLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  * FXML Controller class
@@ -68,6 +72,7 @@ public class SingleGameBordController implements Initializable {
     int player=-1;
     int pc=-1;
     String path;
+    boolean yes = true;
     //0 first player
     //1 computer
     //2 empty
@@ -89,7 +94,13 @@ public class SingleGameBordController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        // TODO
+        Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
+	dlg.setHeaderText("Record Game");
+	dlg.setContentText("Do you want record this game ?");
+	dlg.getButtonTypes().clear();
+	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+	dlg.showAndWait();
+	yes = dlg.getResult() == ButtonType.YES;
     }
 
     public void setText(String text1, String text2, String text3, String text4) {
@@ -183,6 +194,12 @@ public class SingleGameBordController implements Initializable {
     }
 
     public void endGame() {
+        String Data ="" ;
+        for (int i = 0; i < gameMoves.size();i++ )
+        {
+           Data += gameMoves.get(i) + "#";
+           
+        }
 
         System.out.println("end game iswinner = " + isWinner);
         Btn1.setDisable(true);
@@ -199,9 +216,11 @@ public class SingleGameBordController implements Initializable {
                 finalResult = "Player X is the winner \n";
                 if (player1Symbol.getText().equals("X")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
+                    Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + "X@"+player2.getText()+"@O@";
                     path = "build/classes/Style/video.mp4";//winner
                 } else {
                     winner_loser_txt.setText(player1.getText() + " is loser");
+                     Data += player1Symbol.getText()+"&"+ player2.getText() + "@" + "X@"+player1.getText()+"@O@";
                     path = "build/classes/Style/video.mp4";//loser
                 }
 
@@ -211,9 +230,11 @@ public class SingleGameBordController implements Initializable {
                 finalResult = "Player O is the winner \n";
                 if (player1Symbol.getText().equals("O")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
+                     Data +=player1Symbol.getText()+"&"+  player1.getText()+ "@" + "O@"+player2.getText()+"@X@";
                     path = "build/classes/Style/video.mp4";//winner
                 } else {
                     winner_loser_txt.setText(player1.getText() + " is loser");
+                    Data +=player1Symbol.getText()+"&"+ player2.getText() + "@" + "O@"+player1.getText()+"@X@";
                     path = "build/classes/Style/video.mp4";//loser
                 }
                 break;
@@ -221,10 +242,23 @@ public class SingleGameBordController implements Initializable {
             case -1: {
                 finalResult = "That's a Draw \n";
                 winner_loser_txt.setText("That's a Draw ");
-                 path = "build/classes/Style/video.mp4";//draw
+                Data += player1Symbol.getText()+"&"+ player1.getText() + "@"+ player1Symbol.getText() +"@"+player2.getText()+"@"+ player2Symbol.getText()+"@";
+                path = "build/classes/Style/video.mp4";//draw
                 break;
             }
         }
+        if(yes){
+           BufferedWriter out ;
+           try {
+              out = new BufferedWriter(
+              new FileWriter("singleGameRecord.txt", true));
+              out.write(Data + "!");
+              out.close();  
+            } catch (IOException ex) {
+                  Logger.getLogger(SingleGameBordController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            }
         set_color();
         show_video(path);
     }
