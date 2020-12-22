@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,11 +57,15 @@ public class Screen extends Application {
                         if(NetworkGameBoardController.isPlayThreadOn){
                             NetworkGameBoardController.th.stop();
                         }
+                        if(ENTERController.isReplyThreadEnterOn){
+                            ENTERController.replyThreadEnter.stop();
+                        }
                     } catch (IOException ex) {
                         Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 stage.close();
+                Platform.exit();
             }
         });
     }

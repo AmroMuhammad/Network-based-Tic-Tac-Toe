@@ -120,9 +120,13 @@ public class FreeOnlinePlayersController implements Initializable {
                     if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST") || s.equals("IST")) {
                         continue;
                     }
+                    
                     playingList.add(s);
                 }
-
+                if(playingList.get(0).equals("null")){
+                    playingList.remove(0);
+                    playingList.add("No one is Currently playing");
+                }
                 listViewPlaying.getItems().addAll(playingList);
             }
         });

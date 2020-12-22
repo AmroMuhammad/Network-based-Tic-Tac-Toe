@@ -42,8 +42,8 @@ public class ENTERController implements Initializable {
     @FXML
     private Button record_txt;
     public static String Name;
-    static Thread replyThreadEnter;
-    static boolean isReplyThreadEnterOn;
+    public static Thread replyThreadEnter;
+    public static boolean isReplyThreadEnterOn;
     String[] parsedMsg;
     ///////////////////////////////////////////done by AN
     int playerScore;
@@ -166,7 +166,7 @@ public class ENTERController implements Initializable {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (confirmationToPlay() == true) {
+                                    if (confirmationToPlay(oppName) == true) {
                                         System.out.println("acception sent");
                                         String sentMsg = new String("PREQ#accept#" + oppName + "#" + Name);
                                         SignIN2Controller.ps.println(sentMsg);
@@ -207,11 +207,11 @@ public class ENTERController implements Initializable {
             parsedMsg = recievedMsg.split("\\#");
     }
 
-    public boolean confirmationToPlay() {
+    public boolean confirmationToPlay(String opp) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Playing Confirmation");
         alert.setHeaderText("Playing Confirmation");
-        alert.setContentText("Do you want to play?");
+        alert.setContentText("Do you want to play with "+opp+" ?");
         ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         Optional<ButtonType> result = alert.showAndWait();
@@ -236,7 +236,7 @@ public class ENTERController implements Initializable {
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
-            Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ENTERController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
