@@ -139,7 +139,11 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
-            Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+            mediaPlayer.stop();
+            SignIN2Controller.returnToMainPage(Done_Btn);
+            mediaPlayer.stop();
+            SignIN2Controller.whenServerOff();
+            mediaPlayer.stop();
         } finally {
             th.stop();
         }
@@ -387,12 +391,19 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                     });
                 }
             } catch (IOException ex) {
-                Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("catch error in network");
+                SignIN2Controller.returnToMainPage(Btns);
+                SignIN2Controller.whenServerOff();
             }
         }
     }
 
     public void parsing(String recievedMsg) {
+        if(recievedMsg == (null)){
+            SignIN2Controller.returnToMainPage(Btns);
+            SignIN2Controller.whenServerOff();
+            System.out.println("here we are");
+        }
         parsedMsg = recievedMsg.split("\\#");
     }
 }

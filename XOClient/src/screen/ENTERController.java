@@ -74,7 +74,6 @@ public class ENTERController implements Initializable {
           Scene viewscene =new Scene (viewParent);
           RecordController controller =loader.getController();
           controller.flag_value("guest");
-          
           Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
           window.setScene(viewscene);
           window.show();
@@ -98,7 +97,8 @@ public class ENTERController implements Initializable {
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
-            Logger.getLogger(ENTERController.class.getName()).log(Level.SEVERE, null, ex);
+            SignIN2Controller.whenServerOff();
+            SignIN2Controller.returnToMainPage(newGame_txt);
         }
     }
     
@@ -118,7 +118,9 @@ public class ENTERController implements Initializable {
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
-            Logger.getLogger(ENTERController.class.getName()).log(Level.SEVERE, null, ex);
+            SignIN2Controller.whenServerOff();
+            SignIN2Controller.returnToMainPage(newGame_txt);
+            System.out.println("catch in here");
         }
     }
     

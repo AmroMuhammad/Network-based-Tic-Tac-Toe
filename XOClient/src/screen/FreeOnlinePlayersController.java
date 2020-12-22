@@ -87,7 +87,8 @@ public class FreeOnlinePlayersController implements Initializable {
             System.out.println("opened everything");
             getPlayerListAndPlayRequest();
         } catch (IOException ex) {
-            Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+            SignIN2Controller.whenServerOff();
+            SignIN2Controller.returnToMainPage(listViewOnline);
         }
     }
 
@@ -152,7 +153,8 @@ public class FreeOnlinePlayersController implements Initializable {
                             System.out.println(recievedReqeustMsg);
                             parsing(recievedReqeustMsg);
                         } catch (IOException ex) {
-                            Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+                            SignIN2Controller.returnToMainPage(listViewOnline);
+                            SignIN2Controller.whenServerOff();   
                         }
                         System.out.println(recievedReqeustMsg);
                         if (parsedOnlineList[0].equals("PREQ") && parsedOnlineList[1].equals("accept") && parsedOnlineList[2].equals(userName)) {
@@ -273,7 +275,8 @@ public class FreeOnlinePlayersController implements Initializable {
                             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } catch (IOException ex) {
-                        Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
+                        SignIN2Controller.returnToMainPage(listViewOnline);
+                        SignIN2Controller.whenServerOff(); 
                     }
                 }
             }

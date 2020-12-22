@@ -134,6 +134,8 @@ public class ServerGUI extends AnchorPane {
                 usersChart.setVisible(false);
                 try {
                     closingEverything();
+                    MainServer.offlinePlayers=0;
+                    MainServer.onlinePlayers=0;
                 } catch (IOException ex) {
                     Logger.getLogger(ServerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -49,7 +49,7 @@ public class SignIN2Controller implements Initializable {
     public static DataInputStream dis;
     public static PrintStream ps;
     String ip;
-    Thread th;
+    Thread signInThread;
     private int score = 0;
 
     /**
@@ -62,12 +62,13 @@ public class SignIN2Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-                sClient = new Socket(ip, 5008);
-                dis = new DataInputStream(sClient.getInputStream());
-                ps = new PrintStream(sClient.getOutputStream());
-            } catch (IOException ex) {
-                Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            sClient = new Socket(ip, 5008);
+            dis = new DataInputStream(sClient.getInputStream());
+            ps = new PrintStream(sClient.getOutputStream());
+        } catch (IOException ex) {
+            SignIN2Controller.whenServerOff();
+            SignIN2Controller.returnToMainPage(password_txt);
+        }
         // TODO
 
     }
@@ -106,7 +107,7 @@ public class SignIN2Controller implements Initializable {
             ps.println(Data);
             ps.flush();
 
-            th = new Thread(new Runnable() {
+            signInThread = new Thread(new Runnable() {
                 public void run() {
 
                     try {
@@ -143,13 +144,14 @@ public class SignIN2Controller implements Initializable {
                             }
                         });
                     } catch (IOException ex) {
-                        Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                        whenServerOff();
+                        returnToMainPage(signIN_btn);
                     } finally {
-                        th.stop();
+                        signInThread.stop();
                     }
                 }
             });
-            th.start();
+            signInThread.start();
         }
 
     }
@@ -170,8 +172,8 @@ public class SignIN2Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-                th.stop();
-             
+            signInThread.stop();
+
         }
 
     }
@@ -182,5 +184,47 @@ public class SignIN2Controller implements Initializable {
             score = Integer.parseInt(parsedMsg[1]);
         }
         return parsedMsg[0];
+    }
+
+    public static void whenServerOff() {
+        try {
+            SignIN2Controller.dis.close();
+            SignIN2Controller.ps.close();
+            SignIN2Controller.sClient.close();
+            if (FreeOnlinePlayersController.isReplyThreadOn) {
+                FreeOnlinePlayersController.replyThread.stop();
+            }
+            if (FreeOnlinePlayersController.isRequestThreadOn) {
+                FreeOnlinePlayersController.requestThread.stop();
+            }
+            if (NetworkGameBoardController.isPlayThreadOn) {
+                NetworkGameBoardController.th.stop();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void returnToMainPage(Node node) {
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Server is disconnected", ButtonType.OK);
+                    alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                    alert.show();
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/xoClientView/signIN.fxml"));
+                    Parent viewparent = loader.load();
+                    Scene viewscene = new Scene(viewparent);
+                    Stage window = (Stage) node.getScene().getWindow();
+                    window.setScene(viewscene);
+                    window.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 }

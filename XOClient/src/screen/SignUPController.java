@@ -128,7 +128,8 @@ public class SignUPController implements Initializable {
                             }
                         });
                     } catch (IOException ex) {
-                        Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                        SignIN2Controller.whenServerOff();
+                        SignIN2Controller.returnToMainPage(name_text);
                     } finally {
                         th.stop();
                     }
