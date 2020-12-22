@@ -24,8 +24,8 @@ import java.util.logging.Logger;
  */
 public class GameHandler extends Thread {
 
-    private DataInputStream dis;
-    private PrintStream ps;
+    DataInputStream dis;
+    PrintStream ps;
     static Vector<GameHandler> clientVector = new Vector<>();
     private DatabaseConnection databaseConnection;
     private String[] parsedMsg;

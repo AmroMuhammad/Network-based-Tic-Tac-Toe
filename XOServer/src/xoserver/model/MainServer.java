@@ -18,18 +18,15 @@ import java.util.logging.Logger;
  */
 public class MainServer extends Thread {
 
-    static Vector<GameHandler> socketVector;
-    public ServerSocket mainSocket;
-    private GameHandler handler;
+    public static ServerSocket mainSocket;
     private DatabaseConnection dbConnection;
     public static int onlinePlayers;
     public static int offlinePlayers;
+    private static MainServer mainServerObject;
 
-    
-    public MainServer() {
+    private MainServer() {
         try {
             mainSocket = new ServerSocket(5008);
-            socketVector = new Vector<>();
             dbConnection = DatabaseConnection.getDatabaseInstance();
             onlinePlayers = dbConnection.numOnlinePlayers();
             offlinePlayers = dbConnection.numOfflinePlayers();
@@ -39,22 +36,36 @@ public class MainServer extends Thread {
 
     }
 
+    public static MainServer getInstance() {
+        if (mainServerObject == null) {
+            mainServerObject = new MainServer();
+        }
+        return mainServerObject;
+    }
+
+    public static void deleteInstance() {
+        mainServerObject = null;
+    }
+
     @Override
     public void run() {
         while (true) {
             try {
                 Socket s = mainSocket.accept();
-                handler = new GameHandler(s);
-                socketVector.add(handler);
+                new GameHandler(s);
             } catch (IOException ex) {
                 Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    public void stopClients() {
-        for (GameHandler s : socketVector) {
+    public static void stopClients() throws IOException {
+        for (GameHandler s : GameHandler.clientVector) {
+            s.clientSocket.close();
+            s.ps.close();
+            s.dis.close();
             s.stop();
         }
+        GameHandler.clientVector.removeAllElements();
     }
 }

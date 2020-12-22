@@ -25,7 +25,7 @@ import xoserver.model.DatabaseConnection;
 import xoserver.model.GameHandler;
 import xoserver.model.MainServer;
 
-public class ServerGUI extends AnchorPane{
+public class ServerGUI extends AnchorPane {
 
     protected final RadioButton btnOn;
     protected final RadioButton btnOff;
@@ -34,9 +34,8 @@ public class ServerGUI extends AnchorPane{
     protected final PieChart usersChart;
     protected final ToggleGroup group;
     private DatabaseConnection databaseConnection;
-    private MainServer gameMain;
     ObservableList<PieChart.Data> pieChartData;
-    private ScheduledExecutorService scheduledExecutorService;
+    public static ScheduledExecutorService scheduledExecutorService;
 
     public ServerGUI() {
         btnOn = new RadioButton();
@@ -44,20 +43,17 @@ public class ServerGUI extends AnchorPane{
         text = new Text();
         txtServerStatus = new Text();
         group = new ToggleGroup();
-        
+
         //added part
         databaseConnection = DatabaseConnection.getDatabaseInstance();
         databaseConnection.openConnection();  //initialize database with server
-        pieChartData =FXCollections.observableArrayList(
-        new PieChart.Data("Offline",databaseConnection.numOfflinePlayers()),
-        new PieChart.Data("Online",databaseConnection.numOnlinePlayers())     //initialize pie chart 
+        pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Offline", databaseConnection.numOfflinePlayers()),
+                new PieChart.Data("Online", databaseConnection.numOnlinePlayers()) //initialize pie chart 
         );
         usersChart = new PieChart(pieChartData);
         usersChart.setVisible(false);
         usersChart.setAnimated(false);
-                
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        refreshPieChart();
 
         setId("AnchorPane");
         setPrefHeight(498.0);
@@ -112,20 +108,18 @@ public class ServerGUI extends AnchorPane{
         getChildren().add(usersChart);
 
         //added parts
-        
         btnOn.setToggleGroup(group);
         btnOff.setToggleGroup(group);
         btnOff.setSelected(true);
-        
-        
+
         togglingButtons();
-        
 
         btnOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                gameMain = new MainServer();
-                gameMain.start();
+                MainServer.getInstance().start();
+                scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+                refreshPieChart();
                 usersChart.setVisible(true);
             }
         });
@@ -133,17 +127,15 @@ public class ServerGUI extends AnchorPane{
         btnOff.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                gameMain.stop();  //stops main server when server is down (so when client enters server he cant send)
-                gameMain.stopClients();  //stops sockets threads at clients side
-                usersChart.setVisible(false); 
+                usersChart.setVisible(false);
                 try {
-                    gameMain.mainSocket.close();
+                    closingEverything();
                 } catch (IOException ex) {
                     Logger.getLogger(ServerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-   
+
     }
 
     public void togglingButtons() {
@@ -161,25 +153,32 @@ public class ServerGUI extends AnchorPane{
                 }
             }
         });
-        
-        
-    }
-  
-    public void refreshPieChart(){
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-             @Override
-             public void run() {
-                 // Update the chart
 
-                 Platform.runLater(new Runnable() {
-                     @Override
-                     public void run() {
-                         // put random number with current time
-                         pieChartData.set(0,new PieChart.Data("Offline",MainServer.offlinePlayers));
-                         pieChartData.set(1,new PieChart.Data("Online",MainServer.onlinePlayers));
-                     }
-                 });
-             }
-         }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    public void refreshPieChart() {
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                // Update the chart
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        // put random number with current time
+                        pieChartData.set(0, new PieChart.Data("Offline", MainServer.offlinePlayers));
+                        pieChartData.set(1, new PieChart.Data("Online", MainServer.onlinePlayers));
+                    }
+                });
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    public static void closingEverything() throws IOException {
+        scheduledExecutorService.shutdown();
+        MainServer.getInstance().stop();
+        MainServer.mainSocket.close();          //stops main server when server is down (so when client enters server he cant send)
+        MainServer.getInstance().stopClients(); //stops sockets threads at clients side
+        MainServer.deleteInstance();
     }
 }
