@@ -99,7 +99,7 @@ public class FreeOnlinePlayersController implements Initializable {
                 onlineList.removeAll(onlineList);
                 listViewOnline.getItems().clear();
                 for (String s : parsedOnlineList) {
-                    if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST")) {
+                    if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST") || s.equals("IST")) {
                         continue;
                     }
                     onlineList.add(s);
@@ -116,7 +116,7 @@ public class FreeOnlinePlayersController implements Initializable {
                 playingList.removeAll(playingList);
                 listViewPlaying.getItems().clear();
                 for (String s : parsedPlayingList) {
-                    if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST")) {
+                    if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST") || s.equals("IST")) {
                         continue;
                     }
                     playingList.add(s);
@@ -264,7 +264,7 @@ public class FreeOnlinePlayersController implements Initializable {
                                     }
                                 }
                             });
-                        } else if (parsedOnlineList[0].equals("PLIST") || parsedOnlineList[0].equals("LIST")) {
+                        } else if (parsedOnlineList[0].equals("PLIST") || parsedOnlineList[0].equals("LIST")  || parsedOnlineList[0].equals("IST")) {
                             loadOnlineToListView();
                             loadPlayingToListView();
                             SignIN2Controller.ps.println("PLIST");

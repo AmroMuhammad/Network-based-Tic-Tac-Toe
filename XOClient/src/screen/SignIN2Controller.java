@@ -171,11 +171,7 @@ public class SignIN2Controller implements Initializable {
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            signInThread.stop();
-
         }
-
     }
 
     public String SignInParser(String msg) {

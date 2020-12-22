@@ -66,7 +66,6 @@ public class SignUPController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
     }
 
     public void ip_value(String IP) {
@@ -95,7 +94,6 @@ public class SignUPController implements Initializable {
 
             th = new Thread(new Runnable() {
                 public void run() {
-
                     try {
                         String msg = SignIN2Controller.dis.readLine();
                         System.out.println(" my massege is ....." + msg);
@@ -130,8 +128,6 @@ public class SignUPController implements Initializable {
                     } catch (IOException ex) {
                         SignIN2Controller.whenServerOff();
                         SignIN2Controller.returnToMainPage(name_text);
-                    } finally {
-                        th.stop();
                     }
                 }
             });
@@ -171,8 +167,6 @@ public class SignUPController implements Initializable {
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-                th.stop();
         }
 
     }
