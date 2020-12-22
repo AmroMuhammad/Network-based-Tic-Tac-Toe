@@ -84,26 +84,31 @@ public class GameHandler extends Thread {
                     signOutPLayer(parsedMsg[1]);
                     ++MainServer.offlinePlayers;
                     --MainServer.onlinePlayers;
-                } else if(parsing(msg) == 4){
+                } else if (parsing(msg) == 4) {
                     sendMessageToAll(msg);
-                }
-                else if (parsing(msg) == 5) {
+                } else if (parsing(msg) == 5) {
                     ps.println(getPlayersList()); //sends players list to player
                 } else if (parsing(msg) == 6) {
                     System.out.println(msg);
                     sendMessageToAll(msg); //sends players list to player
-                }
-                else if (parsing(msg) == 7) {
+                } else if (parsing(msg) == 7) {
                     //System.out.println("PLAYING"); 
                     setPlaying(parsedMsg[1]);
-                }
-                else if (parsing(msg) == 8) {
+                } else if (parsing(msg) == 8) {
                     //System.out.println("NOT PLAYING");
                     setNotPlaying(parsedMsg[1]);
-                }else if (parsing(msg) == 9) {
-                    System.out.println("added to the DB: "+parsedMsg[1]+" "+parsedMsg[2]);
-                    int scr=Integer.parseInt(parsedMsg[2]);
-                    setScore(parsedMsg[1],scr);
+                } else if (parsing(msg) == 9) {
+                    //System.out.println("added to the DB: "+parsedMsg[1]+" "+parsedMsg[2]);
+                    int scr = Integer.parseInt(parsedMsg[2]);
+                    setScore(parsedMsg[1], scr);
+                } else if (parsing(msg) == 10) {
+                    //System.out.println("ISONLINE GH: "+parsedMsg[1]);
+                    if (isOnline(parsedMsg[1])) {
+                        sendMessageToAll("ONLINE#" + parsedMsg[1]);
+                    } else {
+                       sendMessageToAll("OFF#" + parsedMsg[1]); 
+                    }
+
                 }
             } catch (IOException ex) {
                 stop(); //handling exception when closing clients
@@ -142,6 +147,15 @@ public class GameHandler extends Thread {
         }
     }
 
+    public boolean isOnline(String username) {
+        if (databaseConnection.isOnline(username)) {
+            System.out.println("ONLINE TRUE");
+            return true;
+        }
+        System.out.println("ONLINE FALSE");
+        return false;
+    }
+
     public void signInPlayer(String user) {
         databaseConnection.signInPlayer(user);
     }
@@ -149,18 +163,20 @@ public class GameHandler extends Thread {
     public void signOutPLayer(String user) {
         databaseConnection.signOutPlayer(user);
     }
+
     ////////////////////////////////////////////////////////////////////////////done by me AN
-    public void setPlaying(String user){
-    databaseConnection.setPlaying(user);
+    public void setPlaying(String user) {
+        databaseConnection.setPlaying(user);
     }
-    
-    public void setNotPlaying(String user){
-    databaseConnection.setNotPlaying(user);
+
+    public void setNotPlaying(String user) {
+        databaseConnection.setNotPlaying(user);
     }
-    
-    public void setScore(String user,int scr){
-    databaseConnection.setScore(user, scr);
+
+    public void setScore(String user, int scr) {
+        databaseConnection.setScore(user, scr);
     }
+
     ////////////////////////////////////////////////////////////////////////////
     public int parsing(String requestMessage) {
         if (requestMessage.equals(null)) {
@@ -179,15 +195,16 @@ public class GameHandler extends Thread {
             return 5; //request playing list
         } else if (parsedMsg[0].equals("DUWTP") || parsedMsg[0].equals("PREQ")) {
             return 6; //request playing and answer
-        } 
-        else if(parsedMsg[0].equals("PLN")){
-        return 7;
-        }else if(parsedMsg[0].equals("NPLN")){
-        return 8;
-        }else if(parsedMsg[0].equals("SCR")){
-        return 9;
-        }else {//7=PLN 8=NPLN 9=SCR
-            return 10; //sign out
+        } else if (parsedMsg[0].equals("PLN")) {
+            return 7;
+        } else if (parsedMsg[0].equals("NPLN")) {
+            return 8;
+        } else if (parsedMsg[0].equals("SCR")) {
+            return 9;
+        } else if (parsedMsg[0].equals("ISONLINE")) {
+            return 10;
+        } else {//7=PLN 8=NPLN 9=SCR
+            return 11; //sign out
         }
     }
 
@@ -196,8 +213,8 @@ public class GameHandler extends Thread {
     }
 
     public String getPlayersList() {
-        System.out.println(databaseConnection.getOnlinePlayersList()+"."+databaseConnection.getPlayingPlayersList());
-        return databaseConnection.getOnlinePlayersList()+"."+databaseConnection.getPlayingPlayersList();
+        System.out.println(databaseConnection.getOnlinePlayersList() + "." + databaseConnection.getPlayingPlayersList());
+        return databaseConnection.getOnlinePlayersList() + "." + databaseConnection.getPlayingPlayersList();
     }
 
     public void checkClientSocket() {

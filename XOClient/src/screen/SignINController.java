@@ -124,9 +124,11 @@ public class SignINController implements Initializable {
          
           FXMLLoader loader =new FXMLLoader();
           loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
+          //loader.setLocation(getClass().getResource("/xoClientView/OnlineRecordBoard.fxml"));
           Parent viewParent =loader.load();
           Scene viewscene =new Scene (viewParent);
-          NewGameController controller =loader.getController();
+          OnlineRecordBoardController controller =loader.getController();
+          //xoClientView.OnlineRecordBoardController controller =loader.getController();
           Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
           window.setScene(viewscene);
           window.show();

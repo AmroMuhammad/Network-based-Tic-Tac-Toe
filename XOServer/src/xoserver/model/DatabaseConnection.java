@@ -234,6 +234,26 @@ public class DatabaseConnection {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public boolean isOnline(String username){
+        //System.out.println("HI FROM ISONLINE DB");
+        boolean onlineStatus=false;
+    try {
+            pst = con.prepareStatement("select STATUS from AMR.users where username = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+            rs.next();
+                //System.out.println("STATUS:" +rs.getBoolean("status"));
+                onlineStatus=rs.getBoolean(1);
+            rs.close();
+            pst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    return onlineStatus;
+    }
     ////////////////////////////////////////////////////////////////////////////
     public String getOnlinePlayersList(){
             String players=null;

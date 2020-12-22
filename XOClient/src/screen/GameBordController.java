@@ -96,6 +96,7 @@ public class GameBordController implements Initializable {
     
      
       public void set_Game(String Message){
+          System.out.println("MSG: "+Message);
         new Thread(new Runnable() {
             public void run(){
             boolean flag;
