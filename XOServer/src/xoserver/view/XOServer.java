@@ -5,11 +5,16 @@
  */
 package xoserver.view;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -28,6 +33,17 @@ public class XOServer extends Application {
         stage.setResizable(false);  //ADDED NEW
         stage.centerOnScreen();     //ADDED NEW
         stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                System.out.println("Stage is closing");
+                try {
+                    ServerGUI.closingEverything();
+                } catch (IOException ex) {
+                    Logger.getLogger(XOServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                stage.close();
+            }
+        });
     }
 
     /**
