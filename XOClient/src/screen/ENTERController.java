@@ -145,7 +145,7 @@ public class ENTERController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();
-        
+
     }
 
     public void getPlayRequest() {
@@ -204,14 +204,20 @@ public class ENTERController implements Initializable {
     }
 
     public void parsing(String recievedMsg) {
+        if (recievedMsg == (null)) {
+            SignIN2Controller.returnToMainPage(playerName);
+            SignIN2Controller.whenServerOff();
+            System.out.println("here we are");
+        } else {
             parsedMsg = recievedMsg.split("\\#");
+        }
     }
 
     public boolean confirmationToPlay(String opp) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Playing Confirmation");
         alert.setHeaderText("Playing Confirmation");
-        alert.setContentText("Do you want to play with "+opp+" ?");
+        alert.setContentText("Do you want to play with " + opp + " ?");
         ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         Optional<ButtonType> result = alert.showAndWait();
@@ -223,8 +229,8 @@ public class ENTERController implements Initializable {
             return false;
         }
     }
-    
-        public void showBoardForOpponent(String opp, String mainPlayer) {
+
+    public void showBoardForOpponent(String opp, String mainPlayer) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/NetworkGameBoard.fxml"));
