@@ -218,7 +218,8 @@ public class SignIN2Controller implements Initializable {
                     window.setScene(viewscene);
                     window.show();
                 } catch (IOException ex) {
-                    Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
+                    Platform.exit();
+                    //Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

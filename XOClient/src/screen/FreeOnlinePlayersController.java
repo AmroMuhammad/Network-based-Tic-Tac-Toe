@@ -31,6 +31,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javax.swing.JPanel;
 
@@ -193,6 +194,14 @@ public class FreeOnlinePlayersController implements Initializable {
                             listViewOnline.setMouseTransparent(false);
                             listViewOnline.setFocusTraversable(true);
                             waitingIndicator.setVisible(false);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR, "The invitation is rejected from "+parsedOnlineList[3], ButtonType.OK);
+                                    alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                                    alert.show();
+                                }
+                            });
                             requestThread.stop();
                         }
                     }
@@ -243,7 +252,7 @@ public class FreeOnlinePlayersController implements Initializable {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (confirmationToPlay() == true) {
+                                    if (confirmationToPlay(oppName) == true) {
                                         System.out.println("acception sent");
                                         String sentMsg = new String("PREQ#accept#" + oppName + "#" + userName);
                                         SignIN2Controller.ps.println(sentMsg);
@@ -294,11 +303,11 @@ public class FreeOnlinePlayersController implements Initializable {
         }
     }
 
-    public boolean confirmationToPlay() {
+    public boolean confirmationToPlay(String opp) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Playing Confirmation");
         alert.setHeaderText("Playing Confirmation");
-        alert.setContentText("Do you want to play?");
+        alert.setContentText("Do you want to play with "+opp+" ?");
         ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         Optional<ButtonType> result = alert.showAndWait();
