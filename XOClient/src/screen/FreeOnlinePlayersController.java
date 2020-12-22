@@ -103,7 +103,14 @@ public class FreeOnlinePlayersController implements Initializable {
                     if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST") || s.equals("IST")) {
                         continue;
                     }
+                    listViewOnline.setMouseTransparent(false);
+                    listViewOnline.setFocusTraversable(true);
                     onlineList.add(s);
+                }
+                if(onlineList.isEmpty()){
+                    onlineList.add("No one is Currently Online");
+                    listViewOnline.setMouseTransparent(true);
+                    listViewOnline.setFocusTraversable(false);
                 }
                 listViewOnline.getItems().addAll(onlineList);
             }
@@ -120,7 +127,6 @@ public class FreeOnlinePlayersController implements Initializable {
                     if (s.equals(userName) || s.equals("PLIST") || s.equals("LIST") || s.equals("IST")) {
                         continue;
                     }
-                    
                     playingList.add(s);
                 }
                 if(playingList.get(0).equals("null")){
