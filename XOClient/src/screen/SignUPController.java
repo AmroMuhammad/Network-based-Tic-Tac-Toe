@@ -116,6 +116,7 @@ public class SignUPController implements Initializable {
                                         Scene viewscene = new Scene(viewParent);
                                         ENTERController controller = loader.getController();
                                         controller.nPlayerName(name_text.getText());
+                                        controller.nPlayerScore(0);
                                         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                         window.setScene(viewscene);
                                         window.show();

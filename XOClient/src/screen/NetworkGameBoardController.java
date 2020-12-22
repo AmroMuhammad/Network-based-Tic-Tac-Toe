@@ -312,7 +312,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 player1Symbol.setVisible(false);
                 player2Symbol.setVisible(false);
                 Btns.setVisible(false);
-                String path = "E:\\present.mp4";
+                String path = "build/classes/Style/video.mp4";
                 media = new Media(new File(path).toURI().toString());
                 // animateUsingScaleTransition(mediaView);
                 mediaPlayer = new MediaPlayer(media);

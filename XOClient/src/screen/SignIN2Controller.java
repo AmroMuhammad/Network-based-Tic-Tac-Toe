@@ -61,6 +61,13 @@ public class SignIN2Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+                sClient = new Socket(ip, 5008);
+                dis = new DataInputStream(sClient.getInputStream());
+                ps = new PrintStream(sClient.getOutputStream());
+            } catch (IOException ex) {
+                Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
         // TODO
 
     }
@@ -94,13 +101,6 @@ public class SignIN2Controller implements Initializable {
             alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
             alert.show();
         } else {
-            try {
-                sClient = new Socket(ip, 5008);
-                dis = new DataInputStream(sClient.getInputStream());
-                ps = new PrintStream(sClient.getOutputStream());
-            } catch (IOException ex) {
-                Logger.getLogger(signINBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
             String Data = "SIN#" + name + "#" + pass;
             System.out.println(Data);
             ps.println(Data);

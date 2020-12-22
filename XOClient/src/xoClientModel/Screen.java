@@ -33,6 +33,8 @@ public class Screen extends Application {
         stage.setWidth(710);
         stage.setHeight(550);
         stage.setResizable(false);
+        stage.setTitle("TIC TAC TOE");
+        stage.centerOnScreen();
         stage.show();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
