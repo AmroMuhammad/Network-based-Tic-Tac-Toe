@@ -175,14 +175,14 @@ public class DatabaseConnection {
     }
 
     public int getScore(String username) {
-        int score=0;
+        int score = 0;
         try {
             pst = con.prepareStatement("select score from AMR.users where username = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, username);
             rs = pst.executeQuery();
-            if(rs.next()){
-            score=rs.getInt(1);
+            if (rs.next()) {
+                score = rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,49 +195,51 @@ public class DatabaseConnection {
         }
         return score;
     }
+
     ////////////////////////////////////////////////////////////////////////////done by AN
-    public void setPlaying(String user){
-     try {
+    public void setPlaying(String user) {
+        try {
             pst = con.prepareStatement("update AMR.users set PLAYSTATUS=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pst.setBoolean(1, true);
             pst.setString(2, user);
             pst.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void setNotPlaying(String user){
-     try {
+
+    public void setNotPlaying(String user) {
+        try {
             pst = con.prepareStatement("update AMR.users set PLAYSTATUS=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pst.setBoolean(1, false);
             pst.setString(2, user);
             pst.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void setScore(String user,int scr){
-     try {
+
+    public void setScore(String user, int scr) {
+        try {
             pst = con.prepareStatement("update AMR.users set SCORE=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pst.setInt(1, scr);
             pst.setString(2, user);
             pst.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     ////////////////////////////////////////////////////////////////////////////
-    public String getOnlinePlayersList(){
-            String players=null;
-            playerList.clear();
+    public String getOnlinePlayersList() {
+        String players = null;
+        playerList.clear();
         try {
             pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = false", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);    //solved rollback exception and delay time
@@ -246,18 +248,19 @@ public class DatabaseConnection {
             while (rs.next()) {
                 playerList.add(rs.getString(1));
             }
-            
-            for(String s : playerList){
-                if(players == null)
-                    players = "PLIST#"+s;
-                else
-                    players = players +("#"+s);
+
+            for (String s : playerList) {
+                if (players == null) {
+                    players = "PLIST#" + s;
+                } else {
+                    players = players + ("#" + s);
+                }
 
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         System.out.println(players);
         try {
             pst.close();
@@ -267,10 +270,10 @@ public class DatabaseConnection {
         }
         return players;
     }
-    
-    public String getPlayingPlayersList(){
-            String players=null;
-            playerList.clear();
+
+    public String getPlayingPlayersList() {
+        String players = null;
+        playerList.clear();
         try {
             pst = con.prepareStatement("select USERNAME from AMR.users where status = true and playstatus = true", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);    //solved rollback exception and delay time
@@ -279,18 +282,19 @@ public class DatabaseConnection {
             while (rs.next()) {
                 playerList.add(rs.getString(1));
             }
-            
-            for(String s : playerList){
-                if(players == null)
-                    players = "PLIST#"+s;
-                else
-                    players = players +("#"+s);
+
+            for (String s : playerList) {
+                if (players == null) {
+                    players = "PLIST#" + s;
+                } else {
+                    players = players + ("#" + s);
+                }
 
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         System.out.println(players);
         try {
             pst.close();
@@ -300,14 +304,27 @@ public class DatabaseConnection {
         }
         return players;
     }
-    
-        public void signOutPlayer(String user) {
+
+    public void signOutPlayer(String user) {
         try {
             pst = con.prepareStatement("update AMR.users set STATUS=?,PLAYSTATUS=? where username=?", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             pst.setBoolean(1, false);
             pst.setBoolean(2, false);
             pst.setString(3, user);
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setOpeningServer() {
+        try {
+            pst = con.prepareStatement("update AMR.users set STATUS=?,PLAYSTATUS=?", ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            pst.setBoolean(1, false);
+            pst.setBoolean(2, false);
             pst.executeUpdate();
             pst.close();
         } catch (SQLException ex) {

@@ -36,8 +36,10 @@ public class ServerGUI extends AnchorPane {
     private DatabaseConnection databaseConnection;
     ObservableList<PieChart.Data> pieChartData;
     public static ScheduledExecutorService scheduledExecutorService;
+    static boolean isServerOn;
 
     public ServerGUI() {
+        isServerOn=false;
         btnOn = new RadioButton();
         btnOff = new RadioButton();
         text = new Text();
@@ -121,6 +123,8 @@ public class ServerGUI extends AnchorPane {
                 scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
                 refreshPieChart();
                 usersChart.setVisible(true);
+                databaseConnection.setOpeningServer();
+                isServerOn=true;
             }
         });
 
@@ -175,10 +179,13 @@ public class ServerGUI extends AnchorPane {
     }
 
     public static void closingEverything() throws IOException {
-        scheduledExecutorService.shutdown();
+        if(isServerOn){
+            scheduledExecutorService.shutdown();
+        }
         MainServer.getInstance().stop();
         MainServer.mainSocket.close();          //stops main server when server is down (so when client enters server he cant send)
         MainServer.getInstance().stopClients(); //stops sockets threads at clients side
         MainServer.deleteInstance();
+        isServerOn=false;
     }
 }
