@@ -30,9 +30,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 /**
@@ -52,7 +55,6 @@ public class GameBordController implements Initializable {
     private Label player1Symbol;
     @FXML
     private Label player2Symbol;
-
     private String[] Steps;
     private String[] BeginSymbol;
     private String[] playerinfo;
@@ -87,11 +89,9 @@ public class GameBordController implements Initializable {
     public void GameRecord(String line) {
         Data = line;
         set_Game(Data);
-        System.out.println("done");
     }
 
     public void set_Game(String Message) {
-        System.out.println("MSG: " + Message);
         new Thread(new Runnable() {
             public void run() {
                 boolean flag;
@@ -283,6 +283,32 @@ public class GameBordController implements Initializable {
 
     }
 
+    public void set_color() {
+        if (Btn1.getText().equals(Btn2.getText()) && Btn2.getText().equals(Btn3.getText()) && !Btn1.getText().isEmpty()) {
+            color(Btn1, Btn2, Btn3);
+        } else if (Btn4.getText().equals(Btn5.getText()) && Btn5.getText().equals(Btn6.getText()) && !Btn4.getText().isEmpty()) {
+            color(Btn4, Btn5, Btn6);
+        } else if (Btn7.getText().equals(Btn8.getText()) && Btn8.getText().equals(Btn9.getText()) && !Btn7.getText().isEmpty()) {
+            color(Btn7, Btn8, Btn9);
+        } else if (Btn1.getText().equals(Btn4.getText()) && Btn4.getText().equals(Btn7.getText()) && !Btn1.getText().isEmpty()) {
+            color(Btn1, Btn4, Btn7);
+        } else if (Btn2.getText().equals(Btn5.getText()) && Btn5.getText().equals(Btn8.getText()) && !Btn2.getText().isEmpty()) {
+            color(Btn2, Btn5, Btn8);
+        } else if (Btn3.getText().equals(Btn6.getText()) && Btn6.getText().equals(Btn9.getText()) && !Btn3.getText().isEmpty()) {
+            color(Btn3, Btn6, Btn9);
+        } else if (Btn1.getText().equals(Btn5.getText()) && Btn5.getText().equals(Btn9.getText()) && !Btn1.getText().isEmpty()) {
+            color(Btn1, Btn5, Btn9);
+        } else if (Btn3.getText().equals(Btn5.getText()) && Btn5.getText().equals(Btn7.getText()) && !Btn3.getText().isEmpty()) {
+            color(Btn3, Btn5, Btn7);
+        }
+    }
+
+    public void color(Button b1, Button b2, Button b3) {
+        b1.setStyle("-fx-background-color: red");
+        b2.setStyle("-fx-background-color: red");
+        b3.setStyle("-fx-background-color: red");
+    }
+
     @FXML
     private void Back_btn(ActionEvent event) {
         try {
@@ -299,4 +325,5 @@ public class GameBordController implements Initializable {
             Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }

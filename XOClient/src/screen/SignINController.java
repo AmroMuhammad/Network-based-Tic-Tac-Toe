@@ -35,6 +35,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -56,7 +58,7 @@ public class SignINController implements Initializable {
     @FXML
     private Button gust_click;
     @FXML
-    private Button network_btn;
+    private Button network_btn ,guest_btn;
     public static String serverIP;
 
     @Override
@@ -65,7 +67,21 @@ public class SignINController implements Initializable {
             loadSplashScreen();
         }
 
-    }
+       Image img = new Image("Style/network.PNG");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(130);
+        view.setFitWidth(130);
+        network_btn.setGraphic(view);
+       
+ 
+       Image img2 = new Image("Style/guest.jpg");
+       ImageView view2 = new ImageView(img2);
+       view2.setFitHeight(130);
+       view2.setFitWidth(130);
+       guest_btn.setGraphic(view2);
+       
+ 
+    }    
 
     private void loadSplashScreen() {
 
@@ -127,11 +143,9 @@ public class SignINController implements Initializable {
             dialog.setContentText("Please enter the server IP address :");
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
-                System.out.println("the ip " + result.get());
             }
             ip = result.get();
         } catch (NoSuchElementException e) {
-            System.out.println("exist");
             ex_flag = false;
         }
 
@@ -160,8 +174,6 @@ public class SignINController implements Initializable {
                 alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                 alert.show();
             } catch (IOException ex) {
-
-                System.out.println("ooooops");
             }
 
         } else if (ex_flag) {

@@ -13,10 +13,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 /**
+ * FXML Controller class
  *
  * @author Amr
  */
@@ -31,16 +31,15 @@ public class FXMLDocumentController implements Initializable {
     private Text txtServerStatus;
     @FXML
     private PieChart usersChart;
-    @FXML
-    private TextField txtTest1;
-    @FXML
-    private TextField txtTest2;
+    private Text txtServerStatus1;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
     }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

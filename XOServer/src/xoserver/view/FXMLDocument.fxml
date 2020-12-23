@@ -2,12 +2,11 @@
 
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="498.0" prefWidth="680.0" style="-fx-background-color: #9BD8BB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xoserver.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="498.0" prefWidth="680.0" styleClass="bodybg3" stylesheets="@../../Style/BackgroundServer.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xoserver.FXMLDocumentController">
    <children>
       <RadioButton fx:id="btnOn" layoutX="511.0" layoutY="266.0" mnemonicParsing="false" text="ON" textFill="#0a7c26" />
       <RadioButton fx:id="btnOff" layoutX="511.0" layoutY="295.0" mnemonicParsing="false" text="OFF" textFill="RED" />
@@ -21,8 +20,11 @@
             <Font name="Cambria Math" size="20.0" />
          </font>
       </Text>
-      <PieChart fx:id="usersChart" layoutX="74.0" layoutY="178.0" legendSide="LEFT" prefHeight="234.0" prefWidth="304.0" title="Users Chart" titleSide="BOTTOM" />
-      <TextField fx:id="txtTest1" layoutX="110.0" layoutY="14.0" />
-      <TextField fx:id="txtTest2" layoutX="290.0" layoutY="14.0" />
+      <PieChart fx:id="usersChart" layoutX="74.0" layoutY="178.0" legendSide="LEFT" prefHeight="234.0" prefWidth="304.0" titleSide="BOTTOM" />
+      <Text fill="WHITE" layoutX="110.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Chart" textAlignment="CENTER" wrappingWidth="220.13671875">
+         <font>
+            <Font name="Cambria Math" size="20.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

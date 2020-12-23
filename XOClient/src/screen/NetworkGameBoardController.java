@@ -15,6 +15,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -35,6 +38,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -62,6 +66,9 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     private Pane pane2;
     int player1Score = -1;
     int player2Score = -1;
+    @FXML
+    private ImageView label_img;
+    int s;
     String name;
     String opponent, mainPlayer;
     public static Thread th;
@@ -313,10 +320,8 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 Done_Btn.setVisible(true);
                 winner_loser_txt.setVisible(true);
                 mediaView.setVisible(true);
-                player1.setVisible(false);
-                player2.setVisible(false);
-                player1Symbol.setVisible(false);
-                player2Symbol.setVisible(false);
+                label_img.setVisible(true);
+                animateUsingScaleTransition(label_img);
                 Btns.setVisible(false);
                 String path = "build/classes/Style/video.mp4";
                 media = new Media(new File(path).toURI().toString());
@@ -454,9 +459,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
         if (recievedMsg == (null)) {
             SignIN2Controller.returnToMainPage(Btns);
-            System.out.println("network parsing");
             SignIN2Controller.whenServerOff();
-            System.out.println("here we are");
         } else {
             parsedMsg = recievedMsg.split("\\#");
         }
@@ -471,26 +474,34 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         ButtonType buttonTypeCancel = new ButtonType("Reject", ButtonBar.ButtonData.CANCEL_CLOSE);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            System.out.println("accept record");
             if (secPlayer) {
                 recFlag = true;
-                System.out.println("SECOND PLAYER ACCEPTED: " + name);
-
             } else {
                 recFlag = true;
-                System.out.println("MAIN PLAYER ACCEPTED: " + name);
             }
         } else {
-            System.out.println("refused");
             if (secPlayer) {
                 recFlag = false;
-                System.out.println("SECOND PLAYER REJECTED: " + name);
             } else {
                 recFlag = false;
-                System.out.println("MAIN PLAYER REJECTED: " + name);
             }
 
         }
     }
 
+     private void animateUsingScaleTransition(ImageView heart) {
+        ScaleTransition scaleTransition = new ScaleTransition(
+                Duration.seconds(1), heart
+        );
+        scaleTransition.setFromX(1);
+        scaleTransition.setFromY(1);
+        scaleTransition.setFromZ(1);
+        scaleTransition.setToX(1.1);
+        scaleTransition.setToY(1.1);
+        scaleTransition.setToZ(1.1);
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.setCycleCount(Animation.INDEFINITE);
+        scaleTransition.play();
+    }
 }
+

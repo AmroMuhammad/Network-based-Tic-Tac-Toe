@@ -24,6 +24,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import xoClientView.NetworkRecordController;
 
@@ -48,7 +50,8 @@ public class ENTERController implements Initializable {
     String[] parsedMsg;
     public static int playerScore;
     public static boolean isOnline = false;
-
+    private Button logOut_txt;
+   
     /**
      * Initializes the controller class.
      */
@@ -67,6 +70,24 @@ public class ENTERController implements Initializable {
         isOnline = true;
         isReplyThreadEnterOn = false;
         getPlayRequest();
+        
+        Image img = new Image("Style/NEW.PNG");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(45);
+        view.setFitWidth(210);
+        newGame_txt.setGraphic(view);
+        
+       Image img2 = new Image("Style/recorded.png");
+       ImageView view2 = new ImageView(img2);
+       view2.setFitHeight(45);
+       view2.setFitWidth(215);
+       record_txt.setGraphic(view2);
+       
+       Image img3 = new Image("Style/log.png");
+       ImageView view3= new ImageView(img3);
+       view3.setFitHeight(45);
+       view3.setFitWidth(222);
+       logOut_txt.setGraphic(view3);
     }
 
     @FXML
@@ -124,19 +145,6 @@ public class ENTERController implements Initializable {
             SignIN2Controller.whenServerOff();
             SignIN2Controller.returnToMainPage(newGame_txt);
         }
-    }
-
-    @FXML
-    private void back_click(ActionEvent event) throws IOException {
-        replyThreadEnter.stop();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/xoClientView/signIN2.fxml"));
-        Parent viewParent = loader.load();
-        Scene viewscene = new Scene(viewParent);
-        SignIN2Controller controller = loader.getController();
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(viewscene);
-        window.show();
     }
 
     public void getPlayRequest() {

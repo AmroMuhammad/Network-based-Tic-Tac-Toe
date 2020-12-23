@@ -5,7 +5,9 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +36,9 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.lang.ClassLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -58,6 +63,8 @@ public class SingleGameBordController implements Initializable {
     @FXML
     private GridPane Btns;
     @FXML
+    private ImageView label_img;
+    @FXML
     private Pane pane2;
     String flag;
     int turnFlag = 0;//0 me / 1 pc
@@ -67,6 +74,8 @@ public class SingleGameBordController implements Initializable {
     int cpuMove = 0;
     int player = -1;
     int pc = -1;
+    String path;
+    boolean yes = true;
     //0 first player
     //1 computer
     //2 empty
@@ -87,8 +96,13 @@ public class SingleGameBordController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        // TODO
+        Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
+	dlg.setHeaderText("Record Game");
+	dlg.setContentText("Do you want record this game ?");
+	dlg.getButtonTypes().clear();
+	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+	dlg.showAndWait();
+	yes = dlg.getResult() == ButtonType.YES;
     }
 
     public void setText(String text1, String text2, String text3, String text4) {
@@ -174,6 +188,12 @@ public class SingleGameBordController implements Initializable {
     }
 
     public void endGame() {
+        String Data ="" ;
+        for (int i = 0; i < gameMoves.size();i++ )
+        {
+           Data += gameMoves.get(i) + "#";
+           
+        }
 
         Btn1.setDisable(true);
         Btn2.setDisable(true);
@@ -189,8 +209,12 @@ public class SingleGameBordController implements Initializable {
                 finalResult = "Player X is the winner \n";
                 if (player1Symbol.getText().equals("X")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
+                    Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + "X@"+player2.getText()+"@O@";
+                    path = "build/classes/Style/video.mp4";//winner
                 } else {
-                    winner_loser_txt.setText(player2.getText() + " is winner");
+                    winner_loser_txt.setText(player1.getText() + " is loser");
+                     Data += player1Symbol.getText()+"&"+ player2.getText() + "@" + "X@"+player1.getText()+"@O@";
+                    path = "build/classes/Style/video.mp4";//loser
                 }
 
                 break;
@@ -199,34 +223,37 @@ public class SingleGameBordController implements Initializable {
                 finalResult = "Player O is the winner \n";
                 if (player1Symbol.getText().equals("O")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
+                     Data +=player1Symbol.getText()+"&"+  player1.getText()+ "@" + "O@"+player2.getText()+"@X@";
+                    path = "build/classes/Style/video.mp4";//winner
                 } else {
-                    winner_loser_txt.setText(player2.getText() + " is winner");
+                    winner_loser_txt.setText(player1.getText() + " is loser");
+                    Data +=player1Symbol.getText()+"&"+ player2.getText() + "@" + "O@"+player1.getText()+"@X@";
+                    path = "build/classes/Style/video.mp4";//loser
                 }
                 break;
             }
             case -1: {
                 finalResult = "That's a Draw \n";
                 winner_loser_txt.setText("That's a Draw ");
+                Data += player1Symbol.getText()+"&"+ player1.getText() + "@"+ player1Symbol.getText() +"@"+player2.getText()+"@"+ player2Symbol.getText()+"@";
+                path = "build/classes/Style/video.mp4";//draw
                 break;
             }
         }
-
-        pane2.setVisible(true);
-        Done_Btn.setVisible(true);
-        winner_loser_txt.setVisible(true);
-        mediaView.setVisible(true);
-        player1.setVisible(false);
-        player2.setVisible(false);
-        player1Symbol.setVisible(false);
-        player2Symbol.setVisible(false);
-        Btns.setVisible(false);
-        String path = "build/classes/Style/video.mp4";
-        media = new Media(new File(path).toURI().toString());
-        // animateUsingScaleTransition(mediaView);
-        mediaPlayer = new MediaPlayer(media);
-        mediaView.setMediaPlayer(mediaPlayer);
-        mediaPlayer.setAutoPlay(true);
-
+        if(yes){
+           BufferedWriter out ;
+           try {
+              out = new BufferedWriter(
+              new FileWriter("singleGameRecord.txt", true));
+              out.write(Data + "!");
+              out.close();  
+            } catch (IOException ex) {
+                  Logger.getLogger(SingleGameBordController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            }
+        set_color();
+        show_video(path);
     }
 
     public void setTurn() {
@@ -311,14 +338,73 @@ public class SingleGameBordController implements Initializable {
         }
         return btn;
     }
-
+     public void set_color(){
+          if(Btn1.getText().equals(Btn2.getText())&&Btn2.getText().equals(Btn3.getText()) && !Btn1.getText().isEmpty())
+          {
+            color(Btn1,Btn2,Btn3);  
+          }
+          else if(Btn4.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn6.getText())&& !Btn4.getText().isEmpty())
+          {
+              color(Btn4,Btn5,Btn6);
+          }
+          else if(Btn7.getText().equals(Btn8.getText())&&Btn8.getText().equals(Btn9.getText())&& !Btn7.getText().isEmpty())
+          {
+              color(Btn7,Btn8,Btn9);
+          }
+          else if(Btn1.getText().equals(Btn4.getText())&&Btn4.getText().equals(Btn7.getText())&& !Btn1.getText().isEmpty())
+          {
+              color(Btn1,Btn4,Btn7);
+          }
+          else if(Btn2.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn8.getText())&& !Btn2.getText().isEmpty())
+          {
+              color(Btn2,Btn5,Btn8);
+          }
+          else if(Btn3.getText().equals(Btn6.getText())&&Btn6.getText().equals(Btn9.getText())&& !Btn3.getText().isEmpty())
+          {
+              color(Btn3,Btn6,Btn9);
+          }
+           else if(Btn1.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn9.getText())&& !Btn1.getText().isEmpty())
+          {
+              color(Btn1,Btn5,Btn9);
+          }
+           else if(Btn3.getText().equals(Btn5.getText())&&Btn5.getText().equals(Btn7.getText())&& !Btn3.getText().isEmpty())
+          {
+              color(Btn3,Btn5,Btn7);
+          }
+      }
     public void color(Button b1, Button b2, Button b3) {
         b1.setStyle("-fx-background-color: red");
         b2.setStyle("-fx-background-color: red");
         b3.setStyle("-fx-background-color: red");
     }
-
-    private void animateUsingScaleTransition(MediaView heart) {
+    public void show_video(String path)
+    {
+        new Thread(new Runnable() {
+            public void run(){
+                try {
+                  Thread.sleep(1000);
+                }catch (InterruptedException ex) {
+                Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        pane2.setVisible(true);
+                        Done_Btn.setVisible(true);
+                        label_img.setVisible(true);
+                        animateUsingScaleTransition(label_img);
+                        winner_loser_txt.setVisible(true);
+                        mediaView.setVisible(true);
+                        Btns.setVisible(false);   
+                        media = new Media(new File(path).toURI().toString());  
+                        mediaPlayer = new MediaPlayer(media);
+                        mediaView.setMediaPlayer(mediaPlayer);
+                        mediaPlayer.setAutoPlay(true);
+                    }
+                });
+            }
+        }).start(); 
+    }
+    private void animateUsingScaleTransition(ImageView heart) {
         ScaleTransition scaleTransition = new ScaleTransition(
                 Duration.seconds(1), heart
         );

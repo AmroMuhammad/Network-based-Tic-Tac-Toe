@@ -1,5 +1,10 @@
 package xoserver.view;
 
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.RadioButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -32,6 +37,7 @@ public class ServerGUI extends AnchorPane {
     protected final Text text;
     protected final Text txtServerStatus;
     protected final PieChart usersChart;
+    protected final Text text0;
     protected final ToggleGroup group;
     private DatabaseConnection databaseConnection;
     ObservableList<PieChart.Data> pieChartData;
@@ -39,13 +45,15 @@ public class ServerGUI extends AnchorPane {
     static boolean isServerOn;
 
     public ServerGUI() {
-        isServerOn = false;
+isServerOn = false;
         btnOn = new RadioButton();
         btnOff = new RadioButton();
         text = new Text();
         txtServerStatus = new Text();
+        text0 = new Text();
         group = new ToggleGroup();
 
+        
         databaseConnection = DatabaseConnection.getDatabaseInstance();
         databaseConnection.openConnection();  //initialize database with server
         pieChartData = FXCollections.observableArrayList(
@@ -55,11 +63,13 @@ public class ServerGUI extends AnchorPane {
         usersChart = new PieChart(pieChartData);
         usersChart.setVisible(false);
         usersChart.setAnimated(false);
-
+        
+        
         setId("AnchorPane");
         setPrefHeight(498.0);
         setPrefWidth(680.0);
-        setStyle("-fx-background-color: #9BD8BB;");
+        getStyleClass().add("bodybg3");
+        getStylesheets().add("/xoserver/view/../../Style/BackgroundServer.css");
 
         btnOn.setLayoutX(511.0);
         btnOn.setLayoutY(266.0);
@@ -99,23 +109,34 @@ public class ServerGUI extends AnchorPane {
         usersChart.setLegendSide(javafx.geometry.Side.LEFT);
         usersChart.setPrefHeight(234.0);
         usersChart.setPrefWidth(304.0);
-        usersChart.setTitle("Users Chart");
         usersChart.setTitleSide(javafx.geometry.Side.BOTTOM);
+
+        text0.setFill(javafx.scene.paint.Color.WHITE);
+        text0.setLayoutX(110.0);
+        text0.setLayoutY(428.0);
+        text0.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        text0.setStrokeWidth(0.0);
+        text0.setText("Users Chart");
+        text0.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        text0.setWrappingWidth(220.13671875);
+        text0.setFont(new Font("Cambria Math", 20.0));
 
         getChildren().add(btnOn);
         getChildren().add(btnOff);
         getChildren().add(text);
         getChildren().add(txtServerStatus);
         getChildren().add(usersChart);
-
+        getChildren().add(text0);
+        
+        
         //added parts
         btnOn.setToggleGroup(group);
         btnOff.setToggleGroup(group);
         btnOff.setSelected(true);
-
+        
         togglingButtons();
-
-        btnOn.setOnAction(new EventHandler<ActionEvent>() {
+        
+                btnOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 MainServer.getInstance().start();
@@ -138,9 +159,8 @@ public class ServerGUI extends AnchorPane {
                 }
             }
         });
-
     }
-
+    
     public void togglingButtons() {
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override

@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
@@ -53,14 +54,14 @@ public class SignUPController implements Initializable {
     @FXML
     private PasswordField passconf_text;
     @FXML
-    private TextField name_txt_msg;
+    private Label name_txt_msg;
     @FXML
-    private TextField pass_txt_msg;
+    private Label pass_txt_msg;
     @FXML
-    private TextField passConf_txt_msg;
+    private Label passConf_txt_msg;
     String ip;
     Thread th;
-
+   
     /**
      * Initializes the controller class.
      */
@@ -87,7 +88,6 @@ public class SignUPController implements Initializable {
             String name = name_text.getText();
             String pass = pass_text.getText();
             String str = "REG#" + name + "#" + pass;
-            System.out.println(str);
             SignIN2Controller.ps.println(str);
             SignIN2Controller.ps.flush();
 
@@ -95,7 +95,6 @@ public class SignUPController implements Initializable {
                 public void run() {
                     try {
                         String msg = SignIN2Controller.dis.readLine();
-                        System.out.println(" my massege is ....." + msg);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -127,7 +126,6 @@ public class SignUPController implements Initializable {
                     } catch (IOException ex) {
                         SignIN2Controller.whenServerOff();
                         SignIN2Controller.returnToMainPage(name_text);
-                        System.out.println("sign up anony thread");
                     }
                 }
             });
@@ -136,18 +134,21 @@ public class SignUPController implements Initializable {
 
         if (!fn) {
             name_txt_msg.setText("Invalid Name");
+            name_text.clear();
         } else {
-            name_txt_msg.clear();
+            name_txt_msg.setText("");
         }
         if (!fp) {
             pass_txt_msg.setText("Invalid password");
+            pass_text.clear();
         } else {
-            pass_txt_msg.clear();
+            pass_txt_msg.setText("");
         }
         if (fpc) {
-            passConf_txt_msg.setText("confirmed passowrd");
+            passConf_txt_msg.setText("Confirmed passowrd");
         } else {
             passConf_txt_msg.setText("Not confirmed passowrd");
+            passconf_text.clear();
         }
 
     }
@@ -168,7 +169,6 @@ public class SignUPController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     public static boolean isValidUsername(String name) {

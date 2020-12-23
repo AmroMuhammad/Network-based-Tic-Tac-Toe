@@ -4,16 +4,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #9BD8BA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.SignINController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" styleClass="bodybg3" stylesheets="@../Style/GameStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.SignINController">
    <children>
-      <AnchorPane layoutX="40.0" layoutY="40.0" prefHeight="421.0" prefWidth="621.0">
+      <AnchorPane layoutX="50.0" layoutY="50.0" prefHeight="421.0" prefWidth="621.0">
          <children>
-            <Button fx:id="gust_click" layoutX="106.0" layoutY="144.0" mnemonicParsing="false" onAction="#guest_click" prefHeight="134.0" prefWidth="143.0" style="-fx-background-color: #3FAC76;" text="Guest">
+            <Button fx:id="guest_btn" layoutX="106.0" layoutY="144.0" mnemonicParsing="false" onAction="#guest_click" prefHeight="134.0" prefWidth="143.0" style="-fx-background-color: #E5FCF6;">
                <font>
                   <Font name="Cambria Math" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="network_btn" layoutX="372.0" layoutY="144.0" mnemonicParsing="false" onAction="#network_click" prefHeight="134.0" prefWidth="143.0" style="-fx-background-color: #3FAC76;" text="Network">
+            <Button fx:id="network_btn" layoutX="372.0" layoutY="144.0" mnemonicParsing="false" onAction="#network_click" prefHeight="134.0" prefWidth="143.0" style="-fx-background-color: #E5FCF6;">
                <font>
                   <Font name="Cambria Math" size="19.0" />
                </font>
