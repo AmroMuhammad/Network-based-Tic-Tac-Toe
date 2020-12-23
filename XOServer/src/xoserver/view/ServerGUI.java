@@ -1,5 +1,10 @@
 package xoserver.view;
 
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.RadioButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -25,13 +30,14 @@ import xoserver.model.DatabaseConnection;
 import xoserver.model.GameHandler;
 import xoserver.model.MainServer;
 
-public class ServerGUI extends AnchorPane{
+public class ServerGUI extends AnchorPane {
 
     protected final RadioButton btnOn;
     protected final RadioButton btnOff;
     protected final Text text;
     protected final Text txtServerStatus;
     protected final PieChart usersChart;
+    protected final Text txtServerStatus1;
     protected final ToggleGroup group;
     private DatabaseConnection databaseConnection;
     private MainServer gameMain;
@@ -39,30 +45,33 @@ public class ServerGUI extends AnchorPane{
     private ScheduledExecutorService scheduledExecutorService;
 
     public ServerGUI() {
+
         btnOn = new RadioButton();
         btnOff = new RadioButton();
         text = new Text();
         txtServerStatus = new Text();
+        txtServerStatus1 = new Text();
         group = new ToggleGroup();
-        
+
         //added part
         databaseConnection = DatabaseConnection.getDatabaseInstance();
         databaseConnection.openConnection();  //initialize database with server
-        pieChartData =FXCollections.observableArrayList(
-        new PieChart.Data("Offline",databaseConnection.numOfflinePlayers()),
-        new PieChart.Data("Online",databaseConnection.numOnlinePlayers())     //initialize pie chart 
+        pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Offline", databaseConnection.numOfflinePlayers()),
+                new PieChart.Data("Online", databaseConnection.numOnlinePlayers()) //initialize pie chart 
         );
         usersChart = new PieChart(pieChartData);
         usersChart.setVisible(false);
         usersChart.setAnimated(false);
-                
+
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         refreshPieChart();
 
         setId("AnchorPane");
         setPrefHeight(498.0);
         setPrefWidth(680.0);
-        setStyle("-fx-background-color: #9BD8BB;");
+        getStyleClass().add("bodybg3");
+        getStylesheets().add("/Style/BackgroundServer.css");
 
         btnOn.setLayoutX(511.0);
         btnOn.setLayoutY(266.0);
@@ -102,24 +111,31 @@ public class ServerGUI extends AnchorPane{
         usersChart.setLegendSide(javafx.geometry.Side.LEFT);
         usersChart.setPrefHeight(234.0);
         usersChart.setPrefWidth(304.0);
-        usersChart.setTitle("Users Chart");
         usersChart.setTitleSide(javafx.geometry.Side.BOTTOM);
+
+        txtServerStatus1.setFill(javafx.scene.paint.Color.WHITE);
+        txtServerStatus1.setLayoutX(110.0);
+        txtServerStatus1.setLayoutY(428.0);
+        txtServerStatus1.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        txtServerStatus1.setStrokeWidth(0.0);
+        txtServerStatus1.setText("Users Chart");
+        txtServerStatus1.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        txtServerStatus1.setWrappingWidth(220.13671875);
+        txtServerStatus1.setFont(new Font("Cambria Math", 20.0));
 
         getChildren().add(btnOn);
         getChildren().add(btnOff);
         getChildren().add(text);
         getChildren().add(txtServerStatus);
         getChildren().add(usersChart);
+        getChildren().add(txtServerStatus1);
 
         //added parts
-        
         btnOn.setToggleGroup(group);
         btnOff.setToggleGroup(group);
         btnOff.setSelected(true);
-        
-        
+
         togglingButtons();
-        
 
         btnOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -135,7 +151,7 @@ public class ServerGUI extends AnchorPane{
             public void handle(ActionEvent event) {
                 gameMain.stop();  //stops main server when server is down (so when client enters server he cant send)
                 gameMain.stopClients();  //stops sockets threads at clients side
-                usersChart.setVisible(false); 
+                usersChart.setVisible(false);
                 try {
                     gameMain.mainSocket.close();
                 } catch (IOException ex) {
@@ -143,7 +159,7 @@ public class ServerGUI extends AnchorPane{
                 }
             }
         });
-   
+
     }
 
     public void togglingButtons() {
@@ -161,25 +177,25 @@ public class ServerGUI extends AnchorPane{
                 }
             }
         });
-        
-        
-    }
-  
-    public void refreshPieChart(){
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-             @Override
-             public void run() {
-                 // Update the chart
 
-                 Platform.runLater(new Runnable() {
-                     @Override
-                     public void run() {
-                         // put random number with current time
-                         pieChartData.set(0,new PieChart.Data("Offline",MainServer.offlinePlayers));
-                         pieChartData.set(1,new PieChart.Data("Online",MainServer.onlinePlayers));
-                     }
-                 });
-             }
-         }, 0, 1, TimeUnit.SECONDS);
     }
+
+    public void refreshPieChart() {
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                // Update the chart
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        // put random number with current time
+                        pieChartData.set(0, new PieChart.Data("Offline", MainServer.offlinePlayers));
+                        pieChartData.set(1, new PieChart.Data("Online", MainServer.onlinePlayers));
+                    }
+                });
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+    }
+
 }
