@@ -20,16 +20,12 @@ public class MainServer extends Thread {
 
     public static ServerSocket mainSocket;
     private DatabaseConnection dbConnection;
-    public static int onlinePlayers;
-    public static int offlinePlayers;
     private static MainServer mainServerObject;
 
     private MainServer() {
         try {
             mainSocket = new ServerSocket(5008);
             dbConnection = DatabaseConnection.getDatabaseInstance();
-            onlinePlayers = dbConnection.numOnlinePlayers();
-            offlinePlayers = dbConnection.numOfflinePlayers();
         } catch (IOException ex) {
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
         }

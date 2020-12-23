@@ -57,7 +57,6 @@ public class GameHandler extends Thread {
                     if (!isUserExists(parsedMsg[1])) {
                         addUserToDatabase(parsedMsg[1], parsedMsg[2]);
                         System.out.println("done added");
-                        ++MainServer.onlinePlayers;
                         signInPlayer(parsedMsg[1]);
                         ps.println("Register Confirmed");
                     } else {
@@ -67,23 +66,23 @@ public class GameHandler extends Thread {
                 } else if (parsing(msg) == 2) {
                     if (isUserExists(parsedMsg[1])) {
                         if (isPasswordCorrect(parsedMsg[1], parsedMsg[2])) {
-                            signInPlayer(parsedMsg[1]);
-                            System.out.println("username correct and password is correct"); //send true to client
-                            ++MainServer.onlinePlayers;
-                            --MainServer.offlinePlayers;
-                            ps.println("SignIN Confirmed#" + getScore(parsedMsg[1]));
+                            if (isOnline(parsedMsg[1])) {
+                                ps.println("SignIN not Confirmed#User is online");
+                            } else {
+                                signInPlayer(parsedMsg[1]);
+                                System.out.println("username correct and password is correct"); //send true to client
+                                ps.println("SignIN Confirmed#" + getScore(parsedMsg[1]));
+                            }
                         } else {
                             System.out.println("username correct and password is not correct");
-                            ps.println("SignIN not Confirmed");        //send false to client to reset text fields as password is false
+                            ps.println("SignIN not Confirmed#not online");        //send false to client to reset text fields as password is false
                         }
                     } else {
                         System.out.println("username is not correct");
-                        ps.println("SignIN not Confirmed");      //send false to client to reset text fields as username doesn't exists
+                        ps.println("SignIN not Confirmed#not online");      //send false to client to reset text fields as username doesn't exists
                     }
                 } else if (parsing(msg) == 3) {
                     signOutPLayer(parsedMsg[1]);
-                    ++MainServer.offlinePlayers;
-                    --MainServer.onlinePlayers;
                 } else if (parsing(msg) == 4) {
                     sendMessageToAll(msg);
                 } else if (parsing(msg) == 5) {
@@ -106,7 +105,7 @@ public class GameHandler extends Thread {
                     if (isOnline(parsedMsg[1])) {
                         sendMessageToAll("ONLINE#" + parsedMsg[1]);
                     } else {
-                       sendMessageToAll("OFF#" + parsedMsg[1]); 
+                        sendMessageToAll("OFF#" + parsedMsg[1]);
                     }
 
                 }

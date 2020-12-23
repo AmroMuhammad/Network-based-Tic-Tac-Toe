@@ -51,6 +51,7 @@ public class SignIN2Controller implements Initializable {
     String ip;
     Thread signInThread;
     private int score = 0;
+    String[] parsedMsg;
 
     /**
      * Initializes the controller class.
@@ -116,12 +117,17 @@ public class SignIN2Controller implements Initializable {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                String parsedMsg = SignInParser(msg);
-                                if (!parsedMsg.equals("SignIN Confirmed")) {
-
-                                    Alert alert = new Alert(Alert.AlertType.ERROR, "invalid username or password", ButtonType.OK);
-                                    alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-                                    alert.show();
+                                SignInParser(msg);
+                                if (parsedMsg[0].equals("SignIN not Confirmed")) {
+                                    if (parsedMsg[1].equals("User is online")) {
+                                        Alert alert = new Alert(Alert.AlertType.ERROR, "Username is already logged in", ButtonType.OK);
+                                        alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                                        alert.show();
+                                    } else {
+                                        Alert alert = new Alert(Alert.AlertType.ERROR, "invalid username or password", ButtonType.OK);
+                                        alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                                        alert.show();
+                                    }
                                 } else {
 
                                     try {
@@ -174,12 +180,11 @@ public class SignIN2Controller implements Initializable {
         }
     }
 
-    public String SignInParser(String msg) {
-        String[] parsedMsg = msg.split("\\#");
+    public void SignInParser(String msg) {
+        parsedMsg = msg.split("\\#");
         if (parsedMsg[0].equals("SignIN Confirmed")) {
             score = Integer.parseInt(parsedMsg[1]);
         }
-        return parsedMsg[0];
     }
 
     public static void whenServerOff() {

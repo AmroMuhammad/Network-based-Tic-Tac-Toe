@@ -134,8 +134,6 @@ public class ServerGUI extends AnchorPane {
                 usersChart.setVisible(false);
                 try {
                     closingEverything();
-                    MainServer.offlinePlayers=0;
-                    MainServer.onlinePlayers=0;
                 } catch (IOException ex) {
                     Logger.getLogger(ServerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -172,8 +170,8 @@ public class ServerGUI extends AnchorPane {
                     @Override
                     public void run() {
                         // put random number with current time
-                        pieChartData.set(0, new PieChart.Data("Offline", MainServer.offlinePlayers));
-                        pieChartData.set(1, new PieChart.Data("Online", MainServer.onlinePlayers));
+                        pieChartData.set(0, new PieChart.Data("Offline", databaseConnection.numOfflinePlayers()));
+                        pieChartData.set(1, new PieChart.Data("Online", databaseConnection.numOnlinePlayers()));
                     }
                 });
             }
