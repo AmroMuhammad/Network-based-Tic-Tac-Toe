@@ -16,6 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,12 +30,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -58,6 +62,8 @@ public class LocalGameBoardController implements Initializable {
     private GridPane Btns;
     @FXML
     private Pane pane2;
+    @FXML
+    private ImageView label_img;
     public ArrayList<Integer> gameMoves = new ArrayList<>();
     private String startGame ;
     int xoWinner=-2;
@@ -68,7 +74,7 @@ public class LocalGameBoardController implements Initializable {
         {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
         {0, 4, 8}, {2, 4, 6}
     };
-
+     int gameState[] = {2, 2, 2, 2, 2, 2, 2, 2, 2};
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -114,20 +120,23 @@ public class LocalGameBoardController implements Initializable {
     @FXML
     private void Btn_action(ActionEvent event) {
        
-        Platform.runLater(() -> {
+         Platform.runLater(() -> {
         Button btn=(Button)event.getSource();
         String[] ID = btn.getId().split("n");
         int number = Integer.parseInt(ID[1]);
         if(buttonUsed[number-1]==0){
+             buttonUsed[number-1]=1; 
             if(startGame.equals("X"))
             {
                 btn.setText(startGame);
-                buttonUsed[number-1]=1; 
+                btn.setDisable(true);
+                gameState[number-1]=0; 
             }
             else
             {
                 btn.setText(startGame);
-                buttonUsed[number-1]=2;
+                btn.setDisable(true);
+                gameState[number-1]=1;
             }
             gameMoves.add(number);
         choese();
@@ -140,42 +149,37 @@ public class LocalGameBoardController implements Initializable {
     
     public void WinnerGame() {
         
+        boolean flag = true;
         for (int[] win : winningPositions) {
-            if (buttonUsed[win[0]] == buttonUsed[win[1]] && buttonUsed[win[1]] == buttonUsed[win[2]] && buttonUsed[win[0]] != 0) {
-               
-                if (buttonUsed[win[0]]==1){ xoWinner= 0;}
+            if (gameState[win[0]] == gameState[win[1]] && gameState[win[1]] == gameState[win[2]] && gameState[win[0]] != 2) {
+                flag = false;
+                if (gameState[win[0]]==0){ xoWinner= 0;}
                 else {xoWinner= 1;}
                 disable();
                 winnerName();
                 set_color();
                 VidioShow("build/classes/Style/video.mp4");
                 break;
-           
             }
-            else if( buttonUsed[0] != 0 && buttonUsed[1] != 0 && buttonUsed[2] != 0 && buttonUsed[3] != 0
-                        && buttonUsed[4] != 0 && buttonUsed[5] != 0 && buttonUsed[6] != 0 && buttonUsed[7] != 0 
-                        && buttonUsed[8] != 0 )
-                {
-                    if (buttonUsed[win[0]] == buttonUsed[win[1]] && buttonUsed[win[1]] == buttonUsed[win[2]] ) {
-               
-                        if (buttonUsed[win[0]]==1){ xoWinner= 0;}
-                        else {xoWinner= 1;}
-                        disable();
-                        winnerName();
-                        set_color();
-                        VidioShow("build/classes/Style/video.mp4");
-                        break;
-                    } else{
-                         xoWinner = -1;
-                         winnerName();
-                         disable();
-                         winner_loser_txt.setText("No players wins ");
-                         VidioShow("build/classes/Style/video.mp4");
-                         break;
-                    }
-                }
+            
             
         }
+        if (isDraw() && flag) {
+            winner_loser_txt.setText("No Players wins "); 
+            VidioShow("build/classes/Style/video.mp4");
+            disable();
+            
+        }
+    }
+    
+     public boolean isDraw() {
+        boolean draw = true;
+        for (int btn : buttonUsed) {
+            if (btn != 1) {
+                draw = false;
+            }
+        }
+        return draw;
     }
     
     private void choese (){
@@ -299,14 +303,11 @@ public class LocalGameBoardController implements Initializable {
                         pane2.setVisible(true);
                         Done_Btn.setVisible(true);
                         winner_loser_txt.setVisible(true);
+                        label_img.setVisible(true);
+                        animateUsingScaleTransition(label_img);
                         mediaView.setVisible(true);
-                        player1.setVisible(false);
-                        player2.setVisible(false);
-                        player1Symbol.setVisible(false);
-                        player2Symbol.setVisible(false);
                         Btns.setVisible(false);   
                         media = new Media(new File(Path).toURI().toString());  
- //                     animateUsingScaleTransition(mediaView);
                         mediaPlayer = new MediaPlayer(media);
                         mediaView.setMediaPlayer(mediaPlayer);
                         mediaPlayer.setAutoPlay(true);
@@ -331,11 +332,25 @@ public class LocalGameBoardController implements Initializable {
     }
     public void color(Button btn1, Button btn2  , Button btn3)
        {
-            btn1.setStyle("-fx-background-color: #cc00cc");
-            btn2.setStyle("-fx-background-color: #cc00cc");
-            btn3.setStyle("-fx-background-color: #cc00cc");
+            btn1.setStyle("-fx-background-color: red");
+            btn2.setStyle("-fx-background-color: red");
+            btn3.setStyle("-fx-background-color: red");
    
     }
     
-     
+    private void animateUsingScaleTransition(ImageView heart) {
+        ScaleTransition scaleTransition = new ScaleTransition(
+                Duration.seconds(1), heart
+        );
+        scaleTransition.setFromX(1);
+        scaleTransition.setFromY(1);
+        scaleTransition.setFromZ(1);
+        scaleTransition.setToX(1.1);
+        scaleTransition.setToY(1.1);
+        scaleTransition.setToZ(1.1);
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.setCycleCount(Animation.INDEFINITE);
+        scaleTransition.play();
+    }
+ 
 }

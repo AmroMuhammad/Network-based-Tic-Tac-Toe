@@ -194,6 +194,7 @@ public class FreeOnlinePlayersController implements Initializable {
         Parent viewparent = loader.load();
         Scene viewscene = new Scene(viewparent);
         ENTERController controller = loader.getController();
+        
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();

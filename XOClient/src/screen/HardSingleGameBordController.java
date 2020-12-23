@@ -18,6 +18,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,12 +32,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -61,6 +65,8 @@ public class HardSingleGameBordController implements Initializable {
     private GridPane Btns;
     @FXML
     private Pane pane2;
+    @FXML
+    private ImageView label_img;
     
     String flag ;
     
@@ -116,6 +122,7 @@ public class HardSingleGameBordController implements Initializable {
                     String[] ID = btnA.getId().split("n");
                     int number = Integer.parseInt(ID[1]);
                     gameMoves.add(number);
+                    btn.setDisable(true);
                     btn.setText(player1Symbol.getText());
                     System.out.println("xxx");
                     btn.setMouseTransparent(true);
@@ -126,45 +133,63 @@ public class HardSingleGameBordController implements Initializable {
                         if(bestMove.row == 0)
                         {
                             switch(bestMove.col){
-                                case 0:
+                                case 0:{
                                     gameMoves.add(1);
+                                    Btn1.setDisable(true);
                                     break;
-                                case 1:
+                                }
+                                case 1:{
                                     gameMoves.add(2);
+                                     Btn2.setDisable(true);
                                     break;
-                                case 2:
+                                }
+                                case 2:{
                                     gameMoves.add(3);
+                                    Btn3.setDisable(true);
                                     break;
+                                }
                                     
                             }
                         }
                        else if(bestMove.row == 1)
                         {
                             switch(bestMove.col){
-                                case 0:
+                                case 0:{
                                     gameMoves.add(4);
+                                    Btn4.setDisable(true);
                                     break;
-                                case 1:
+                                }
+                                case 1:{
                                     gameMoves.add(5);
+                                    Btn5.setDisable(true);
                                     break;
-                                case 2:
+                                }
+                                case 2:{
                                     gameMoves.add(6);
+                                    Btn6.setDisable(true);
                                     break;
+                                }
                                     
                             }
                         }
                         else if(bestMove.row == 2)
                         {
                             switch(bestMove.col){
-                                case 0:
+                                case 0:{
                                     gameMoves.add(7);
+                                    Btn7.setDisable(true);
                                     break;
-                                case 1:
+                                }
+                                case 1:{
                                     gameMoves.add(8);
+                                    Btn8.setDisable(true);
                                     break;
-                                case 2:
+                                }
+                                case 2:{
                                     gameMoves.add(9);
+                                    Btn9.setDisable(true);
                                     break;
+                                }
                                     
                             }
                         }
@@ -278,14 +303,11 @@ public class HardSingleGameBordController implements Initializable {
                         pane2.setVisible(true);
                         Done_Btn.setVisible(true);
                         winner_loser_txt.setVisible(true);
+                        label_img.setVisible(true);
+                        animateUsingScaleTransition(label_img);
                         mediaView.setVisible(true);
-                        player1.setVisible(false);
-                        player2.setVisible(false);
-                        player1Symbol.setVisible(false);
-                        player2Symbol.setVisible(false);
                         Btns.setVisible(false);   
-                        media = new Media(new File(path).toURI().toString());  
-        //                     animateUsingScaleTransition(mediaView);
+                        media = new Media(new File(path).toURI().toString());         
                         mediaPlayer = new MediaPlayer(media);
                         mediaView.setMediaPlayer(mediaPlayer);
                         mediaPlayer.setAutoPlay(true);
@@ -295,7 +317,20 @@ public class HardSingleGameBordController implements Initializable {
         }).start(); 
     }
 
-   
+    private void animateUsingScaleTransition(ImageView heart) {
+        ScaleTransition scaleTransition = new ScaleTransition(
+                Duration.seconds(1), heart
+        );
+        scaleTransition.setFromX(1);
+        scaleTransition.setFromY(1);
+        scaleTransition.setFromZ(1);
+        scaleTransition.setToX(1.1);
+        scaleTransition.setToY(1.1);
+        scaleTransition.setToZ(1.1);
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.setCycleCount(Animation.INDEFINITE);
+        scaleTransition.play();
+    }
 
     
 }

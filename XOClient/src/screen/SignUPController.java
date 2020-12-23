@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
@@ -53,14 +54,20 @@ public class SignUPController implements Initializable {
     @FXML
     private PasswordField passconf_text;
     @FXML
-    private TextField name_txt_msg;
+    private Label name_txt_msg;
     @FXML
-    private TextField pass_txt_msg;
+    private Label pass_txt_msg;
     @FXML
-    private TextField passConf_txt_msg;
+    private Label passConf_txt_msg;
     String ip;
     Thread th;
-
+    @FXML
+    private TextField name_txt_msgxxx;
+    @FXML
+    private TextField pass_txt_msgxxx;
+    @FXML
+    private TextField passConf_txt_msgxxx;
+   
     /**
      * Initializes the controller class.
      */
@@ -128,9 +135,9 @@ public class SignUPController implements Initializable {
                         });
                     } catch (IOException ex) {
                         Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
-                    } finally {
+                    } /*finally {
                         th.stop();
-                    }
+                    }*/
                 }
             });
             th.start();
@@ -139,15 +146,15 @@ public class SignUPController implements Initializable {
         if (!fn) {
             name_txt_msg.setText("Invalid Name");
         } else {
-            name_txt_msg.clear();
+            name_txt_msg.setText("");
         }
         if (!fp) {
             pass_txt_msg.setText("Invalid password");
         } else {
-            pass_txt_msg.clear();
+            pass_txt_msg.setText("");
         }
         if (fpc) {
-            passConf_txt_msg.setText("confirmed passowrd");
+            passConf_txt_msg.setText("Confirmed passowrd");
         } else {
             passConf_txt_msg.setText("Not confirmed passowrd");
         }
@@ -169,9 +176,9 @@ public class SignUPController implements Initializable {
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(SignUPController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } /*finally {
                 th.stop();
-        }
+        }*/
 
     }
 

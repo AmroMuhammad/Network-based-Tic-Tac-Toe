@@ -38,6 +38,7 @@ import javafx.util.Duration;
 import java.lang.ClassLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -61,6 +62,8 @@ public class SingleGameBordController implements Initializable {
     private Button Done_Btn;
     @FXML
     private GridPane Btns;
+    @FXML
+    private ImageView label_img;
     @FXML
     private Pane pane2;
     String flag;
@@ -402,15 +405,12 @@ public class SingleGameBordController implements Initializable {
                     @Override public void run() {
                         pane2.setVisible(true);
                         Done_Btn.setVisible(true);
+                        label_img.setVisible(true);
+                        animateUsingScaleTransition(label_img);
                         winner_loser_txt.setVisible(true);
                         mediaView.setVisible(true);
-                        player1.setVisible(false);
-                        player2.setVisible(false);
-                        player1Symbol.setVisible(false);
-                        player2Symbol.setVisible(false);
                         Btns.setVisible(false);   
                         media = new Media(new File(path).toURI().toString());  
-                        animateUsingScaleTransition(mediaView);
                         mediaPlayer = new MediaPlayer(media);
                         mediaView.setMediaPlayer(mediaPlayer);
                         mediaPlayer.setAutoPlay(true);
@@ -419,7 +419,7 @@ public class SingleGameBordController implements Initializable {
             }
         }).start(); 
     }
-    private void animateUsingScaleTransition(MediaView heart) {
+    private void animateUsingScaleTransition(ImageView heart) {
         ScaleTransition scaleTransition = new ScaleTransition(
                 Duration.seconds(1), heart
         );

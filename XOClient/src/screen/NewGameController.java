@@ -21,6 +21,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -50,6 +52,25 @@ public class NewGameController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(NewGameController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        Image img = new Image("Style/single.PNG");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(60);
+        view.setFitWidth(260);
+        singleplay_btn.setGraphic(view);
+        
+        
+       Image img2 = new Image("Style/muti.PNG");
+       ImageView view2 = new ImageView(img2);
+       view2.setFitHeight(60);
+       view2.setFitWidth(260);
+       multLOCALi_btn.setGraphic(view2);
+       
+       
+       Image img3 = new Image("Style/recorded.png");
+       ImageView view3 = new ImageView(img3);
+       view3.setFitHeight(60);
+       view3.setFitWidth(260);
+       Record_btn.setGraphic(view3);
     }    
 
     @FXML

@@ -4,37 +4,66 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #9BD8BA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.SignIN2Controller">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" styleClass="bodybg" stylesheets="@../Style/GameStyle1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.SignIN2Controller">
    <children>
-      <TextField fx:id="userName_txt" layoutX="133.0" layoutY="160.0" prefHeight="40.0" prefWidth="435.0" promptText="User name" />
-      <Button fx:id="signIN_btn" layoutX="133.0" layoutY="315.0" mnemonicParsing="false" onAction="#signIN_click" prefHeight="40.0" prefWidth="435.0" style="-fx-background-color: #3FAC76;" text="Sign in" textFill="#030303">
+      <TextField fx:id="userName_txt" focusTraversable="false" layoutX="180.0" layoutY="179.0" prefHeight="40.0" prefWidth="398.0" promptText="User name">
          <font>
-            <Font name="Cambria Math" size="19.0" />
+            <Font name="Comic Sans MS" size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="signIN_btn" layoutX="143.0" layoutY="332.0" mnemonicParsing="false" onAction="#signIN_click" prefHeight="40.0" prefWidth="435.0" style="-fx-background-color: #a1e2e7;" text="Sign in" textFill="#33415a">
+         <font>
+            <Font name="Comic Sans MS" size="20.0" />
          </font>
       </Button>
-      <Label layoutX="134.0" layoutY="363.0" prefHeight="40.0" prefWidth="259.0" text="Don’t have an account?">
+      <Label layoutX="142.0" layoutY="401.0" prefHeight="40.0" prefWidth="259.0" text="   Don’t have an account?!" textFill="#e5fcf6">
          <font>
-            <Font name="Cambria Math" size="15.0" />
+            <Font name="Comic Sans MS" size="22.0" />
          </font>
       </Label>
-      <Label layoutX="291.0" layoutY="64.0" text="Sign in" textFill="WHITE">
+      <Label layoutX="290.0" layoutY="74.0" text="Sign in" textFill="#e5fcf6">
          <font>
-            <Font name="Cambria Math" size="41.0" />
+            <Font name="Comic Sans MS" size="45.0" />
          </font>
       </Label>
-      <Button fx:id="signUP_btn" layoutX="426.0" layoutY="363.0" mnemonicParsing="false" onAction="#signUP_click" prefHeight="40.0" prefWidth="142.0" style="-fx-background-color: #9BD8BA;" text="Sign up" textFill="#176b40">
+      <Button fx:id="signUP_btn" layoutX="436.0" layoutY="401.0" mnemonicParsing="false" onAction="#signUP_click" prefHeight="40.0" prefWidth="142.0" style="-fx-background-color: #a1e2e7;" text="Sign up" textFill="#33415a">
          <font>
-            <Font name="Cambria Math" size="19.0" />
+            <Font name="Comic Sans MS" size="20.0" />
          </font>
       </Button>
-      <PasswordField fx:id="password_txt" layoutX="133.0" layoutY="233.0" prefHeight="40.0" prefWidth="435.0" promptText="password" />
-      <Button mnemonicParsing="false" onAction="#back_click" prefHeight="32.0" prefWidth="64.0" style="-fx-background-color: #9BD8BA;" text="&lt;--" textFill="#1d804e">
+      <PasswordField fx:id="password_txt" focusTraversable="false" layoutX="180.0" layoutY="249.0" prefHeight="40.0" prefWidth="398.0" promptText="Password">
+         <font>
+            <Font name="Comic Sans MS" size="18.0" />
+         </font>
+      </PasswordField>
+      <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#back_click" prefHeight="53.0" prefWidth="59.0" textFill="#1d804e">
          <font>
             <Font name="Cambria Math" size="21.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Style/previous.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
+      <Button layoutX="142.0" layoutY="179.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="42.0" style="-fx-background-color: #ffffff;" />
+      <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="148.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Style/user.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="143.0" layoutY="249.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="45.0" style="-fx-background-color: #ffffff;" />
+      <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="148.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Style/padlock.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

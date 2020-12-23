@@ -21,6 +21,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -37,8 +39,9 @@ public class ENTERController implements Initializable {
     @FXML
     private Button newGame_txt;
     @FXML
-    private Button record_txt;
-    public static String Name ;  
+    private Button record_txt ,logOut_txt;
+    public static String Name ; 
+   
     /**
      * Initializes the controller class.
      */
@@ -50,11 +53,28 @@ public class ENTERController implements Initializable {
     public void nPlayerScore(int scr)
     {
         score.setText(""+scr);
+        
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
+      Image img = new Image("Style/NEW.PNG");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(45);
+        view.setFitWidth(210);
+        newGame_txt.setGraphic(view);
+        
+       Image img2 = new Image("Style/recorded.png");
+       ImageView view2 = new ImageView(img2);
+       view2.setFitHeight(45);
+       view2.setFitWidth(215);
+       record_txt.setGraphic(view2);
+       
+       Image img3 = new Image("Style/log.png");
+       ImageView view3= new ImageView(img3);
+       view3.setFitHeight(45);
+       view3.setFitWidth(222);
+       logOut_txt.setGraphic(view3);
     }    
 
     @FXML

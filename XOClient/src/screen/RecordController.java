@@ -39,10 +39,12 @@ public class RecordController implements Initializable {
 
     @FXML
     private Button Btn1,Btn2,Btn3,Btn4,Btn5;
+    @FXML
+    private Button BTn1,BTn2,BTn3,BTn4,BTn5;
     
     
     String flag;
-    public String [] lines;
+    public String [] lines, Lines2;
     BufferedReader br;
     BufferedReader br2;
     FileReader fr; 
@@ -74,6 +76,96 @@ public class RecordController implements Initializable {
         Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IOException ex) {
         Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    if( L != null)
+    {
+         lines = parsing_lines(L);
+         switch (lines.length){
+             case 1 :
+                 Btn1.setVisible(true);
+                 break;
+            case 2 :{
+                 Btn1.setVisible(true);
+                 Btn2.setVisible(true);
+                 break;
+            }
+            case 3 :{
+                 Btn1.setVisible(true);
+                 Btn2.setVisible(true);
+                 Btn3.setVisible(true);
+                 break;
+            }
+            case 4 :{
+                 Btn1.setVisible(true);
+                 Btn2.setVisible(true);
+                 Btn3.setVisible(true);
+                 Btn4.setVisible(true);
+                 break;
+            }
+            case 5 :{
+                 Btn1.setVisible(true);
+                 Btn2.setVisible(true);
+                 Btn3.setVisible(true);
+                 Btn4.setVisible(true);
+                 Btn5.setVisible(true);
+                 break; 
+            }
+            default:{
+                 Btn1.setVisible(true);
+                 Btn2.setVisible(true);
+                 Btn3.setVisible(true);
+                 Btn4.setVisible(true);
+                 Btn5.setVisible(true);
+                 break; 
+            }
+         }
+    }
+     if( L2 != null)
+    {
+         Lines2 = parsing_lines(L2);
+         switch (Lines2.length){
+             
+             case 1:
+                 BTn1.setVisible(true);
+                 break;
+            case 2:{
+                
+                 BTn1.setVisible(true);
+                 BTn2.setVisible(true);
+                 break;
+            }
+            case 3:{
+                 BTn1.setVisible(true);
+                 BTn2.setVisible(true);
+                 BTn3.setVisible(true);
+                 break;
+            }
+            case 4:{
+                 BTn1.setVisible(true);
+                 BTn2.setVisible(true);
+                 BTn3.setVisible(true);
+                 BTn4.setVisible(true);
+                 break;
+            }
+            case 5:{
+                 BTn1.setVisible(true);
+                 BTn2.setVisible(true);
+                 BTn3.setVisible(true);
+                 BTn4.setVisible(true);
+                 BTn5.setVisible(true);
+                 break; 
+            }
+            default:{
+                 BTn1.setVisible(true);
+                 BTn2.setVisible(true);
+                 BTn3.setVisible(true);
+                 BTn4.setVisible(true);
+                 BTn5.setVisible(true);
+                 break; 
+            }
+                
+                
+         }
     }
 
        
@@ -111,6 +203,7 @@ public class RecordController implements Initializable {
             Scene viewscene =new Scene (viewParent);
             GameBordController controller =loader.getController();
             if((lines.length - (number - 1)) > 0){
+                btn.setVisible(true);
                 controller.GameRecord(lines[lines.length - number]);
                 Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
                 window.setScene(viewscene);

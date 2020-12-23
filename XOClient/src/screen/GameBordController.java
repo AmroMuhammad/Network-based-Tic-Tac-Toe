@@ -32,9 +32,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 /**
@@ -120,6 +123,7 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn1.setText("X");
+                                    Btn1.setDisable(true);
                                        }
                                      });
                             
@@ -127,6 +131,7 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn1.setText("O");
+                                    Btn1.setDisable(true);
                                        }
                                      });
                                 break;
@@ -135,12 +140,14 @@ public class GameBordController implements Initializable {
                                      Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn2.setText("X");
+                                    Btn2.setDisable(true);
                                        }
                                      });
                                 else
                                      Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn2.setText("O");
+                                    Btn2.setDisable(true);
                                        }
                                      });
                                 break;
@@ -149,12 +156,14 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn3.setText("X");
+                                    Btn3.setDisable(true);
                                        }
                                      });
                                 else
                                    Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn3.setText("O");
+                                    Btn3.setDisable(true);
                                        }
                                      });
                                 break;
@@ -163,12 +172,14 @@ public class GameBordController implements Initializable {
                                    Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn4.setText("X");
+                                    Btn4.setDisable(true);
                                        }
                                      });
                                 else
                                    Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn4.setText("O");
+                                    Btn4.setDisable(true);
                                        }
                                      });
                                 break;
@@ -177,12 +188,14 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn5.setText("X");
+                                    Btn5.setDisable(true);
                                        }
                                      });
                                 else
                                      Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn5.setText("O");
+                                    Btn5.setDisable(true);
                                        }
                                      });
                                 break;
@@ -191,12 +204,14 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn6.setText("X");
+                                    Btn6.setDisable(true);
                                        }
                                      });
                                 else
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn6.setText("O");
+                                    Btn6.setDisable(true);
                                        }
                                      });
                                 break;
@@ -205,12 +220,14 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn7.setText("X");
+                                    Btn7.setDisable(true);
                                        }
                                      });
                                 else
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn7.setText("O");
+                                    Btn7.setDisable(true);
                                        }
                                      });
                                 break;                           
@@ -219,12 +236,14 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn8.setText("X");
+                                    Btn8.setDisable(true);
                                        }
                                      });
                                 else
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn8.setText("O");
+                                    Btn8.setDisable(true);
                                        }
                                      });
                                 break;
@@ -233,12 +252,14 @@ public class GameBordController implements Initializable {
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn9.setText("X");
+                                    Btn9.setDisable(true);
                                        }
                                      });
                                 else
                                     Platform.runLater(new Runnable() {
                                   @Override public void run() {
                                     Btn9.setText("O");
+                                    Btn9.setDisable(true);
                                        }
                                      });
                                 break;
@@ -297,11 +318,11 @@ public class GameBordController implements Initializable {
           }
       }
        public void color(Button b1, Button b2, Button b3) {
-        b1.setStyle("-fx-background-color: #cc00cc");
-        b2.setStyle("-fx-background-color: #cc00cc");
-        b3.setStyle("-fx-background-color: #cc00cc");
+        b1.setStyle("-fx-background-color: red");
+        b2.setStyle("-fx-background-color: red");
+        b3.setStyle("-fx-background-color: red");
     }
-       @FXML
+    @FXML
     private void Back_btn(ActionEvent event) 
     {
     try {
@@ -318,4 +339,6 @@ public class GameBordController implements Initializable {
         Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
     }
     } 
+
+    
 }

@@ -3,14 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/LocalUserNamesController.java</file>
             <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/NewGameController.java</file>
-            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/SingleGameBordController.java</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/LocalUserNamesController.java</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/FreeOnlinePlayersController.java</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/ENTERController.java</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/Style/OnlineListViewColors.css</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/Style/PlayingListViewColors.css</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/SignINController.java</file>
             <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/LocalGameBoardController.java</file>
-            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/GameBordController.java</file>
-            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/NetworkGameBoardController.java</file>
+            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/Style/per.png</file>
             <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/RecordController.java</file>
-            <file>file:/C:/Users/Dell/Desktop/FinalProject/XO/XOClient/src/screen/HardSingleGameBordController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -7,17 +7,18 @@ and open the template in the editor.
     Created on : Dec 8, 2020, 12:54:49 PM
     Author     : Dell
 */
-.bodybg{
- -fx-background-image: url('background1.jpeg');
+
+
+.bodybg3{
+ -fx-background-image: url('img.jpg');
  -fx-background-size: 100% 100%;
 }
-.bodybg2{
- -fx-background-image: url('backgroung2.jpeg');
- -fx-background-size: 100% 100%;
+.button{     
+    -fx-background-color: Transparent;
 }
-.bodycolor{
-    -fx-background-color: blueviolet;
+
+.setStyle{
+    -fx-font-size: 30;
+    -fx-font-family: "Broadway";
 }
-.Backgroundcolor{
-    -fx-background-color: grey;
-}
+

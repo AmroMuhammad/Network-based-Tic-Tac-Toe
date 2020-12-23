@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -38,6 +39,8 @@ public class LocalUserNamesController implements Initializable {
     private RadioButton x ,o;
     @FXML
     private ToggleGroup rad_x;
+    @FXML
+    private Label symbol2;
     
 
      @FXML
@@ -90,7 +93,19 @@ public class LocalUserNamesController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       symbol2.setText("Your Symbole is O");
     }    
-    
+     @FXML
+    private void radioAction(ActionEvent event) {
+        
+        
+        if (x.isSelected())
+        {
+            symbol2.setText("Your Symbole is O");
+        }
+     else if(o.isSelected())
+        {
+            symbol2.setText("Your Symbole is X"); 
+        }
+    }
 }
