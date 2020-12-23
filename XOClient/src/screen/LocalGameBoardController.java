@@ -41,7 +41,8 @@ import javafx.stage.Stage;
  * @author Dell
  */
 public class LocalGameBoardController implements Initializable {
- @FXML
+
+    @FXML
     private Label player1, player2, player1Symbol, player2Symbol;
 
     @FXML
@@ -59,10 +60,10 @@ public class LocalGameBoardController implements Initializable {
     @FXML
     private Pane pane2;
     public ArrayList<Integer> gameMoves = new ArrayList<>();
-    private String startGame ;
-    int xoWinner=-2;
+    private String startGame;
+    int xoWinner = -2;
     boolean yes = false;
-    int buttonUsed [] = {0,0,0,0,0,0,0,0,0};
+    int buttonUsed[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     int[][] winningPositions = {
         {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
         {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
@@ -71,28 +72,25 @@ public class LocalGameBoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-	Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
-	//dlg.setTitle("Move Directory");
-	dlg.setHeaderText("Record Game");
-	dlg.setContentText("Do you want record this game ?");
-	dlg.getButtonTypes().clear();
-	dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
-	dlg.showAndWait();
-	yes = dlg.getResult() == ButtonType.YES;
-        System.out.println("arert" + yes);
+
+        Alert dlg = new Alert(Alert.AlertType.CONFIRMATION);
+        //dlg.setTitle("Move Directory");
+        dlg.setHeaderText("Record Game");
+        dlg.setContentText("Do you want record this game ?");
+        dlg.getButtonTypes().clear();
+        dlg.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+        dlg.showAndWait();
+        yes = dlg.getResult() == ButtonType.YES;
     }
-    
-     public void setText(String text1 , String text2 , String text3 , String text4 )
-    {
+
+    public void setText(String text1, String text2, String text3, String text4) {
         player1.setText(text1);
         player2.setText(text2);
         player1Symbol.setText(text3);
         player2Symbol.setText(text4);
-        startGame =text3;
-  
+        startGame = text3;
+
     }
- 
 
     @FXML
     private void Done_btn(ActionEvent event) {
@@ -103,198 +101,182 @@ public class LocalGameBoardController implements Initializable {
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
             NewGameController controller = loader.getController();
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(viewscene);
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     private void Btn_action(ActionEvent event) {
-       
+
         Platform.runLater(() -> {
-        Button btn=(Button)event.getSource();
-        String[] ID = btn.getId().split("n");
-        int number = Integer.parseInt(ID[1]);
-        if(buttonUsed[number-1]==0){
-            if(startGame.equals("X"))
-            {
-                btn.setText(startGame);
-                buttonUsed[number-1]=1; 
+            Button btn = (Button) event.getSource();
+            String[] ID = btn.getId().split("n");
+            int number = Integer.parseInt(ID[1]);
+            if (buttonUsed[number - 1] == 0) {
+                if (startGame.equals("X")) {
+                    btn.setText(startGame);
+                    buttonUsed[number - 1] = 1;
+                } else {
+                    btn.setText(startGame);
+                    buttonUsed[number - 1] = 2;
+                }
+                gameMoves.add(number);
+                choese();
+                WinnerGame();
             }
-            else
-            {
-                btn.setText(startGame);
-                buttonUsed[number-1]=2;
-            }
-            gameMoves.add(number);
-        choese();
-        WinnerGame();
-        }
-         });
-   
-       
+        });
+
     }
-    
+
     public void WinnerGame() {
-        
+
         for (int[] win : winningPositions) {
             if (buttonUsed[win[0]] == buttonUsed[win[1]] && buttonUsed[win[1]] == buttonUsed[win[2]] && buttonUsed[win[0]] != 0) {
-               
-                if (buttonUsed[win[0]]==1){ xoWinner= 0;}
-                else {xoWinner= 1;}
+
+                if (buttonUsed[win[0]] == 1) {
+                    xoWinner = 0;
+                } else {
+                    xoWinner = 1;
+                }
                 disable();
                 winnerName();
                 VidioShow("build/classes/Style/video.mp4");
                 break;
-           
-            }
-            else if( buttonUsed[0] != 0 && buttonUsed[1] != 0 && buttonUsed[2] != 0 && buttonUsed[3] != 0
-                        && buttonUsed[4] != 0 && buttonUsed[5] != 0 && buttonUsed[6] != 0 && buttonUsed[7] != 0 
-                        && buttonUsed[8] != 0 )
-                {
-                    if (buttonUsed[win[0]] == buttonUsed[win[1]] && buttonUsed[win[1]] == buttonUsed[win[2]] ) {
-               
-                        if (buttonUsed[win[0]]==1){ xoWinner= 0;}
-                        else {xoWinner= 1;}
-                        disable();
-                        winnerName();
-                        VidioShow("build/classes/Style/video.mp4");
-                        break;
-                    } else{
-                         xoWinner = -1;
-                         winnerName();
-                         disable();
-                         winner_loser_txt.setText("No players wins ");
-                         VidioShow("build/classes/Style/video.mp4");
-                         break;
+
+            } else if (buttonUsed[0] != 0 && buttonUsed[1] != 0 && buttonUsed[2] != 0 && buttonUsed[3] != 0
+                    && buttonUsed[4] != 0 && buttonUsed[5] != 0 && buttonUsed[6] != 0 && buttonUsed[7] != 0
+                    && buttonUsed[8] != 0) {
+                if (buttonUsed[win[0]] == buttonUsed[win[1]] && buttonUsed[win[1]] == buttonUsed[win[2]]) {
+
+                    if (buttonUsed[win[0]] == 1) {
+                        xoWinner = 0;
+                    } else {
+                        xoWinner = 1;
                     }
+                    disable();
+                    winnerName();
+                    VidioShow("build/classes/Style/video.mp4");
+                    break;
+                } else {
+                    xoWinner = -1;
+                    winnerName();
+                    disable();
+                    winner_loser_txt.setText("No players wins ");
+                    VidioShow("build/classes/Style/video.mp4");
+                    break;
                 }
-            
+            }
+
         }
     }
-    
-    private void choese (){
-    
-        if (startGame.equals("X"))
-        {
-            startGame ="O";
+
+    private void choese() {
+
+        if (startGame.equals("X")) {
+            startGame = "O";
+        } else {
+            startGame = "X";
         }
-        else 
-        {
-            startGame ="X";
-        }  
     }
-    
-     public void winnerName(){
-        String Data ="" ;
-        for (int i = 0; i < gameMoves.size();i++ )
-        {
-           Data += gameMoves.get(i) + "#";
-            System.out.println("moveeeeee" + Data);
+
+    public void winnerName() {
+        String Data = "";
+        for (int i = 0; i < gameMoves.size(); i++) {
+            Data += gameMoves.get(i) + "#";
         }
-        System.out.println(Data);
-         switch (xoWinner) {
-            case 0:{
-                
-                if(player1Symbol.getText().equals("X")){
-                    
-                    winner_loser_txt.setText(player1.getText()+" is winner");
-                    System.out.println(player1.getText());
-                    Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + "X@"+player2.getText()+"@O@";
+        switch (xoWinner) {
+            case 0: {
+
+                if (player1Symbol.getText().equals("X")) {
+
+                    winner_loser_txt.setText(player1.getText() + " is winner");
+                    Data += player1Symbol.getText() + "&" + player1.getText() + "@" + "X@" + player2.getText() + "@O@";
+                } else {
+                    winner_loser_txt.setText(player2.getText() + " is winner");
+                    Data += player1Symbol.getText() + "&" + player2.getText() + "@" + "X@" + player1.getText() + "@O@";
                 }
-                else{
-                    winner_loser_txt.setText(player2.getText()+" is winner");
-                    System.out.println(player2.getText());
-                    Data += player1Symbol.getText()+"&"+ player2.getText() + "@" + "X@"+player1.getText()+"@O@";
-                }
-               
+
                 break;
             }
-            case 1:{
-                
-                if(player1Symbol.getText().equals("O")){
-                    winner_loser_txt.setText(player1.getText()+" is winner");
-                    System.out.println(player1.getText());
-                    Data +=player1Symbol.getText()+"&"+  player1.getText()+ "@" + "O@"+player2.getText()+"@X@";
-                }
-                else{
-                    winner_loser_txt.setText(player2.getText()+" is winner");
-                    System.out.println(player2.getText());
-                    Data +=player1Symbol.getText()+"&"+ player2.getText() + "@" + "O@"+player1.getText()+"@X@";
+            case 1: {
+
+                if (player1Symbol.getText().equals("O")) {
+                    winner_loser_txt.setText(player1.getText() + " is winner");
+                    Data += player1Symbol.getText() + "&" + player1.getText() + "@" + "O@" + player2.getText() + "@X@";
+                } else {
+                    winner_loser_txt.setText(player2.getText() + " is winner");
+                    Data += player1Symbol.getText() + "&" + player2.getText() + "@" + "O@" + player1.getText() + "@X@";
                 }
                 break;
             }
             case -1: {
-                Data += player1Symbol.getText()+"&"+ player1.getText() + "@"+ player1Symbol.getText() +"@"+player2.getText()+"@"+ player2Symbol.getText()+"@";
+                Data += player1Symbol.getText() + "&" + player1.getText() + "@" + player1Symbol.getText() + "@" + player2.getText() + "@" + player2Symbol.getText() + "@";
                 break;
             }
-            
+
         }
-         System.out.println(Data);
-         if(yes){
-           BufferedWriter out ;
-           try {
-              out = new BufferedWriter(
-              new FileWriter("GameRecord.txt", true));
-              out.write(Data + "!");
-              out.close();  
+        System.out.println(Data);
+        if (yes) {
+            BufferedWriter out;
+            try {
+                out = new BufferedWriter(
+                        new FileWriter("GameRecord.txt", true));
+                out.write(Data + "!");
+                out.close();
             } catch (IOException ex) {
-                  Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LocalGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            }
+
+        }
     }
-     
-    public void VidioShow(String vidioPath){
-         
+
+    public void VidioShow(String vidioPath) {
+
         Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-        public void run()
-        {
-         pane2.setVisible(true);
-         Done_Btn.setVisible(true);
-         winner_loser_txt.setVisible(true); 
-         mediaView.setVisible(true);
-         player1.setVisible(false);
-         player2.setVisible(false);
-         player1Symbol.setVisible(false);
-         player2Symbol.setVisible(false);
-         Btns.setVisible(false);
-         String path = vidioPath;  
-         media = new Media(new File(path).toURI().toString());  
-        // animateUsingScaleTransition(mediaView);
-         mediaPlayer = new MediaPlayer(media);
-         mediaView.setMediaPlayer(mediaPlayer);
-         mediaPlayer.setAutoPlay(true);
-         }
+        TimerTask task = new TimerTask() {
+            public void run() {
+                pane2.setVisible(true);
+                Done_Btn.setVisible(true);
+                winner_loser_txt.setVisible(true);
+                mediaView.setVisible(true);
+                player1.setVisible(false);
+                player2.setVisible(false);
+                player1Symbol.setVisible(false);
+                player2Symbol.setVisible(false);
+                Btns.setVisible(false);
+                String path = vidioPath;
+                media = new Media(new File(path).toURI().toString());
+                // animateUsingScaleTransition(mediaView);
+                mediaPlayer = new MediaPlayer(media);
+                mediaView.setMediaPlayer(mediaPlayer);
+                mediaPlayer.setAutoPlay(true);
+            }
         };
-        timer.schedule(task,500l); 
-       
-        
+        timer.schedule(task, 500l);
+
     }
-     public void disable ()
-        {
-            Btn1.setDisable(true);
-            Btn2.setDisable(true);
-            Btn3.setDisable(true);
-            Btn4.setDisable(true);
-            Btn5.setDisable(true);
-            Btn6.setDisable(true);
-            Btn7.setDisable(true);
-            Btn8.setDisable(true);
-            Btn9.setDisable(true);
+
+    public void disable() {
+        Btn1.setDisable(true);
+        Btn2.setDisable(true);
+        Btn3.setDisable(true);
+        Btn4.setDisable(true);
+        Btn5.setDisable(true);
+        Btn6.setDisable(true);
+        Btn7.setDisable(true);
+        Btn8.setDisable(true);
+        Btn9.setDisable(true);
     }
-    public void color(Button btn1, Button btn2  , Button btn3)
-       {
-            btn1.setStyle("-fx-background-color: #cc00cc");
-            btn2.setStyle("-fx-background-color: #cc00cc");
-            btn3.setStyle("-fx-background-color: #cc00cc");
-   
+
+    public void color(Button btn1, Button btn2, Button btn3) {
+        btn1.setStyle("-fx-background-color: #cc00cc");
+        btn2.setStyle("-fx-background-color: #cc00cc");
+        btn3.setStyle("-fx-background-color: #cc00cc");
+
     }
-    
-     
+
 }

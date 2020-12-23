@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
-public  class splashBase extends AnchorPane {
+public class splashBase extends AnchorPane {
 
     protected final Label label;
     protected final Label label0;

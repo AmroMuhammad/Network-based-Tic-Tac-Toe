@@ -5,8 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -53,8 +51,6 @@ import xoClientModel.Screen;
  */
 public class SignINController implements Initializable {
 
-    
-    
     @FXML
     private AnchorPane root;
     @FXML
@@ -62,162 +58,135 @@ public class SignINController implements Initializable {
     @FXML
     private Button network_btn;
     public static String serverIP;
-   
-   
 
-  
-   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       if(!Screen.isSplashloaded){
-       loadSplashScreen();
-       }
-       
- 
-    }    
+        if (!Screen.isSplashloaded) {
+            loadSplashScreen();
+        }
+
+    }
 
     private void loadSplashScreen() {
-        
+
         try {
-            Screen.isSplashloaded=true;
-            AnchorPane pane=FXMLLoader.load(getClass().getResource("/xoClientView/splash.fxml"));
+            Screen.isSplashloaded = true;
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("/xoClientView/splash.fxml"));
             root.getChildren().setAll(pane);
-           
-            FadeTransition fadeIn =new FadeTransition(Duration.seconds(1),pane);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), pane);
             fadeIn.setFromValue(0);
             fadeIn.setToValue(1);
             fadeIn.setCycleCount(1);
-            
-            
-            FadeTransition fadeOut =new FadeTransition(Duration.seconds(1),pane);
+
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), pane);
             fadeOut.setFromValue(1);
             fadeOut.setToValue(0);
             fadeOut.setCycleCount(1);
-       
+
             fadeIn.play();
-            fadeIn.setOnFinished((e)->{
+            fadeIn.setOnFinished((e) -> {
                 fadeOut.play();
             });
-            
-            fadeOut.setOnFinished((e)->{
-               try {
-                   AnchorPane parentConted =FXMLLoader.load(getClass().getResource("/xoClientView/signIN.fxml"));
-                   root.getChildren().setAll(parentConted);
+
+            fadeOut.setOnFinished((e) -> {
+                try {
+                    AnchorPane parentConted = FXMLLoader.load(getClass().getResource("/xoClientView/signIN.fxml"));
+                    root.getChildren().setAll(parentConted);
                 } catch (IOException ex) {
                     Logger.getLogger(SignINController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-              
-                
+
             });
-            
+
         } catch (IOException ex) {
             Logger.getLogger(SignINController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-   
-        
-    
-
     @FXML
     private void guest_click(ActionEvent event) throws IOException {
-         
-          FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
-          //loader.setLocation(getClass().getResource("/xoClientView/OnlineRecordBoard.fxml"));
-          Parent viewParent =loader.load();
-          Scene viewscene =new Scene (viewParent);
-          NewGameController controller =loader.getController();
-          //xoClientView.OnlineRecordBoardController controller =loader.getController();
-          Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-          window.setScene(viewscene);
-          window.show();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
+        Parent viewParent = loader.load();
+        Scene viewscene = new Scene(viewParent);
+        NewGameController controller = loader.getController();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(viewscene);
+        window.show();
     }
 
     @FXML
-    private void network_click(ActionEvent event)  {
+    private void network_click(ActionEvent event) {
         String ip = " ";
         boolean ex_flag = true;
-        try{
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Dialog");
-        dialog.setContentText("Please enter the ip :");
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-             System.out.println("the ip " + result.get());
-        }
-         ip  = result.get();
-        }catch(NoSuchElementException e)
-        {
+        try {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Dialog");
+            dialog.setContentText("Please enter the ip :");
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                System.out.println("the ip " + result.get());
+            }
+            ip = result.get();
+        } catch (NoSuchElementException e) {
             System.out.println("exist");
             ex_flag = false;
         }
-        
-        
-        
-        
-        boolean flag = isIpv4(ip) ;
-        if(flag)
-        {
+
+        boolean flag = isIpv4(ip);
+        if (flag) {
             SocketAddress socketAddress = new InetSocketAddress(ip, 5008);
-            serverIP=ip;
-	    Socket socket = new Socket();
-        
+            serverIP = ip;
+            Socket socket = new Socket();
+
             try {
-                socket.connect(socketAddress,500);
-	        socket.close();
-                
-                FXMLLoader loader =new FXMLLoader();
+                socket.connect(socketAddress, 500);
+                socket.close();
+
+                FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/xoClientView/signIN2.fxml"));
-                Parent viewParent =loader.load();
-                Scene viewscene =new Scene (viewParent);
-                SignIN2Controller controller =loader.getController();
+                Parent viewParent = loader.load();
+                Scene viewscene = new Scene(viewParent);
+                SignIN2Controller controller = loader.getController();
                 controller.ip_value(ip);
-                Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(viewscene);
                 window.show();
-                             
+
+            } catch (SocketTimeoutException exception) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "this server not found.", ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+                alert.show();
+            } catch (IOException ex) {
+
+                System.out.println("ooooops");
             }
-             catch (SocketTimeoutException exception)
-             {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "this server not found.", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show(); 
-            }
-            catch (IOException ex) {
-          
-                 System.out.println("ooooops");
-            } 
-        
-    
-        } 
-        else if (ex_flag) {
+
+        } else if (ex_flag) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error ");
             alert.setHeaderText("Look, an Error Dialog");
             alert.setContentText("Ooops,wrong ip");
 
             alert.showAndWait();
-            
+
         }
-        
+
     }
-    
-    
 
     public boolean isIpv4(String ipAddress) {
-    if (ipAddress == null) {
-        return false;
+        if (ipAddress == null) {
+            return false;
+        }
+        String ip = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+        Pattern pattern = Pattern.compile(ip);
+        Matcher matcher = pattern.matcher(ipAddress);
+        return matcher.matches();
     }
-    String ip = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-            + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-            + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-            + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
-    Pattern pattern = Pattern.compile(ip);
-    Matcher matcher = pattern.matcher(ipAddress);
-    return matcher.matches();
-     }
 
-   
-    
 }

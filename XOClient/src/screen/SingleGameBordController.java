@@ -65,8 +65,8 @@ public class SingleGameBordController implements Initializable {
     int isWinner = -2;// 0 => x is winner / 1 => o is winner / -1 draw
     String finalResult;
     int cpuMove = 0;
-    int player=-1;
-    int pc=-1;
+    int player = -1;
+    int pc = -1;
     //0 first player
     //1 computer
     //2 empty
@@ -74,7 +74,7 @@ public class SingleGameBordController implements Initializable {
     /*
     {2, 2, 2, 2, 0, 2, 2, 2, 2};
     {2, 1, 2, 2, 0, 2, 2, 2, 2};
-    */
+     */
     int[][] winningPositions = {
         {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
         {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
@@ -87,7 +87,7 @@ public class SingleGameBordController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         // TODO
     }
 
@@ -95,13 +95,12 @@ public class SingleGameBordController implements Initializable {
         player1.setText(text1);
         player2.setText(text2);
         player1Symbol.setText(text3);
-        if(text3.equals("X")){
-        player=0;
-        pc=1;
-        }
-        else{
-        player=1;
-        pc=0;
+        if (text3.equals("X")) {
+            player = 0;
+            pc = 1;
+        } else {
+            player = 1;
+            pc = 0;
         }
         player2Symbol.setText(text4);
     }
@@ -137,13 +136,10 @@ public class SingleGameBordController implements Initializable {
                 btn.setText(getTurn());
                 btn.setDisable(true);
                 gameState[number - 1] = 0;
-                System.out.println("my MOVE " + number);
-                System.out.println("ME: "+Winner(player));
-                if(Winner(player)||isDraw()){
-                endGame();
-                }
-                else{
-                nextCpuMove();
+                if (Winner(player) || isDraw()) {
+                    endGame();
+                } else {
+                    nextCpuMove();
                 }
             }
         });
@@ -155,12 +151,9 @@ public class SingleGameBordController implements Initializable {
         } else {
             //checkWinner();
             cpuMove = generateRand();
-            System.out.println("this is cpu next move :" + cpuMove);
             if (gameMoves.contains(cpuMove)) {
-                System.out.println("cpu couldn't play in this move :" + cpuMove);
                 nextCpuMove();
             } else {
-                System.out.println("ELSE");
                 int number = cpuMove;
                 Button btn;
                 btn = getBtn(number);
@@ -171,9 +164,8 @@ public class SingleGameBordController implements Initializable {
                         btn.setText(getTurn());
                         btn.setDisable(true);
                         gameState[number - 1] = 1;
-                        System.out.println("CPU: " + Winner(pc));
-                        if(Winner(pc)){
-                        endGame();
+                        if (Winner(pc)) {
+                            endGame();
                         }
                     }
                 });
@@ -183,7 +175,6 @@ public class SingleGameBordController implements Initializable {
 
     public void endGame() {
 
-        System.out.println("end game iswinner = " + isWinner);
         Btn1.setDisable(true);
         Btn2.setDisable(true);
         Btn3.setDisable(true);
@@ -241,10 +232,8 @@ public class SingleGameBordController implements Initializable {
     public void setTurn() {
 
         if (turnFlag == 0) {
-            System.out.println("X Turn");
             turnFlag = 1;
         } else {
-            System.out.println("O Turn");
             turnFlag = 0;
         }
     }
@@ -266,8 +255,7 @@ public class SingleGameBordController implements Initializable {
         for (int[] win : winningPositions) {
             if (gameState[win[0]] == gameState[win[1]] && gameState[win[1]] == gameState[win[2]] && gameState[win[0]] != 2) {
                 winnerResult = true;
-                isWinner=player;
-                System.out.println("the winner is: " + player);
+                isWinner = player;
 
             }
         }
@@ -275,15 +263,13 @@ public class SingleGameBordController implements Initializable {
     }
 
     public boolean isDraw() {
-        
+
         boolean draw = false;
-        if (Btn1.isDisabled()&&Btn2.isDisabled()&&Btn3.isDisabled()
-                &&Btn4.isDisabled()&&Btn5.isDisabled()&&Btn6.isDisabled()
-                &&Btn7.isDisabled()&&Btn8.isDisabled()&&Btn9.isDisabled()) {
-            System.out.println("draw");
+        if (Btn1.isDisabled() && Btn2.isDisabled() && Btn3.isDisabled()
+                && Btn4.isDisabled() && Btn5.isDisabled() && Btn6.isDisabled()
+                && Btn7.isDisabled() && Btn8.isDisabled() && Btn9.isDisabled()) {
             isWinner = -1;
             draw = true;
-            System.out.println("welcome to isDraw");
         }
         return draw;
     }

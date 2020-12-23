@@ -74,12 +74,10 @@ public class OnlineRecordBoardController implements Initializable {
     @FXML
     private void btnAction(ActionEvent event) {
         parser(gameMoves);
-        //System.out.println(parsedMoves.length);
         new Thread(new Runnable() {
             public void run() {
                 Platform.runLater(() -> {
                     for (int i = 0; i < parsedMoves.length; i += 2) {
-                        //System.out.println(move);
                         Button btn = new Button();
                         btn = getBtn(Integer.parseInt(parsedMoves[i]));
                         btn.setText(parsedMoves[i + 1]);
@@ -137,9 +135,7 @@ public class OnlineRecordBoardController implements Initializable {
         parsedMoves = moves.split("\\#");
     }
 
-
     private void hold() {
-
     }
 
     @FXML

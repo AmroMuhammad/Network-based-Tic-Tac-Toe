@@ -81,13 +81,12 @@ public class SignUPController implements Initializable {
         if (pass_text.getText().equals(passconf_text.getText())) {
             fpc = true;
         }
-        //////////////////////////
 
         if (fpc && fp && fn) {
 
             String name = name_text.getText();
             String pass = pass_text.getText();
-            String str = "REG#" + name + "#" + pass;   //added IP address of Host        
+            String str = "REG#" + name + "#" + pass;
             System.out.println(str);
             SignIN2Controller.ps.println(str);
             SignIN2Controller.ps.flush();

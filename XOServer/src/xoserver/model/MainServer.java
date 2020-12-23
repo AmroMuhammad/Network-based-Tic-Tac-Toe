@@ -55,7 +55,7 @@ public class MainServer extends Thread {
         }
     }
 
-    public static void stopClients() throws IOException {
+    public static void stopClients() throws IOException {  //stops clients when closing server
         for (GameHandler s : GameHandler.clientVector) {
             s.clientSocket.close();
             s.ps.close();

@@ -228,7 +228,6 @@ public class SignIN2Controller implements Initializable {
                 } catch (IOException ex) {
                     Platform.exit();
                     System.out.println("RETURN TO MAIN PAGE");
-                    //Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

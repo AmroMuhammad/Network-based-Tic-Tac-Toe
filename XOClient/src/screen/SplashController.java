@@ -5,8 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -21,13 +19,12 @@ import javafx.scene.control.ProgressBar;
  */
 public class SplashController implements Initializable {
 
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

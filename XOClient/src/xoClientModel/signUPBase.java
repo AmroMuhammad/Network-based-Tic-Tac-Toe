@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
-public  class signUPBase extends BorderPane {
+public class signUPBase extends BorderPane {
 
     protected final Label label;
     protected final AnchorPane anchorPane;
@@ -75,7 +75,6 @@ public  class signUPBase extends BorderPane {
         signUPP_btn.setStyle("-fx-background-color: #3FAC76;");
         signUPP_btn.setText("Sign up");
         signUPP_btn.setFont(new Font("Cambria Math", 19.0));
-        
 
         name_text.setLayoutX(147.0);
         name_text.setLayoutY(18.0);

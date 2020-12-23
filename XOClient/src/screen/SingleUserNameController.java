@@ -5,8 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,90 +29,84 @@ import javafx.stage.Stage;
  *
  * @author Dell
  */
-     
 public class SingleUserNameController implements Initializable {
-@FXML 
-private  RadioButton x , o ;
-@FXML 
-private  RadioButton easy , hard ;
-@FXML 
-private  TextField playerName ;
+
+    @FXML
+    private RadioButton x, o;
+    @FXML
+    private RadioButton easy, hard;
+    @FXML
+    private TextField playerName;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
+
     }
-@FXML 
-private void handleStartSinglePlayer (ActionEvent event) 
-{
-     String symbole1 = " ";
-     String symbole2 = " ";
-     
-   if (x.isSelected())
-        {
-             symbole1 = "X";
-             symbole2 = "O";
+
+    @FXML
+    private void handleStartSinglePlayer(ActionEvent event) {
+        String symbole1 = " ";
+        String symbole2 = " ";
+
+        if (x.isSelected()) {
+            symbole1 = "X";
+            symbole2 = "O";
+        } else if (o.isSelected()) {
+            symbole1 = "O";
+            symbole2 = "X";
         }
-   else if(o.isSelected())
-   {
-             symbole1 = "O";
-             symbole2 = "X";
-   }
-   if(playerName.getText().isEmpty() || playerName.getText().contains(" "))
-   {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "your name is required without spaces.", ButtonType.OK);
-                                            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-                                            alert.show();
-   }
-   else if(easy.isSelected())
-   {
-   
-         try {
-             FXMLLoader loader = new FXMLLoader();
-             loader.setLocation(getClass().getResource("/xoClientView/SingleGameBord.fxml"));
-             Parent viewparent = loader.load();
-             Scene viewscene = new Scene(viewparent);
-             SingleGameBordController controller = loader.getController();
-             controller.setText(playerName.getText() , "computer" ,symbole1 ,symbole2 );
-             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-             window.setScene(viewscene);
-             window.show();
-         } catch (IOException ex) {
-             Logger.getLogger(SingleUserNameController.class.getName()).log(Level.SEVERE, null, ex);
-         }
-   }
-   else if(hard.isSelected())
-   {
-         try {
-             FXMLLoader loader = new FXMLLoader();
-             loader.setLocation(getClass().getResource("/xoClientView/HardSingleGameBord.fxml"));
-             Parent viewparent = loader.load();
-             Scene viewscene = new Scene(viewparent);
-             HardSingleGameBordController controller = loader.getController();
-             controller.setText(playerName.getText() , "computer" ,symbole1 ,symbole2 );
-             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-             window.setScene(viewscene);
-             window.show();
-         } catch (IOException ex) {
-             Logger.getLogger(SingleUserNameController.class.getName()).log(Level.SEVERE, null, ex);
-         }
-   }
-   
-}
- @FXML
-    private void back_btn(ActionEvent event) throws IOException{
-      
-        FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
-          Parent viewParent =loader.load();
-          Scene viewscene =new Scene (viewParent);
-          NewGameController controller =loader.getController();
-          Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-          window.setScene(viewscene);
-          window.show();
+        if (playerName.getText().isEmpty() || playerName.getText().contains(" ")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "your name is required without spaces.", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+            alert.show();
+        } else if (easy.isSelected()) {
+
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/xoClientView/SingleGameBord.fxml"));
+                Parent viewparent = loader.load();
+                Scene viewscene = new Scene(viewparent);
+                SingleGameBordController controller = loader.getController();
+                controller.setText(playerName.getText(), "computer", symbole1, symbole2);
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(viewscene);
+                window.show();
+            } catch (IOException ex) {
+                Logger.getLogger(SingleUserNameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (hard.isSelected()) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/xoClientView/HardSingleGameBord.fxml"));
+                Parent viewparent = loader.load();
+                Scene viewscene = new Scene(viewparent);
+                HardSingleGameBordController controller = loader.getController();
+                controller.setText(playerName.getText(), "computer", symbole1, symbole2);
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(viewscene);
+                window.show();
+            } catch (IOException ex) {
+                Logger.getLogger(SingleUserNameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
-    
+
+    @FXML
+    private void back_btn(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
+        Parent viewParent = loader.load();
+        Scene viewscene = new Scene(viewParent);
+        NewGameController controller = loader.getController();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(viewscene);
+        window.show();
+    }
+
 }

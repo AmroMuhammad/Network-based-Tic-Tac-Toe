@@ -5,8 +5,6 @@ package screen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,56 +38,57 @@ public class NewGameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void back_click(ActionEvent event) throws IOException {
-         
-          FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/signIN.fxml"));
-          Parent viewParent =loader.load();
-          Scene viewscene =new Scene (viewParent);
-          SignINController controller =loader.getController();
-          Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-          window.setScene(viewscene);
-          window.show();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/signIN.fxml"));
+        Parent viewParent = loader.load();
+        Scene viewscene = new Scene(viewParent);
+        SignINController controller = loader.getController();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(viewscene);
+        window.show();
     }
-     @FXML
-    private void HandleSinglePlayer(ActionEvent event) throws IOException
-    {
-          FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/SingleUserName.fxml"));
-          Parent viewParent =loader.load();
-          Scene viewscene =new Scene (viewParent);
-          SingleUserNameController controller =loader.getController();
-          Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-          window.setScene(viewscene);
-          window.show();
-    }
+
     @FXML
-    private void HandleLocalPlayers(ActionEvent event) throws IOException
-    {
-          FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/LocalUserNames.fxml"));
-          Parent viewParent =loader.load();
-          Scene viewscene =new Scene (viewParent);
-          LocalUserNamesController controller =loader.getController();
-          Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-          window.setScene(viewscene);
-          window.show();
+    private void HandleSinglePlayer(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/SingleUserName.fxml"));
+        Parent viewParent = loader.load();
+        Scene viewscene = new Scene(viewParent);
+        SingleUserNameController controller = loader.getController();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(viewscene);
+        window.show();
     }
-     @FXML
+
+    @FXML
+    private void HandleLocalPlayers(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/LocalUserNames.fxml"));
+        Parent viewParent = loader.load();
+        Scene viewscene = new Scene(viewParent);
+        LocalUserNamesController controller = loader.getController();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(viewscene);
+        window.show();
+    }
+
+    @FXML
     private void RecordingAction(ActionEvent event) throws IOException {
-       
-         FXMLLoader loader =new FXMLLoader();
-          loader.setLocation(getClass().getResource("/xoClientView/record.fxml"));
-          Parent viewParent =loader.load();
-          Scene viewscene =new Scene (viewParent);
-          RecordController controller =loader.getController();
-          controller.flag_value("network");
-          Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-          window.setScene(viewscene);
-          window.show();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/xoClientView/record.fxml"));
+        Parent viewParent = loader.load();
+        Scene viewscene = new Scene(viewParent);
+        RecordController controller = loader.getController();
+        controller.flag_value("network");
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(viewscene);
+        window.show();
     }
-    
+
 }

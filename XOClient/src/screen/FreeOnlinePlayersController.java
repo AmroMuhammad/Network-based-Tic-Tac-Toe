@@ -61,9 +61,7 @@ public class FreeOnlinePlayersController implements Initializable {
     public static Thread replyThread;
     public static boolean isRequestThreadOn = false;
     public static boolean isReplyThreadOn = false;
-    ///////////////////////////////////////////////////done by AN
     int score;
-    ///////////////////////////////////////////////////done by AN
     @FXML
     private ProgressIndicator waitingIndicator;
 
@@ -71,12 +69,10 @@ public class FreeOnlinePlayersController implements Initializable {
         userName = ENTERController.Name;
     }
 
-    ///////////////////////////////////////////////////done by AN
     public void setScore(int scr) {
         score = scr;
     }
 
-    ///////////////////////////////////////////////////done by AN
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -87,12 +83,10 @@ public class FreeOnlinePlayersController implements Initializable {
             s2 = new Socket(SignINController.serverIP, 5008);
             dis2 = new DataInputStream(s2.getInputStream());
             ps2 = new PrintStream(s2.getOutputStream());
-            System.out.println("opened everything");
             getPlayerListAndPlayRequest();
         } catch (IOException ex) {
             SignIN2Controller.whenServerOff();
             SignIN2Controller.returnToMainPage(listViewOnline);
-            System.out.println("free initialize");
         }
     }
 
@@ -110,7 +104,7 @@ public class FreeOnlinePlayersController implements Initializable {
                     listViewOnline.setFocusTraversable(true);
                     onlineList.add(s);
                 }
-                if(onlineList.isEmpty()){
+                if (onlineList.isEmpty()) {
                     onlineList.add("No one is Currently Online");
                     listViewOnline.setMouseTransparent(true);
                     listViewOnline.setFocusTraversable(false);
@@ -132,7 +126,7 @@ public class FreeOnlinePlayersController implements Initializable {
                     }
                     playingList.add(s);
                 }
-                if(playingList.get(0).equals("null")){
+                if (playingList.get(0).equals("null")) {
                     playingList.remove(0);
                     playingList.add("No one is Currently playing");
                 }
@@ -145,8 +139,6 @@ public class FreeOnlinePlayersController implements Initializable {
     private void handleMouseClickAction(javafx.scene.input.MouseEvent event) throws IOException {
         String opponentName = (String) listViewOnline.getSelectionModel().getSelectedItem();
         if (opponentName == null || opponentName.isEmpty()) {
-            System.out.println("oooops it is empty");
-            System.out.println("if " + userName + " and " + opponentName);
         } else {
             listViewOnline.setMouseTransparent(true);
             listViewOnline.setFocusTraversable(false);
@@ -157,26 +149,20 @@ public class FreeOnlinePlayersController implements Initializable {
                     isRequestThreadOn = true;
                     String sentMsg = new String("DUWTP#" + opponentName + "#" + userName);
                     ps2.println(sentMsg);
-                    System.out.println("pressed on" + opponentName);
                     int d = 0;
                     while (true) {
                         String recievedReqeustMsg = null;
                         try {
-                            System.out.println(++d + "");
                             recievedReqeustMsg = dis2.readLine();
-                            System.out.println(recievedReqeustMsg);
                             parsing(recievedReqeustMsg);
                         } catch (IOException ex) {
                             SignIN2Controller.returnToMainPage(listViewOnline);
-                            System.out.println("free handle mouse");
-                            SignIN2Controller.whenServerOff();   
+                            SignIN2Controller.whenServerOff();
                         }
-                        System.out.println(recievedReqeustMsg);
                         if (parsedOnlineList[0].equals("PREQ") && parsedOnlineList[1].equals("accept") && parsedOnlineList[2].equals(userName)) {
                             Platform.runLater(new Runnable() {
                                 public void run() {
                                     try {
-                                        System.out.println("acception received");
                                         FXMLLoader loader = new FXMLLoader();
                                         loader.setLocation(getClass().getResource("/xoClientView/NetworkGameBoard.fxml"));
                                         Parent viewparent = loader.load();
@@ -203,7 +189,6 @@ public class FreeOnlinePlayersController implements Initializable {
                                 }
                             });
                         } else if (parsedOnlineList[0].equals("PREQ") && parsedOnlineList[1].equals("reject") && parsedOnlineList[2].equals(userName)) {
-                            System.out.println("rejection received");
                             listViewOnline.getSelectionModel().clearSelection();
                             listViewOnline.setMouseTransparent(false);
                             listViewOnline.setFocusTraversable(true);
@@ -211,7 +196,7 @@ public class FreeOnlinePlayersController implements Initializable {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Alert alert = new Alert(Alert.AlertType.ERROR, "The invitation is rejected from "+parsedOnlineList[3], ButtonType.OK);
+                                    Alert alert = new Alert(Alert.AlertType.ERROR, "The invitation is rejected from " + parsedOnlineList[3], ButtonType.OK);
                                     alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                                     alert.show();
                                 }
@@ -252,22 +237,18 @@ public class FreeOnlinePlayersController implements Initializable {
             @Override
             public void run() {
                 SignIN2Controller.ps.println("PLIST");
-                isReplyThreadOn=true;
+                isReplyThreadOn = true;
                 while (true) {
                     try {
-                        System.out.println("welcome from FREEONLINE while");
                         String msg = SignIN2Controller.dis.readLine();
-                        System.out.println("MSG: " + msg);
                         parsing(msg);
                         if (parsedOnlineList[0].equals("DUWTP") && parsedOnlineList[1].equals(userName)) {
 
                             final String oppName = parsedOnlineList[2];
-                            System.out.println("play request for me  " + oppName);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (confirmationToPlay(oppName) == true) {
-                                        System.out.println("acception sent");
                                         String sentMsg = new String("PREQ#accept#" + oppName + "#" + userName);
                                         SignIN2Controller.ps.println(sentMsg);
                                         Platform.runLater(new Runnable() {
@@ -280,14 +261,12 @@ public class FreeOnlinePlayersController implements Initializable {
                                             }
                                         });
                                     } else {
-                                        System.out.println("rejection sent");
                                         String sentMsg = new String("PREQ#reject#" + oppName + "#" + userName);
                                         System.out.println(sentMsg);
-                                        SignIN2Controller.ps.println(sentMsg);
                                     }
                                 }
                             });
-                        } else if (parsedOnlineList[0].equals("PLIST") || parsedOnlineList[0].equals("LIST")  || parsedOnlineList[0].equals("IST")) {
+                        } else if (parsedOnlineList[0].equals("PLIST") || parsedOnlineList[0].equals("LIST") || parsedOnlineList[0].equals("IST")) {
                             loadOnlineToListView();
                             loadPlayingToListView();
                             SignIN2Controller.ps.println("PLIST");
@@ -299,8 +278,7 @@ public class FreeOnlinePlayersController implements Initializable {
                         }
                     } catch (IOException ex) {
                         SignIN2Controller.returnToMainPage(listViewOnline);
-                        System.out.println("free get playerlist");
-                        SignIN2Controller.whenServerOff(); 
+                        SignIN2Controller.whenServerOff();
                     }
                 }
             }
@@ -322,15 +300,13 @@ public class FreeOnlinePlayersController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Playing Confirmation");
         alert.setHeaderText("Playing Confirmation");
-        alert.setContentText("Do you want to play with "+opp+" ?");
+        alert.setContentText("Do you want to play with " + opp + " ?");
         ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            System.out.println("yes");
             return true;
         } else {
-            System.out.println("no");
             return false;
         }
     }

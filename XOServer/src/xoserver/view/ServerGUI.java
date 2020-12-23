@@ -39,14 +39,13 @@ public class ServerGUI extends AnchorPane {
     static boolean isServerOn;
 
     public ServerGUI() {
-        isServerOn=false;
+        isServerOn = false;
         btnOn = new RadioButton();
         btnOff = new RadioButton();
         text = new Text();
         txtServerStatus = new Text();
         group = new ToggleGroup();
 
-        //added part
         databaseConnection = DatabaseConnection.getDatabaseInstance();
         databaseConnection.openConnection();  //initialize database with server
         pieChartData = FXCollections.observableArrayList(
@@ -124,7 +123,7 @@ public class ServerGUI extends AnchorPane {
                 refreshPieChart();
                 usersChart.setVisible(true);
                 databaseConnection.setOpeningServer();
-                isServerOn=true;
+                isServerOn = true;
             }
         });
 
@@ -165,7 +164,6 @@ public class ServerGUI extends AnchorPane {
             @Override
             public void run() {
                 // Update the chart
-
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -179,13 +177,13 @@ public class ServerGUI extends AnchorPane {
     }
 
     public static void closingEverything() throws IOException {
-        if(isServerOn){
+        if (isServerOn) {
             scheduledExecutorService.shutdown();
         }
         MainServer.getInstance().stop();
         MainServer.mainSocket.close();          //stops main server when server is down (so when client enters server he cant send)
         MainServer.getInstance().stopClients(); //stops sockets threads at clients side
         MainServer.deleteInstance();
-        isServerOn=false;
+        isServerOn = false;
     }
 }

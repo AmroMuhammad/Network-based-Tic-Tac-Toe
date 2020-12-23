@@ -59,27 +59,16 @@ public class NetworkRecordController implements Initializable {
     boolean firstItemFlag = true;
     String[] afterCheckMsg;
     public static boolean isThreadOn = false;
-    //int check=0;
 
-    /*public static Socket recordPageSocket;
-    public static DataInputStream disRec;
-    public static PrintStream psRec;*/
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*try {
-            /*recordPageSocket=new Socket(SignINController.serverIP,5008);
-            disRec=new DataInputStream(recordPageSocket.getInputStream());
-            psRec=new PrintStream(recordPageSocket.getOutputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(NetworkRecordController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        //check=0;
         ENTERController.replyThreadEnter.stop();
-        if(FreeOnlinePlayersController.isRequestThreadOn)
+        if (FreeOnlinePlayersController.isRequestThreadOn) {
             FreeOnlinePlayersController.requestThread.stop();
+        }
         getRec();
         getRecThread.start();
     }
@@ -89,10 +78,9 @@ public class NetworkRecordController implements Initializable {
         Button btn = (Button) event.getSource();
         String[] ID = btn.getId().split("n");
         int number = Integer.parseInt(ID[1]);
-        if (((lineParsedMsg.length - (number - 1)) > 0) ) {  //check==1 && 
+        if (((lineParsedMsg.length - (number - 1)) > 0)) {
             lineDividerParser(lineParsedMsg[number - 1]);
             try {
-                //recordParser(dividedLineMsg[2]);
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/xoClientView/OnlineRecordBoard.fxml"));
                 Parent viewParent = loader.load();
@@ -102,10 +90,11 @@ public class NetworkRecordController implements Initializable {
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(viewscene);
                 window.show();
-                //check=1;
             } catch (IOException ex) {
                 Logger.getLogger(NetworkRecordController.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{getRecThread.stop();}
+            } finally {
+                getRecThread.stop();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Empty record");
@@ -142,17 +131,12 @@ public class NetworkRecordController implements Initializable {
                 while (true) {
                     try {
                         recievedMsg = SignIN2Controller.dis.readLine();
-                        System.out.println("RECIEVEDMSG: " + recievedMsg);
                         checkParser(recievedMsg);
-                        if(checkMsg.length>1){
-                        if ((checkMsg[0].equals("TREC") || checkMsg[0].equals("ETREC") || checkMsg[0].equals("GETREC")) && checkMsg[1].equals(ENTERController.Name)) {
-                            lineParser(afterCheckMsg[1]);
-                            System.out.println("line parser size: " + lineParsedMsg.length);
-                            //check=1;
-                            //recordParser(dividedLineMsg[2]);
-                            //lineDividerParser(lineParsedMsg[2]);
-                            //recordParser(dividedLineMsg[2]);
-                        }
+                        if (checkMsg.length > 1) {
+                            if ((checkMsg[0].equals("TREC") || checkMsg[0].equals("ETREC") || checkMsg[0].equals("GETREC")) && checkMsg[1].equals(ENTERController.Name)) {
+                                lineParser(afterCheckMsg[1]);
+                                System.out.println("line parser size: " + lineParsedMsg.length);
+                            }
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(NetworkRecordController.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,28 +148,18 @@ public class NetworkRecordController implements Initializable {
     }
 
     public void checkParser(String msg) {
-        if(msg != null){
-        afterCheckMsg = msg.split("\\@");
-        checkMsg = afterCheckMsg[0].split("\\#");
+        if (msg != null) {
+            afterCheckMsg = msg.split("\\@");
+            checkMsg = afterCheckMsg[0].split("\\#");
         }
     }
 
     public void lineParser(String msg) {
         lineParsedMsg = msg.split("!");
-        for (String s : lineParsedMsg) {
-            System.out.println(s);
-        }
     }
 
     public void lineDividerParser(String msg) {
         dividedLineMsg = msg.split("\\#");
-        for (String s : dividedLineMsg) {
-            System.out.println(s);
-        }
-    }
-
-    public void recordParser(String msg) {
-        recordParsedMsg = msg.split("\\.");
     }
 
 }

@@ -7,19 +7,19 @@ import javafx.scene.control.Button;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Dell
  */
 public class HardLevel {
+
     public static class Move {
 
         public int row, col;
     }
-    
-   public static String player  , opponent ;
-   
+
+    public static String player, opponent;
+
     public static Boolean isMoveLeft(Button board[][]) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -32,7 +32,7 @@ public class HardLevel {
     }
 
     static int minimax(Button board[][], int depth, Boolean isMax) {
-       
+
         int score = Evaluation.evaluate(board);
         if (score == 10) {
             return score;
@@ -87,13 +87,6 @@ public class HardLevel {
                         bestMove.row = i;
                         bestMove.col = j;
                         bestVal = moveVal;
-                        
- //                       try {
- //                           Thread.sleep(1000);
-  //                      } catch (InterruptedException ex) {
-  //                         Logger.getLogger(HardLevel.class.getName()).log(Level.SEVERE, null, ex);
-   //                     }
-                        
                     }
                 }
             }

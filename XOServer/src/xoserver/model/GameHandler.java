@@ -49,8 +49,6 @@ public class GameHandler extends Thread {
         while (true) {
             try {
                 String msg = dis.readLine();
-                System.out.println(msg);
-                //sendMessageToAll(msg);
                 if (msg == null) {
                     checkClientSocket();       //check if userSocket open or not.
                 } else if (parsing(msg) == 1) {
@@ -91,34 +89,27 @@ public class GameHandler extends Thread {
                     System.out.println(msg);
                     sendMessageToAll(msg); //sends players list to player
                 } else if (parsing(msg) == 7) {
-                    //System.out.println("PLAYING"); 
                     setPlaying(parsedMsg[1]);
                 } else if (parsing(msg) == 8) {
-                    //System.out.println("NOT PLAYING");
                     setNotPlaying(parsedMsg[1]);
                 } else if (parsing(msg) == 9) {
-                    //System.out.println("added to the DB: "+parsedMsg[1]+" "+parsedMsg[2]);
                     int scr = Integer.parseInt(parsedMsg[2]);
                     setScore(parsedMsg[1], scr);
                 } else if (parsing(msg) == 10) {
-                    //System.out.println("ISONLINE GH: "+parsedMsg[1]);
                     if (isOnline(parsedMsg[1])) {
                         sendMessageToAll("ONLINE#" + parsedMsg[1]);
                     } else {
                         sendMessageToAll("OFF#" + parsedMsg[1]);
                     }
                 } else if (parsing(msg) == 11) {
-                    setRecord(parsedMsg[1], parsedMsg[2],parsedMsg[3],parsedMsg[4] );
-                }else if (parsing(msg) == 12) {
-                    System.out.println("WELCOME TO THE GET RECORD SECTION");
-                    
+                    setRecord(parsedMsg[1], parsedMsg[2], parsedMsg[3], parsedMsg[4]);
+                } else if (parsing(msg) == 12) {
                     sendMessageToAll(getRecord(parsedMsg[1]));
-                   
-                }
-                else{
+
+                } else {
                     System.out.println("NOT FOUND PARSER");
                 }
-                
+
             } catch (IOException ex) {
                 stop(); //handling exception when closing clients
                 Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,10 +149,8 @@ public class GameHandler extends Thread {
 
     public boolean isOnline(String username) {
         if (databaseConnection.isOnline(username)) {
-            System.out.println("ONLINE TRUE");
             return true;
         }
-        System.out.println("ONLINE FALSE");
         return false;
     }
 
@@ -172,11 +161,11 @@ public class GameHandler extends Thread {
     public void signOutPLayer(String user) {
         databaseConnection.signOutPlayer(user);
     }
-    
-    public void setRecord(String sender, String mainPlayer, String secondPlayer, String gameMoves){
-    databaseConnection.setRecord(sender, mainPlayer, secondPlayer, gameMoves);
+
+    public void setRecord(String sender, String mainPlayer, String secondPlayer, String gameMoves) {
+        databaseConnection.setRecord(sender, mainPlayer, secondPlayer, gameMoves);
     }
-    ////////////////////////////////////////////////////////////////////////////done by me AN
+
     public void setPlaying(String user) {
         databaseConnection.setPlaying(user);
     }
@@ -188,11 +177,11 @@ public class GameHandler extends Thread {
     public void setScore(String user, int scr) {
         databaseConnection.setScore(user, scr);
     }
-    
-    public String getRecord(String reqSender){
-    return databaseConnection.getRecord(reqSender);
+
+    public String getRecord(String reqSender) {
+        return databaseConnection.getRecord(reqSender);
     }
-    ////////////////////////////////////////////////////////////////////////////
+
     public int parsing(String requestMessage) {
         if (requestMessage.equals(null)) {
             return -1;
@@ -211,20 +200,19 @@ public class GameHandler extends Thread {
         } else if (parsedMsg[0].equals("DUWTP") || parsedMsg[0].equals("PREQ")) {
             return 6; //request playing and answer
         } else if (parsedMsg[0].equals("PLN")) {
-            return 7;
+            return 7; //playing
         } else if (parsedMsg[0].equals("NPLN")) {
-            return 8;
+            return 8; //finished Playing
         } else if (parsedMsg[0].equals("SCR")) {
-            return 9;
+            return 9; //score of player
         } else if (parsedMsg[0].equals("ISONLINE")) {
-            return 10;
+            return 10; //is player still online while playing
         } else if (parsedMsg[0].equals("REC")) {
-            return 11;
-        }else if (parsedMsg[0].equals("GETREC")) {
-            return 12;
-        }
-        else {//7=PLN 8=NPLN 9=SCR
-            return 13; //sign out
+            return 11; //save Record in database
+        } else if (parsedMsg[0].equals("GETREC")) {
+            return 12; //get Record from database
+        } else {
+            return 13;
         }
     }
 
@@ -233,7 +221,6 @@ public class GameHandler extends Thread {
     }
 
     public String getPlayersList() {
-        System.out.println(databaseConnection.getOnlinePlayersList() + "." + databaseConnection.getPlayingPlayersList());
         return databaseConnection.getOnlinePlayersList() + "." + databaseConnection.getPlayingPlayersList();
     }
 

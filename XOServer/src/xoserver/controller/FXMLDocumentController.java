@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
  * @author Amr
  */
 public class FXMLDocumentController implements Initializable {
-    
+
     private Label label;
     @FXML
     private RadioButton btnOn;
@@ -35,16 +35,16 @@ public class FXMLDocumentController implements Initializable {
     private TextField txtTest1;
     @FXML
     private TextField txtTest2;
-    
+
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }
