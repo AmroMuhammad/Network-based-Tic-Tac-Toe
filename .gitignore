@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+/XOServer/build/
+/XOServer/dist/
+/XOServer/nbproject/private/
+/XOClient/build/
 /XOClient/dist/
 /XOClient/nbproject/private/
-||||||| c1f8a9c
-=======
-/XOClient/dist/
->>>>>>> localGame
-/XOServer/dist/
