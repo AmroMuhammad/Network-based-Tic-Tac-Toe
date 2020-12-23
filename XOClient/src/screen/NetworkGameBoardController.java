@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -65,13 +67,14 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     public static Thread th;
     public static boolean isPlayThreadOn=false;
     String[] parsedMsg;
+    boolean onlineFlag = true;
 
     private String startGame;
     private int xoWinner = 0;
     private int xCount = 0;
     private int oCount = 0;
     int butttonUsed[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-
+    int check = 0;//remove it after the trial
     //0 first player
     //1 second player
     //empty
@@ -83,7 +86,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     };
     String gameMoves = "";
     boolean secPlayer = false;
-
+    
     //////////////////////////////////////////////////////////////////////////////
     public void setText(String text1, String text2, String text3, String text4, String opponent, String player, int score) {
         player1.setText(text1);
@@ -105,6 +108,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         }
         SignIN2Controller.ps.println("PLN#" + mainPlayer);
         SignIN2Controller.ps.println("PLN#" + opponent);
+        //isOpponentOnline();
     }
     //////////////////////////////////////////////////////////////////////////////
 
@@ -151,31 +155,35 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
     @FXML
     private void Btn(ActionEvent event) {
-        Platform.runLater(() -> {
-            Button btn = (Button) event.getSource();
-            String[] ID = btn.getId().split("n");
-            int number = Integer.parseInt(ID[1]);
-            if (butttonUsed[number - 1] == 0) {
-                btn.setText(startGame);
-                gameMoves += number + "#";
-                gameMoves += startGame;
-                gameMoves += "#";
-                //System.out.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent);
-                SignIN2Controller.ps.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent + "#" + xoWinner);
+        /*if(check==3){
+        SignIN2Controller.ps.println("SOUT#"+opponent);
+        }
+        check++;*/
+        SignIN2Controller.ps.println("ISONLINE#" + opponent);
+        Button btn = (Button) event.getSource();
+        String[] ID = btn.getId().split("n");
+        int number = Integer.parseInt(ID[1]);
+        if (butttonUsed[number - 1] == 0) {
+            btn.setText(startGame);
+            gameMoves += number + "#";
+            gameMoves += startGame;
+            gameMoves += "#";
 
-                //System.out.println("after press: " + xoWinner);
-                butttonUsed[number - 1] = 1;
-                gameState[number - 1] = xoWinner;
-                winnerGame();
-                choese();
+            //System.out.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent);
+            SignIN2Controller.ps.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent + "#" + xoWinner);
+            //System.out.println("after press: " + xoWinner);
+            butttonUsed[number - 1] = 1;
+            gameState[number - 1] = xoWinner;
+            winnerGame();
+            choese();
 
-                /*for (int arr : gameState) {
+            /*for (int arr : gameState) {
                     System.out.print(arr);
                 }
                 System.out.println("");*/
-                disable();
-            }
-        });
+            disable();
+        }
+
     }
 
     private void choese() {
@@ -193,7 +201,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         for (int[] win : winningPositions) {
             if (gameState[win[0]] == gameState[win[1]] && gameState[win[1]] == gameState[win[2]] && gameState[win[0]] != 2) {
                 flag = false;
-                System.out.println("gameMoves WON: " + xoWinner);
+                System.out.println("gameMoves WON: " + gameMoves);
                 if (xoWinner == 0) {
                     player1Score++;
                     player2Score--;
@@ -210,12 +218,12 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
                 }
                 if (!secPlayer) {
-                //controller.nPlayerScore(player1Score);
-                SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player1Score);
-            } else {
-                //controller.nPlayerScore(player2Score);
-                SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
-            }
+                    //controller.nPlayerScore(player1Score);
+                    SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player1Score);
+                } else {
+                    //controller.nPlayerScore(player2Score);
+                    SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
+                }
 
                 disable();
                 VidioShow();
@@ -226,6 +234,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
             alert.show();
             disable();
+            move("DRAW");
 
         }
 
@@ -362,16 +371,20 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (onlineFlag) {
             String msg;
             String sign;
             int pos;
-
+            //SignIN2Controller.ps.println("ISONLINE#" + opponent);
             try {
                 msg = SignIN2Controller.dis.readLine();
                 //println("recieved MSG: " + msg);
                 parsing(msg);
-                if (parsedMsg[0].equals("GAME") && parsedMsg[5].equals(mainPlayer)) {
+                if (parsedMsg[0].equals("OFF") && parsedMsg[1].equals(opponent)) {//don't forget to send the name of the opponent 
+                    downOpponent();
+                    disable();
+                    break;
+                } else if (parsedMsg[0].equals("GAME") && parsedMsg[5].equals(mainPlayer)) {
                     //xoWinner=1;
                     enableBtns();
                     sign = parsedMsg[2];
@@ -398,12 +411,64 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         }
     }
 
+    public void downOpponent() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Opponent withdraw");
+                alert.setContentText("You won, your opponent has been withdrawn");
+                alert.show();
+                ButtonType buttonTypeAccept = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                move("DOWN");
+            }
+        });
+
+    }
+
+    public void move(String calledFrom) {
+        try {
+            SignIN2Controller.ps.println("NPLN#" + mainPlayer);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/xoClientView/ENTER.fxml"));
+            Parent viewParent = loader.load();
+            Scene viewscene = new Scene(viewParent);
+            ENTERController controller = loader.getController();
+            if (!secPlayer) {
+                if(calledFrom.equals("DOWN"))
+                player1Score++;
+                controller.nPlayerScore(player1Score);
+                SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player1Score);
+
+            } else {
+                if(calledFrom.equals("DOWN"))
+                player2Score++;
+                controller.nPlayerScore(player2Score);
+                SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
+
+            }
+            controller.nPlayerName(name);
+
+            Stage window = (Stage) pane2.getScene().getWindow();
+            window.setScene(viewscene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            th.stop();
+        }
+    }
+
     public void parsing(String recievedMsg) {
+
         if(recievedMsg == (null)){
             SignIN2Controller.returnToMainPage(Btns);
             SignIN2Controller.whenServerOff();
             System.out.println("here we are");
-        }
-        parsedMsg = recievedMsg.split("\\#");
+        }else{
+
+        //System.out.println("RECMSG: " + recievedMsg);
+
+        parsedMsg = recievedMsg.split("\\#");}
     }
 }
