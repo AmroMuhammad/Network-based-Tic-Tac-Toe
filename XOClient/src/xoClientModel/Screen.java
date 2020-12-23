@@ -21,6 +21,7 @@ import screen.ENTERController;
 import screen.SignIN2Controller;
 import screen.FreeOnlinePlayersController;
 import screen.NetworkGameBoardController;
+import xoClientView.NetworkRecordController;
 
 public class Screen extends Application {
 
@@ -48,17 +49,20 @@ public class Screen extends Application {
                         SignIN2Controller.dis.close();
                         SignIN2Controller.ps.close();
                         SignIN2Controller.sClient.close();
-                        if (FreeOnlinePlayersController.isReplyThreadOn){
+                        if (FreeOnlinePlayersController.isReplyThreadOn) {
                             FreeOnlinePlayersController.replyThread.stop();
                         }
-                        if(FreeOnlinePlayersController.isRequestThreadOn){
+                        if (FreeOnlinePlayersController.isRequestThreadOn) {
                             FreeOnlinePlayersController.requestThread.stop();
                         }
-                        if(NetworkGameBoardController.isPlayThreadOn){
+                        if (NetworkGameBoardController.isPlayThreadOn) {
                             NetworkGameBoardController.th.stop();
                         }
-                        if(ENTERController.isReplyThreadEnterOn){
+                        if (ENTERController.isReplyThreadEnterOn) {
                             ENTERController.replyThreadEnter.stop();
+                        }
+                        if (NetworkRecordController.isThreadOn) {
+                            NetworkRecordController.getRecThread.stop();
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);

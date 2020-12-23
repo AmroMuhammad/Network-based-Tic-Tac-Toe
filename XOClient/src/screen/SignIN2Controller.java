@@ -69,6 +69,7 @@ public class SignIN2Controller implements Initializable {
         } catch (IOException ex) {
             SignIN2Controller.whenServerOff();
             SignIN2Controller.returnToMainPage(password_txt);
+            System.out.println("initialize signin2");
         }
         // TODO
 
@@ -152,6 +153,7 @@ public class SignIN2Controller implements Initializable {
                     } catch (IOException ex) {
                         whenServerOff();
                         returnToMainPage(signIN_btn);
+                        System.out.println("signin2 signin click");
                     } finally {
                         signInThread.stop();
                     }
@@ -202,6 +204,7 @@ public class SignIN2Controller implements Initializable {
                 NetworkGameBoardController.th.stop();
             }
         } catch (IOException ex) {
+            System.out.println("WHEN SERVER OFF");
             Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -224,6 +227,7 @@ public class SignIN2Controller implements Initializable {
                     window.show();
                 } catch (IOException ex) {
                     Platform.exit();
+                    System.out.println("RETURN TO MAIN PAGE");
                     //Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

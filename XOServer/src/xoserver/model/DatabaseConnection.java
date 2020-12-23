@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class DatabaseConnection {
     private Connection con;
     private static DatabaseConnection databaseObject;
     private PreparedStatement pst;
+    private PreparedStatement pst1;
     private Statement stmt;
     private ResultSet rs;
     public static Vector<String> playerList;
@@ -225,36 +227,35 @@ public class DatabaseConnection {
 
     public void setScore(String user, int scr) {
         try {
-            pst = con.prepareStatement("update AMR.users set SCORE=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+            pst1 = con.prepareStatement("update AMR.users set SCORE=? where username=?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            pst.setInt(1, scr);
-            pst.setString(2, user);
-            pst.executeUpdate();
+            pst1.setInt(1, scr);
+            pst1.setString(2, user);
+            pst1.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    
-    public boolean isOnline(String username){
+    public boolean isOnline(String username) {
         //System.out.println("HI FROM ISONLINE DB");
-        boolean onlineStatus=false;
-    try {
+        boolean onlineStatus = false;
+        try {
             pst = con.prepareStatement("select STATUS from AMR.users where username = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             pst.setString(1, username);
             rs = pst.executeQuery();
             rs.next();
-                //System.out.println("STATUS:" +rs.getBoolean("status"));
-                onlineStatus=rs.getBoolean(1);
+            //System.out.println("STATUS:" +rs.getBoolean("status"));
+            onlineStatus = rs.getBoolean(1);
             rs.close();
             pst.close();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    return onlineStatus;
+
+        return onlineStatus;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -352,4 +353,45 @@ public class DatabaseConnection {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    ////////////////////////////////////////////////////// user REC
+    public void setRecord(String sender, String mainPlayer, String secondPlayer, String gameMoves){
+     try {
+            pst = con.prepareStatement("insert into AMR.userrecording (mainuser,secuser,record,sender) VALUES (?,?,?,?)");
+            pst.setString(1, mainPlayer);
+            pst.setString(2, secondPlayer);
+            pst.setString(3, gameMoves);
+            pst.setString(4, sender);
+            pst.executeUpdate();
+            //pst.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public String getRecord(String reqSender){
+        boolean firstTimeFlag=true;
+        String gameMoves="GETREC#";
+        ArrayList<String> recList=new ArrayList<>();
+        int i=0;
+        try {
+            pst = con.prepareStatement("select mainuser, secuser, record,sender from AMR.userrecording where sender = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);    //solved rollback exception and delay time
+            pst.setString(1, reqSender);
+            rs = pst.executeQuery();
+            rs.afterLast();
+            while (rs.previous()&&i<5) {
+                if(firstTimeFlag){
+                gameMoves+=rs.getString(4)+"@";
+                firstTimeFlag=false;}
+                gameMoves+=rs.getString(1)+"#"+rs.getString(2)+"#"+rs.getString(3)+"!";
+                i++;
+            }
+            
+            System.out.println("GAMEMOVES FROM DB: "+gameMoves);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return gameMoves;
+    }
+    //////////////////////////////////////////////////////
 }

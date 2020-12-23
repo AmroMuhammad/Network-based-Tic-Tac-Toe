@@ -107,8 +107,18 @@ public class GameHandler extends Thread {
                     } else {
                         sendMessageToAll("OFF#" + parsedMsg[1]);
                     }
-
+                } else if (parsing(msg) == 11) {
+                    setRecord(parsedMsg[1], parsedMsg[2],parsedMsg[3],parsedMsg[4] );
+                }else if (parsing(msg) == 12) {
+                    System.out.println("WELCOME TO THE GET RECORD SECTION");
+                    
+                    sendMessageToAll(getRecord(parsedMsg[1]));
+                   
                 }
+                else{
+                    System.out.println("NOT FOUND PARSER");
+                }
+                
             } catch (IOException ex) {
                 stop(); //handling exception when closing clients
                 Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -162,7 +172,10 @@ public class GameHandler extends Thread {
     public void signOutPLayer(String user) {
         databaseConnection.signOutPlayer(user);
     }
-
+    
+    public void setRecord(String sender, String mainPlayer, String secondPlayer, String gameMoves){
+    databaseConnection.setRecord(sender, mainPlayer, secondPlayer, gameMoves);
+    }
     ////////////////////////////////////////////////////////////////////////////done by me AN
     public void setPlaying(String user) {
         databaseConnection.setPlaying(user);
@@ -175,7 +188,10 @@ public class GameHandler extends Thread {
     public void setScore(String user, int scr) {
         databaseConnection.setScore(user, scr);
     }
-
+    
+    public String getRecord(String reqSender){
+    return databaseConnection.getRecord(reqSender);
+    }
     ////////////////////////////////////////////////////////////////////////////
     public int parsing(String requestMessage) {
         if (requestMessage.equals(null)) {
@@ -202,8 +218,13 @@ public class GameHandler extends Thread {
             return 9;
         } else if (parsedMsg[0].equals("ISONLINE")) {
             return 10;
-        } else {//7=PLN 8=NPLN 9=SCR
-            return 11; //sign out
+        } else if (parsedMsg[0].equals("REC")) {
+            return 11;
+        }else if (parsedMsg[0].equals("GETREC")) {
+            return 12;
+        }
+        else {//7=PLN 8=NPLN 9=SCR
+            return 13; //sign out
         }
     }
 

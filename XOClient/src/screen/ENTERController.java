@@ -25,6 +25,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import xoClientView.NetworkRecordController;
 
 /**
  * FXML Controller class
@@ -46,7 +47,7 @@ public class ENTERController implements Initializable {
     public static boolean isReplyThreadEnterOn;
     String[] parsedMsg;
     ///////////////////////////////////////////done by AN
-    int playerScore;
+    public static int playerScore;
     ///////////////////////////////////////////done by AN
     public static boolean isOnline = false;
 
@@ -75,13 +76,12 @@ public class ENTERController implements Initializable {
 
     @FXML
     private void recordAction(ActionEvent event) throws IOException {
-
+        replyThreadEnter.stop();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/xoClientView/record.fxml"));
+        loader.setLocation(getClass().getResource("/xoClientView/NetworkRecord.fxml"));
         Parent viewParent = loader.load();
         Scene viewscene = new Scene(viewParent);
-        RecordController controller = loader.getController();
-        controller.flag_value("guest");
+        xoClientView.NetworkRecordController controller =loader.getController();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();
@@ -91,7 +91,7 @@ public class ENTERController implements Initializable {
     private void log_out(ActionEvent event) {
 
         try {
-            replyThreadEnter.stop();
+            
             String logoutMessage = "SOUT#" + Name;
             SignIN2Controller.ps.println(logoutMessage);
             SignIN2Controller.dis.close();
@@ -105,16 +105,20 @@ public class ENTERController implements Initializable {
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(viewscene);
             window.show();
+            replyThreadEnter.stop();
+            if (NetworkRecordController.isThreadOn){
+            NetworkRecordController.getRecThread.stop();
+            }
         } catch (IOException ex) {
-            SignIN2Controller.whenServerOff();
-            SignIN2Controller.returnToMainPage(newGame_txt);
+            System.out.println("FROM EXCEPTION");
+           // SignIN2Controller.whenServerOff();
+            //SignIN2Controller.returnToMainPage(newGame_txt);
         }
     }
 
     @FXML
     private void NewGameAction(ActionEvent event) {
         try {
-            replyThreadEnter.stop();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/xoClientView/FreeOnlinePlayers.fxml"));
             Parent viewParent = loader.load();
@@ -130,7 +134,7 @@ public class ENTERController implements Initializable {
         } catch (IOException ex) {
             SignIN2Controller.whenServerOff();
             SignIN2Controller.returnToMainPage(newGame_txt);
-            System.out.println("catch in here");
+            System.out.println("enter new game action");
         }
     }
 
@@ -155,7 +159,7 @@ public class ENTERController implements Initializable {
                 isReplyThreadEnterOn = true;
                 while (true) {
                     try {
-                        System.out.println("welcome from while");
+                        System.out.println("welcome from ENTER while");
                         String msg = SignIN2Controller.dis.readLine();
                         System.out.println("MSG: " + msg);
                         parsing(msg);
@@ -194,7 +198,9 @@ public class ENTERController implements Initializable {
                             Logger.getLogger(FreeOnlinePlayersController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } catch (IOException ex) {
-                        SignIN2Controller.returnToMainPage(playerName);
+                        System.out.println("hello from here");
+                        //SignIN2Controller.returnToMainPage(playerName);
+                        System.out.println("enter get play req.");
                         SignIN2Controller.whenServerOff();
                     }
                 }
@@ -206,6 +212,7 @@ public class ENTERController implements Initializable {
     public void parsing(String recievedMsg) {
         if (recievedMsg == (null)) {
             SignIN2Controller.returnToMainPage(playerName);
+            System.out.println("enter parsing");
             SignIN2Controller.whenServerOff();
             System.out.println("here we are");
         } else {

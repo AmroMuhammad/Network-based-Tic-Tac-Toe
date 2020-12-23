@@ -65,7 +65,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     String name;
     String opponent, mainPlayer;
     public static Thread th;
-    public static boolean isPlayThreadOn=false;
+    public static boolean isPlayThreadOn = false;
     String[] parsedMsg;
     boolean onlineFlag = true;
 
@@ -84,9 +84,10 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
         {0, 4, 8}, {2, 4, 6}
     };
-    String gameMoves = "";
+    String gameMoves = "REC#";
     boolean secPlayer = false;
-    
+    boolean recFlag = false;
+
     //////////////////////////////////////////////////////////////////////////////
     public void setText(String text1, String text2, String text3, String text4, String opponent, String player, int score) {
         player1.setText(text1);
@@ -98,6 +99,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         this.opponent = opponent;
         mainPlayer = player;
         player1Score = score;
+
         System.out.println("SCORE 1: " + score);
         if (opponent.equals(text1)) {
             name = player;
@@ -108,13 +110,15 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         }
         SignIN2Controller.ps.println("PLN#" + mainPlayer);
         SignIN2Controller.ps.println("PLN#" + opponent);
-        //isOpponentOnline();
+        gameMoves += name + "#";
+        gameMoves += text1 + "#" + text2 + "#";
+        recReq(name);
     }
     //////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        isPlayThreadOn=true;
+        isPlayThreadOn = true;
         pane2.setVisible(false);
         th = new Thread(this);
         th.start();
@@ -145,6 +149,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         } catch (IOException ex) {
             mediaPlayer.stop();
             SignIN2Controller.returnToMainPage(Done_Btn);
+            System.out.println("network done btn");
             mediaPlayer.stop();
             SignIN2Controller.whenServerOff();
             mediaPlayer.stop();
@@ -165,9 +170,9 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         int number = Integer.parseInt(ID[1]);
         if (butttonUsed[number - 1] == 0) {
             btn.setText(startGame);
-            gameMoves += number + "#";
+            gameMoves += number + ".";
             gameMoves += startGame;
-            gameMoves += "#";
+            gameMoves += ".";
 
             //System.out.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent);
             SignIN2Controller.ps.println("GAME#SIGN#" + startGame + "#POS#" + number + "#" + opponent + "#" + xoWinner);
@@ -224,7 +229,9 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                     //controller.nPlayerScore(player2Score);
                     SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
                 }
-
+                if (recFlag) {
+                    SignIN2Controller.ps.println(gameMoves);
+                }
                 disable();
                 VidioShow();
             }
@@ -233,6 +240,9 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "NO Players wins ", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
             alert.show();
+            if (recFlag) {
+                SignIN2Controller.ps.println(gameMoves);
+            }
             disable();
             move("DRAW");
 
@@ -395,9 +405,9 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                         Button btn;
                         btn = getBtn(pos);
                         btn.setText(sign);
-                        gameMoves += pos + "#";
+                        gameMoves += pos + ".";
                         gameMoves += sign;
-                        gameMoves += "#";
+                        gameMoves += ".";
 
                         winnerGame();
                         choese();
@@ -406,6 +416,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             } catch (IOException ex) {
                 System.out.println("catch error in network");
                 SignIN2Controller.returnToMainPage(Btns);
+                System.out.println("network run");
                 SignIN2Controller.whenServerOff();
             }
         }
@@ -435,14 +446,16 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             Scene viewscene = new Scene(viewParent);
             ENTERController controller = loader.getController();
             if (!secPlayer) {
-                if(calledFrom.equals("DOWN"))
-                player1Score++;
+                if (calledFrom.equals("DOWN")) {
+                    player1Score++;
+                }
                 controller.nPlayerScore(player1Score);
                 SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player1Score);
 
             } else {
-                if(calledFrom.equals("DOWN"))
-                player2Score++;
+                if (calledFrom.equals("DOWN")) {
+                    player2Score++;
+                }
                 controller.nPlayerScore(player2Score);
                 SignIN2Controller.ps.println("SCR#" + mainPlayer + "#" + player2Score);
 
@@ -461,14 +474,47 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
     public void parsing(String recievedMsg) {
 
-        if(recievedMsg == (null)){
+        if (recievedMsg == (null)) {
             SignIN2Controller.returnToMainPage(Btns);
+            System.out.println("network parsing");
             SignIN2Controller.whenServerOff();
             System.out.println("here we are");
-        }else{
+        } else {
 
-        //System.out.println("RECMSG: " + recievedMsg);
-
-        parsedMsg = recievedMsg.split("\\#");}
+            //System.out.println("RECMSG: " + recievedMsg);
+            parsedMsg = recievedMsg.split("\\#");
+        }
     }
+
+    public void recReq(String name) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Playing recording");
+        alert.setHeaderText("recording Confirmation");
+        alert.setContentText("Do you want to record this game?");
+        ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeCancel = new ButtonType("Reject", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println("accept record");
+            if (secPlayer) {
+                recFlag = true;
+                System.out.println("SECOND PLAYER ACCEPTED: " + name);
+
+            } else {
+                recFlag = true;
+                System.out.println("MAIN PLAYER ACCEPTED: " + name);
+            }
+        } else {
+            System.out.println("refused");
+            if (secPlayer) {
+                recFlag = false;
+                System.out.println("SECOND PLAYER REJECTED: " + name);
+            } else {
+                recFlag = false;
+                System.out.println("MAIN PLAYER REJECTED: " + name);
+            }
+
+        }
+    }
+
 }

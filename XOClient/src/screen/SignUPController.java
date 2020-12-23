@@ -128,6 +128,7 @@ public class SignUPController implements Initializable {
                     } catch (IOException ex) {
                         SignIN2Controller.whenServerOff();
                         SignIN2Controller.returnToMainPage(name_text);
+                        System.out.println("sign up anony thread");
                     }
                 }
             });

@@ -34,6 +34,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javax.swing.JPanel;
+import static screen.ENTERController.replyThreadEnter;
 
 /**
  * FXML Controller class
@@ -79,6 +80,7 @@ public class FreeOnlinePlayersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            replyThreadEnter.stop();
             listViewPlaying.setMouseTransparent(true);
             listViewPlaying.setFocusTraversable(false);
             waitingIndicator.setVisible(false);
@@ -90,6 +92,7 @@ public class FreeOnlinePlayersController implements Initializable {
         } catch (IOException ex) {
             SignIN2Controller.whenServerOff();
             SignIN2Controller.returnToMainPage(listViewOnline);
+            System.out.println("free initialize");
         }
     }
 
@@ -165,6 +168,7 @@ public class FreeOnlinePlayersController implements Initializable {
                             parsing(recievedReqeustMsg);
                         } catch (IOException ex) {
                             SignIN2Controller.returnToMainPage(listViewOnline);
+                            System.out.println("free handle mouse");
                             SignIN2Controller.whenServerOff();   
                         }
                         System.out.println(recievedReqeustMsg);
@@ -251,7 +255,7 @@ public class FreeOnlinePlayersController implements Initializable {
                 isReplyThreadOn=true;
                 while (true) {
                     try {
-                        System.out.println("welcome from while");
+                        System.out.println("welcome from FREEONLINE while");
                         String msg = SignIN2Controller.dis.readLine();
                         System.out.println("MSG: " + msg);
                         parsing(msg);
@@ -295,6 +299,7 @@ public class FreeOnlinePlayersController implements Initializable {
                         }
                     } catch (IOException ex) {
                         SignIN2Controller.returnToMainPage(listViewOnline);
+                        System.out.println("free get playerlist");
                         SignIN2Controller.whenServerOff(); 
                     }
                 }

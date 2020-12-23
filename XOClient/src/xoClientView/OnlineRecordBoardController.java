@@ -13,9 +13,14 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import screen.FreeOnlinePlayersController;
 import screen.GameBordController;
 import screen.SignIN2Controller;
@@ -53,15 +58,15 @@ public class OnlineRecordBoardController implements Initializable {
     private Button Btn6;
     @FXML
     private Button Btn9;
-    @FXML
-    private Button btnShow;
-    String gameMoves = "1#X#5#O#4#X#2#O#7#X";
+    String gameMoves = "1.X.5.O.4.X.2.O.7.X.";
     //String gameMoves = "1#1#5#1#4#1#2#1#7#1";
     String[] parsedMoves;
     Thread recordThread;
     int i = 0;
     Button btn = new Button();
     boolean flag=true;
+    @FXML
+    private Button backBtn;
 
     /**
      * Initializes the controller class.
@@ -69,16 +74,36 @@ public class OnlineRecordBoardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        show();
 
     }
 
+    public void setText(String firstPlayer, String secPlayer,String firstSymbol,String secSymbol, String moves){
+    player1.setText(firstPlayer);
+    player2.setText(secPlayer);
+    this.player1Symbol.setText(firstSymbol);
+    this.player2Symbol.setText(secSymbol);
+    gameMoves=moves;
+    }
     @FXML
     private void Back_btn(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/xoClientView/NetworkRecord.fxml"));
+            Parent viewParent = loader.load();
+            Scene viewscene = new Scene(viewParent);
+            xoClientView.NetworkRecordController controller =loader.getController();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(viewscene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    @FXML
-    private void btnAction(ActionEvent event) {
-        parser(gameMoves);
+  
+    public void show (){
+    parser(gameMoves);
 
         for (i = 0; i < parsedMoves.length; i += 2) {
             if(parsedMoves[i + 1].equals("O")){
@@ -87,111 +112,7 @@ public class OnlineRecordBoardController implements Initializable {
             else if(parsedMoves[i + 1].equals("X")){
             flag=true;
             }
-            /*Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
             
-                
-                btn = getBtn(Integer.parseInt(parsedMoves[i]));
-                System.out.println("POS: " + parsedMoves[i]);
-                System.out.println("SIGN: " + parsedMoves[i + 1]);
-                
-                
-                btn.setText(parsedMoves[i + 1]);
-                
-              
-                }*/
-
-            //System.out.println(move);
-            /*switch (Integer.parseInt(parsedMoves[i])) {
-                case 1:
-                    Btn1.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 2:
-                    Btn2.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 3:
-                    Btn3.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 4:
-                    Btn4.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 5:
-                    Btn5.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 6:
-                    Btn6.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 7:
-                    Btn7.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 8:
-                    Btn8.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case 9:
-                    Btn9.setText(parsedMoves[i + 1]);
-                    try {
-                        Thread.sleep(500);
-                        //System.out.println(parsedMoves.length);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(OnlineRecordBoardController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-
-            }
-
-            //});
-            if (i == 8) {
-                break;
-            }*/
         }
         
         new Thread(new Runnable() {
@@ -335,7 +256,7 @@ public class OnlineRecordBoardController implements Initializable {
                 else
                    flag = true;
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     } catch (InterruptedException ex) {
                 Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -385,7 +306,7 @@ public class OnlineRecordBoardController implements Initializable {
 
     private void parser(String moves) {
 
-        parsedMoves = moves.split("\\#");
+        parsedMoves = moves.split("\\.");
         for (String pars : parsedMoves) {
             System.out.println("PARSED: " + pars);
         }
