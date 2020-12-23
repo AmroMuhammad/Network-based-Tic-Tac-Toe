@@ -124,7 +124,7 @@ public class SignINController implements Initializable {
         try {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Dialog");
-            dialog.setContentText("Please enter the ip :");
+            dialog.setContentText("Please enter the server IP address :");
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
                 System.out.println("the ip " + result.get());
@@ -156,7 +156,7 @@ public class SignINController implements Initializable {
                 window.show();
 
             } catch (SocketTimeoutException exception) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "this server not found.", ButtonType.OK);
+                Alert alert = new Alert(Alert.AlertType.ERROR, "This server is not found.", ButtonType.OK);
                 alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                 alert.show();
             } catch (IOException ex) {
@@ -168,7 +168,7 @@ public class SignINController implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error ");
             alert.setHeaderText("Look, an Error Dialog");
-            alert.setContentText("Ooops,wrong ip");
+            alert.setContentText("Ooops, Wrong IP");
 
             alert.showAndWait();
 

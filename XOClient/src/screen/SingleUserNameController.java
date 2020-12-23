@@ -60,7 +60,7 @@ public class SingleUserNameController implements Initializable {
             symbole2 = "X";
         }
         if (playerName.getText().isEmpty() || playerName.getText().contains(" ")) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "your name is required without spaces.", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your name is required without spaces.", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
             alert.show();
         } else if (easy.isSelected()) {

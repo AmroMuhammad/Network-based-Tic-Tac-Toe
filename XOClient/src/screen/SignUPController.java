@@ -101,7 +101,7 @@ public class SignUPController implements Initializable {
                             public void run() {
                                 if (!msg.equals("Register Confirmed")) {
 
-                                    Alert alert = new Alert(Alert.AlertType.ERROR, "This data is already exist. ", ButtonType.OK);
+                                    Alert alert = new Alert(Alert.AlertType.ERROR, "This data is already exist.", ButtonType.OK);
                                     alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                                     alert.show();
                                 } else {

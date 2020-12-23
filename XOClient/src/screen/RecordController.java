@@ -92,7 +92,7 @@ public class RecordController implements Initializable {
                 window.setScene(viewscene);
                 window.show();
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No game recording available.", ButtonType.OK);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No game recording is available", ButtonType.OK);
                 alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                 alert.show();
                 flag_switch = false;

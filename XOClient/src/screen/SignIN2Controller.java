@@ -125,7 +125,7 @@ public class SignIN2Controller implements Initializable {
                                         alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                                         alert.show();
                                     } else {
-                                        Alert alert = new Alert(Alert.AlertType.ERROR, "invalid username or password", ButtonType.OK);
+                                        Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid username or password", ButtonType.OK);
                                         alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
                                         alert.show();
                                     }
@@ -204,7 +204,6 @@ public class SignIN2Controller implements Initializable {
                 NetworkGameBoardController.th.stop();
             }
         } catch (IOException ex) {
-            System.out.println("WHEN SERVER OFF");
             Logger.getLogger(SignIN2Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
