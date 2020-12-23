@@ -134,7 +134,7 @@ public class DatabaseConnection {
         int online = 0;
         try {
 
-            pst = con.prepareStatement("select * from AMR.users where status=true and playstatus=false", ResultSet.TYPE_SCROLL_SENSITIVE,
+            pst = con.prepareStatement("select * from AMR.users where status=true", ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             rs = pst.executeQuery();
             rs.beforeFirst();

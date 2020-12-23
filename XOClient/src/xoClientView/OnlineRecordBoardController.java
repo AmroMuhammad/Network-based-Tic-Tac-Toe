@@ -73,7 +73,7 @@ public class OnlineRecordBoardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // TODO    
         show();
 
     }
@@ -105,7 +105,7 @@ public class OnlineRecordBoardController implements Initializable {
     public void show (){
     parser(gameMoves);
 
-        for (i = 0; i < parsedMoves.length; i += 2) {
+        for (i = 0; i < parsedMoves.length-1; i += 2) {
             if(parsedMoves[i + 1].equals("O")){
             flag=false;
             }
@@ -117,7 +117,7 @@ public class OnlineRecordBoardController implements Initializable {
         
         new Thread(new Runnable() {
             public void run(){
-           for(int i = 0; i<parsedMoves.length ;i+=2)
+           for(int i = 0; i<parsedMoves.length-1;i+=2)
                { 
                  switch (Integer.parseInt(parsedMoves[i])) {
                             case 1:
