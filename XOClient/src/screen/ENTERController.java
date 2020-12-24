@@ -201,7 +201,7 @@ public class ENTERController implements Initializable {
     public void showBoardForOpponent(String opp, String mainPlayer) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/NetworkRecord/NetworkGameBoard.fxml"));
+            loader.setLocation(getClass().getResource("/xoClientView/NetworkGameBoard.fxml"));
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
             NetworkGameBoardController controller = loader.getController();

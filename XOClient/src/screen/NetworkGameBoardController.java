@@ -232,15 +232,17 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             }
         }
         if (isDraw() && flag) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "That's a Draw", ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
-            alert.show();
+           path = "/screen/drawVideo.mp4";
+           Show(path);
+           xoWinner=2;
             if (recFlag) {
                 SignIN2Controller.ps.println(gameMoves);
             }
-            path="/screen/drawVideo.mp4";
             disable();
-            move("DRAW");
+            
+           VidioShow();
+            
+            
         }
 
     }
@@ -314,8 +316,15 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                     winner_loser_txt.setText(player1.getText() + " is loser");
                     path = "/screen/lossingVideo.mp4";
                 }
+                break;
             }
-            break;
+            case 2: {
+            winner_loser_txt.setText("that's a draw");
+            path = "/screen/drawVideo.mp4";
+                Show(path);
+                
+            }
+            
         }
 
         Timer timer = new Timer();
@@ -337,6 +346,35 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         };
         timer.schedule(task, 500l);
 
+    }
+    public void Show(String path){
+         
+        new Thread(new Runnable() {
+            public void run(){
+                try {
+                  Thread.sleep(1000);
+                }catch (InterruptedException ex) {
+                Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        pane2.setVisible(true);
+                        Done_Btn.setVisible(true);
+                        winner_loser_txt.setVisible(true);
+                        label_img.setVisible(true);
+                        animateUsingScaleTransition(label_img);
+                        mediaView.setVisible(true);
+                        Btns.setVisible(false);   
+                        media = new Media(this.getClass().getResource(path).toExternalForm());  
+                        mediaPlayer = new MediaPlayer(media);
+                        mediaView.setMediaPlayer(mediaPlayer);
+                        mediaPlayer.setAutoPlay(true);
+                    }
+                });
+            }
+        }).start(); 
+       
+        
     }
 
     public void disable() {

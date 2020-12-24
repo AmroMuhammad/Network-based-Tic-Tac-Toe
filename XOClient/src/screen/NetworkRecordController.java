@@ -171,9 +171,8 @@ public class NetworkRecordController implements Initializable {
     }
 
     public void lineParser(String msg) {
+        if(msg != null){
         lineParsedMsg = msg.split("!");
-        for (String s : lineParsedMsg) {
-            System.out.println(s);
         }
     }
 
