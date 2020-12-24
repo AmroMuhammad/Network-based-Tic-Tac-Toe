@@ -19,22 +19,17 @@
             <Font name="Cambria Math" size="25.0" />
          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#back_click" prefHeight="55.0" prefWidth="73.0" textFill="#1d804e">
-         <font>
-            <Font name="Cambria Math" size="21.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Style/previous.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="logOut_txt" alignment="CENTER" contentDisplay="CENTER" layoutX="245.0" layoutY="385.0" mnemonicParsing="false" onAction="#log_out" prefHeight="60.0" prefWidth="230.0" style="-fx-background-color: #E5FCF6;" textFill="#33415a">
+      <Button fx:id="record_txt1" alignment="CENTER" contentDisplay="CENTER" layoutX="245.0" layoutY="385.0" mnemonicParsing="false" onAction="#log_out" prefHeight="60.0" prefWidth="230.0" style="-fx-background-color: #E5FCF6;" textFill="#33415a">
          <font>
             <Font name="Comic Sans MS Bold" size="20.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="45.0" fitWidth="224.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Style/log.PNG" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <ImageView fitHeight="140.0" fitWidth="154.0" layoutX="109.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>

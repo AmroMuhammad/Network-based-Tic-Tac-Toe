@@ -50,7 +50,6 @@ public class ENTERController implements Initializable {
     String[] parsedMsg;
     public static int playerScore;
     public static boolean isOnline = false;
-    private Button logOut_txt;
    
     /**
      * Initializes the controller class.
@@ -82,12 +81,6 @@ public class ENTERController implements Initializable {
        view2.setFitHeight(45);
        view2.setFitWidth(215);
        record_txt.setGraphic(view2);
-       
-       Image img3 = new Image("Style/log.png");
-       ImageView view3= new ImageView(img3);
-       view3.setFitHeight(45);
-       view3.setFitWidth(222);
-       logOut_txt.setGraphic(view3);
     }
 
     @FXML
@@ -120,8 +113,8 @@ public class ENTERController implements Initializable {
             window.setScene(viewscene);
             window.show();
             replyThreadEnter.stop();
-            if (NetworkRecordController.isThreadOn) {
-                NetworkRecordController.getRecThread.stop();
+            if (NetworkRecordController.isThreadOn){
+            NetworkRecordController.getRecThread.stop();
             }
         } catch (IOException ex) {
             Logger.getLogger(ENTERController.class.getName()).log(Level.SEVERE, null, ex);

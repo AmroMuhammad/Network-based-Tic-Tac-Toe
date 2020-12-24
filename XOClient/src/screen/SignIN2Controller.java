@@ -209,7 +209,6 @@ public class SignIN2Controller implements Initializable {
     }
 
     public static void returnToMainPage(Node node) {
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

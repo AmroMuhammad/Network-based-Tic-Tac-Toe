@@ -21,7 +21,7 @@
          </font>
       </Text>
       <PieChart fx:id="usersChart" layoutX="74.0" layoutY="178.0" legendSide="LEFT" prefHeight="234.0" prefWidth="304.0" titleSide="BOTTOM" />
-      <Text fx:id="txtServerStatus1" fill="WHITE" layoutX="110.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Chart" textAlignment="CENTER" wrappingWidth="220.13671875">
+      <Text fill="WHITE" layoutX="110.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Chart" textAlignment="CENTER" wrappingWidth="220.13671875">
          <font>
             <Font name="Cambria Math" size="20.0" />
          </font>

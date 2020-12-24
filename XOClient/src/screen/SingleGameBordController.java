@@ -210,11 +210,11 @@ public class SingleGameBordController implements Initializable {
                 if (player1Symbol.getText().equals("X")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
                     Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + "X@"+player2.getText()+"@O@";
-                    path = "build/classes/Style/video.mp4";//winner
+                    path = "build/classes/Style/winningVideo.mp4";//winner
                 } else {
                     winner_loser_txt.setText(player1.getText() + " is loser");
                      Data += player1Symbol.getText()+"&"+ player2.getText() + "@" + "X@"+player1.getText()+"@O@";
-                    path = "build/classes/Style/video.mp4";//loser
+                    path = "build/classes/Style/lossingVideo.mp4";//loser
                 }
 
                 break;
@@ -224,19 +224,19 @@ public class SingleGameBordController implements Initializable {
                 if (player1Symbol.getText().equals("O")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
                      Data +=player1Symbol.getText()+"&"+  player1.getText()+ "@" + "O@"+player2.getText()+"@X@";
-                    path = "build/classes/Style/video.mp4";//winner
+                    path = "build/classes/Style/winningVideo.mp4";//winner
                 } else {
                     winner_loser_txt.setText(player1.getText() + " is loser");
                     Data +=player1Symbol.getText()+"&"+ player2.getText() + "@" + "O@"+player1.getText()+"@X@";
-                    path = "build/classes/Style/video.mp4";//loser
+                    path = "build/classes/Style/lossingVideo.mp4";//loser
                 }
                 break;
             }
             case -1: {
                 finalResult = "That's a Draw \n";
-                winner_loser_txt.setText("That's a Draw ");
+                winner_loser_txt.setText("That's a Draw");
                 Data += player1Symbol.getText()+"&"+ player1.getText() + "@"+ player1Symbol.getText() +"@"+player2.getText()+"@"+ player2Symbol.getText()+"@";
-                path = "build/classes/Style/video.mp4";//draw
+                path = "build/classes/Style/drawVideo.mp4";//draw
                 break;
             }
         }

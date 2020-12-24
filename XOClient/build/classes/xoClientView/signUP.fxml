@@ -23,7 +23,7 @@
                               <Font name="Comic Sans MS" size="20.0" />
                            </font>
                         </Button>
-                        <Label layoutX="70.0" layoutY="193.0" prefHeight="33.0" prefWidth="111.0" text="PASSWORD" textFill="#a1e2e7">
+                        <Label layoutX="70.0" layoutY="193.0" prefHeight="33.0" prefWidth="125.0" text="PASSWORD*" textFill="#a1e2e7">
                            <font>
                               <Font name="Comic Sans MS" size="19.0" />
                            </font>
@@ -114,6 +114,11 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Label layoutX="122.0" layoutY="457.0" prefHeight="33.0" prefWidth="210.0" text="* Password must be more than 5 characters" textFill="#a1e2e7">
+                     <font>
+                        <Font name="Comic Sans MS" size="10.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

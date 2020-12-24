@@ -94,6 +94,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
     String gameMoves = "REC#";
     boolean secPlayer = false;
     boolean recFlag = false;
+    String path;
 
     //////////////////////////////////////////////////////////////////////////////
     public void setText(String text1, String text2, String text3, String text4, String opponent, String player, int score) {
@@ -231,15 +232,15 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             }
         }
         if (isDraw() && flag) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "NO Players wins ", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "That's a Draw", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
             alert.show();
             if (recFlag) {
                 SignIN2Controller.ps.println(gameMoves);
             }
+            path="build/classes/Style/drawVideo.mp4";
             disable();
             move("DRAW");
-
         }
 
     }
@@ -298,16 +299,20 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             case 0: {
 
                 winner_loser_txt.setText(player1.getText() + " is winner");
+                path = "build/classes/Style/winningVideo.mp4";
                 if (secPlayer) {
                     winner_loser_txt.setText(player2.getText() + " is loser");
+                    path = "build/classes/Style/lossingVideo.mp4";
                 }
                 break;
             }
 
             case 1: {
                 winner_loser_txt.setText(player2.getText() + " is winner");
+                String path = "build/classes/Style/winningVideo.mp4";
                 if (!secPlayer) {
                     winner_loser_txt.setText(player1.getText() + " is loser");
+                    path = "build/classes/Style/lossingVideo.mp4";
                 }
             }
             break;
@@ -323,7 +328,6 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 label_img.setVisible(true);
                 animateUsingScaleTransition(label_img);
                 Btns.setVisible(false);
-                String path = "build/classes/Style/video.mp4";
                 media = new Media(new File(path).toURI().toString());
                 mediaPlayer = new MediaPlayer(media);
                 mediaView.setMediaPlayer(mediaPlayer);
@@ -489,7 +493,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         }
     }
 
-     private void animateUsingScaleTransition(ImageView heart) {
+    private void animateUsingScaleTransition(ImageView heart) {
         ScaleTransition scaleTransition = new ScaleTransition(
                 Duration.seconds(1), heart
         );
@@ -504,4 +508,3 @@ public class NetworkGameBoardController implements Initializable, Runnable {
         scaleTransition.play();
     }
 }
-

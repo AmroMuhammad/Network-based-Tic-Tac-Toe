@@ -158,15 +158,15 @@ public class LocalGameBoardController implements Initializable {
                 disable();
                 winnerName();
                 set_color();
-                VidioShow("build/classes/Style/video.mp4");
+                VidioShow("build/classes/Style/winningVideo.mp4");
                 break;
             }
             
             
         }
         if (isDraw() && flag) {
-            winner_loser_txt.setText("No Players wins "); 
-            VidioShow("build/classes/Style/video.mp4");
+            winner_loser_txt.setText("That's a Draw"); 
+            VidioShow("build/classes/Style/drawVideo.mp4");
             disable();
             
         }

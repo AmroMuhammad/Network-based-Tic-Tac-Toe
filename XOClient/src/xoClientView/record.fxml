@@ -85,7 +85,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fitHeight="315.0" fitWidth="315.0" layoutX="367.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="315.0" fitWidth="315.0" layoutX="367.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Style/fram%20(2).png" />
          </image>
@@ -100,7 +100,7 @@
             <Image url="@../Style/1vspc.png" />
          </image>
       </ImageView>
-      <Button fx:id="BTn1" layoutX="443.0" layoutY="161.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: ;" textFill="WHITE">
+      <Button fx:id="BTn1" layoutX="443.0" layoutY="161.0" mnemonicParsing="false" onAction="#Btn_click" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: ;" textFill="WHITE" visible="false">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>

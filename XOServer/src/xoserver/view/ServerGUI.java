@@ -69,7 +69,7 @@ isServerOn = false;
         setPrefHeight(498.0);
         setPrefWidth(680.0);
         getStyleClass().add("bodybg3");
-        getStylesheets().add("/xoserver/view/../../Style/BackgroundServer.css");
+        getStylesheets().add("/Style/BackgroundServer.css");
 
         btnOn.setLayoutX(511.0);
         btnOn.setLayoutY(266.0);
