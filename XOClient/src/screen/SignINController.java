@@ -151,7 +151,7 @@ public class SignINController implements Initializable {
 
         boolean flag = isIpv4(ip);
         if (flag) {
-            SocketAddress socketAddress = new InetSocketAddress(ip, 5008);
+            SocketAddress socketAddress = new InetSocketAddress(ip, 5050);
             serverIP = ip;
             Socket socket = new Socket();
 

@@ -24,7 +24,7 @@ public class MainServer extends Thread {
 
     private MainServer() {
         try {
-            mainSocket = new ServerSocket(5008);
+            mainSocket = new ServerSocket(5050);
             dbConnection = DatabaseConnection.getDatabaseInstance();
         } catch (IOException ex) {
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);

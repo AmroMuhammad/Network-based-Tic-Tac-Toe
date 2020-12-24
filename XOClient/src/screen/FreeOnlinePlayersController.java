@@ -80,7 +80,7 @@ public class FreeOnlinePlayersController implements Initializable {
             listViewPlaying.setMouseTransparent(true);
             listViewPlaying.setFocusTraversable(false);
             waitingIndicator.setVisible(false);
-            s2 = new Socket(SignINController.serverIP, 5008);
+            s2 = new Socket(SignINController.serverIP, 5050);
             dis2 = new DataInputStream(s2.getInputStream());
             ps2 = new PrintStream(s2.getOutputStream());
             getPlayerListAndPlayRequest();

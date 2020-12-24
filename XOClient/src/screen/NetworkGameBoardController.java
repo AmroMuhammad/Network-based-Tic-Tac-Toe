@@ -302,32 +302,39 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
                 winner_loser_txt.setText(player1.getText() + " is winner");
                 path = "/screen/winningVideo.mp4";
+                
                 if (secPlayer) {
                     winner_loser_txt.setText(player2.getText() + " is loser");
                     path = "/screen/lossingVideo.mp4";
+                
                 }
+                Show(path);
                 break;
             }
 
             case 1: {
                 winner_loser_txt.setText(player2.getText() + " is winner");
                 String path = "/screen/winningVideo.mp4";
+                
                 if (!secPlayer) {
                     winner_loser_txt.setText(player1.getText() + " is loser");
                     path = "/screen/lossingVideo.mp4";
+                
+                
                 }
-                break;
+                Show(path);
+               break; 
             }
             case 2: {
             winner_loser_txt.setText("that's a draw");
             path = "/screen/drawVideo.mp4";
                 Show(path);
-                
+                break;
             }
             
         }
 
-        Timer timer = new Timer();
+        /*Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             public void run() {
                 pane2.setVisible(true);
@@ -344,7 +351,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
 
             }
         };
-        timer.schedule(task, 500l);
+        timer.schedule(task, 500l);*/
 
     }
     public void Show(String path){

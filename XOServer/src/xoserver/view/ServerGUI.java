@@ -29,6 +29,7 @@ import javafx.scene.control.Toggle;
 import xoserver.model.DatabaseConnection;
 import xoserver.model.GameHandler;
 import xoserver.model.MainServer;
+import javafx.beans.binding.Bindings;
 
 public class ServerGUI extends AnchorPane {
 
@@ -190,6 +191,14 @@ isServerOn = false;
                         // put random number with current time
                         pieChartData.set(0, new PieChart.Data("Offline", databaseConnection.numOfflinePlayers()));
                         pieChartData.set(1, new PieChart.Data("Online", databaseConnection.numOnlinePlayers()));
+                        
+                        pieChartData.forEach(data ->
+                data.nameProperty().bind(
+                        Bindings.concat(
+                                data.getName(), " ", data.pieValueProperty(), " Players"
+                        )
+                )
+        );
                     }
                 });
             }

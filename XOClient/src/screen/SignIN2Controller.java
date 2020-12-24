@@ -63,7 +63,7 @@ public class SignIN2Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            sClient = new Socket(ip, 5008);
+            sClient = new Socket(SignINController.serverIP, 5050);
             dis = new DataInputStream(sClient.getInputStream());
             ps = new PrintStream(sClient.getOutputStream());
         } catch (IOException ex) {
