@@ -12,16 +12,37 @@
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="51.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Style/single.PNG" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="multLOCALi_btn" layoutX="221.0" layoutY="228.0" mnemonicParsing="false" onAction="#HandleLocalPlayers" prefHeight="70.0" prefWidth="278.0" style="-fx-background-color: #E5FCF6;" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="51.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Style/muti.PNG" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="Record_btn" layoutX="221.0" layoutY="353.0" mnemonicParsing="false" onAction="#RecordingAction" prefHeight="70.0" prefWidth="278.0" style="-fx-background-color: #E5FCF6;" textFill="#3c3030">
          <font>
             <Font name="HoloLens MDL2 Assets" size="25.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="44.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Style/recorded.PNG" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="back_button" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#back_click" prefHeight="59.0" prefWidth="72.0" textFill="WHITE">
          <font>

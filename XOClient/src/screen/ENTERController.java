@@ -27,7 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import xoClientView.NetworkRecordController;
 
 /**
  * FXML Controller class
@@ -69,18 +68,6 @@ public class ENTERController implements Initializable {
         isOnline = true;
         isReplyThreadEnterOn = false;
         getPlayRequest();
-        
-        Image img = new Image("Style/NEW.PNG");
-        ImageView view = new ImageView(img);
-        view.setFitHeight(45);
-        view.setFitWidth(210);
-        newGame_txt.setGraphic(view);
-        
-       Image img2 = new Image("Style/recorded.png");
-       ImageView view2 = new ImageView(img2);
-       view2.setFitHeight(45);
-       view2.setFitWidth(215);
-       record_txt.setGraphic(view2);
     }
 
     @FXML
@@ -90,7 +77,7 @@ public class ENTERController implements Initializable {
         loader.setLocation(getClass().getResource("/xoClientView/NetworkRecord.fxml"));
         Parent viewParent = loader.load();
         Scene viewscene = new Scene(viewParent);
-        xoClientView.NetworkRecordController controller = loader.getController();
+        screen.NetworkRecordController controller = loader.getController();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(viewscene);
         window.show();
@@ -214,7 +201,7 @@ public class ENTERController implements Initializable {
     public void showBoardForOpponent(String opp, String mainPlayer) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/xoClientView/NetworkGameBoard.fxml"));
+            loader.setLocation(getClass().getResource("/NetworkRecord/NetworkGameBoard.fxml"));
             Parent viewparent = loader.load();
             Scene viewscene = new Scene(viewparent);
             NetworkGameBoardController controller = loader.getController();

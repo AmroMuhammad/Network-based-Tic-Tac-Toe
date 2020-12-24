@@ -238,7 +238,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             if (recFlag) {
                 SignIN2Controller.ps.println(gameMoves);
             }
-            path="build/classes/Style/drawVideo.mp4";
+            path="/screen/drawVideo.mp4";
             disable();
             move("DRAW");
         }
@@ -299,20 +299,20 @@ public class NetworkGameBoardController implements Initializable, Runnable {
             case 0: {
 
                 winner_loser_txt.setText(player1.getText() + " is winner");
-                path = "build/classes/Style/winningVideo.mp4";
+                path = "/screen/winningVideo.mp4";
                 if (secPlayer) {
                     winner_loser_txt.setText(player2.getText() + " is loser");
-                    path = "build/classes/Style/lossingVideo.mp4";
+                    path = "/screen/lossingVideo.mp4";
                 }
                 break;
             }
 
             case 1: {
                 winner_loser_txt.setText(player2.getText() + " is winner");
-                String path = "build/classes/Style/winningVideo.mp4";
+                String path = "/screen/winningVideo.mp4";
                 if (!secPlayer) {
                     winner_loser_txt.setText(player1.getText() + " is loser");
-                    path = "build/classes/Style/lossingVideo.mp4";
+                    path = "/screen/lossingVideo.mp4";
                 }
             }
             break;
@@ -328,7 +328,7 @@ public class NetworkGameBoardController implements Initializable, Runnable {
                 label_img.setVisible(true);
                 animateUsingScaleTransition(label_img);
                 Btns.setVisible(false);
-                media = new Media(new File(path).toURI().toString());
+                media = new Media(this.getClass().getResource(path).toExternalForm());
                 mediaPlayer = new MediaPlayer(media);
                 mediaView.setMediaPlayer(mediaPlayer);
                 mediaPlayer.setAutoPlay(true);

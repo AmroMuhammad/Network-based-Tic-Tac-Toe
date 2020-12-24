@@ -326,17 +326,16 @@ public class GameBordController implements Initializable {
     private void Back_btn(ActionEvent event) 
     {
     try {
-      
-        FXMLLoader loader =new FXMLLoader();
-        loader.setLocation(getClass().getResource("/xoClientView/Record.fxml"));
-        Parent viewParent =loader.load();
-        Scene viewscene =new Scene (viewParent);
-        RecordController controller =loader.getController();
-        Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(viewscene);
-        window.show();
+        FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/xoClientView/record.fxml"));
+            Parent viewparent = loader.load();
+            Scene viewscene = new Scene(viewparent);
+            RecordController controller = loader.getController();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(viewscene);
+            window.show();
     } catch (IOException ex) {
-        Logger.getLogger(NetworkGameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(GameBordController.class.getName()).log(Level.SEVERE, null, ex);
     }
     } 
 

@@ -21,7 +21,7 @@ import screen.ENTERController;
 import screen.SignIN2Controller;
 import screen.FreeOnlinePlayersController;
 import screen.NetworkGameBoardController;
-import xoClientView.NetworkRecordController;
+import screen.NetworkRecordController;
 
 public class Screen extends Application {
 

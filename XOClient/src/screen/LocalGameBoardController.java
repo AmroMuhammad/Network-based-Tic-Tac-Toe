@@ -158,7 +158,7 @@ public class LocalGameBoardController implements Initializable {
                 disable();
                 winnerName();
                 set_color();
-                VidioShow("build/classes/Style/winningVideo.mp4");
+                VidioShow("/screen/winningVideo.mp4");
                 break;
             }
             
@@ -166,7 +166,7 @@ public class LocalGameBoardController implements Initializable {
         }
         if (isDraw() && flag) {
             winner_loser_txt.setText("That's a Draw"); 
-            VidioShow("build/classes/Style/drawVideo.mp4");
+            VidioShow("/screen/drawVideo.mp4");
             disable();
             
         }
@@ -289,7 +289,7 @@ public class LocalGameBoardController implements Initializable {
           }
       }
      
-    public void VidioShow(String Path){
+    public void VidioShow(String path){
          
         new Thread(new Runnable() {
             public void run(){
@@ -307,7 +307,7 @@ public class LocalGameBoardController implements Initializable {
                         animateUsingScaleTransition(label_img);
                         mediaView.setVisible(true);
                         Btns.setVisible(false);   
-                        media = new Media(new File(Path).toURI().toString());  
+                        media = new Media(this.getClass().getResource(path).toExternalForm());  
                         mediaPlayer = new MediaPlayer(media);
                         mediaView.setMediaPlayer(mediaPlayer);
                         mediaPlayer.setAutoPlay(true);

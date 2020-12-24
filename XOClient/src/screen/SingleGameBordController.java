@@ -210,11 +210,11 @@ public class SingleGameBordController implements Initializable {
                 if (player1Symbol.getText().equals("X")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
                     Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + "X@"+player2.getText()+"@O@";
-                    path = "build/classes/Style/winningVideo.mp4";//winner
+                    path = "/screen/winningVideo.mp4";//winner
                 } else {
                     winner_loser_txt.setText(player1.getText() + " is loser");
                      Data += player1Symbol.getText()+"&"+ player2.getText() + "@" + "X@"+player1.getText()+"@O@";
-                    path = "build/classes/Style/lossingVideo.mp4";//loser
+                    path = "/screen/lossingVideo.mp4";//loser
                 }
 
                 break;
@@ -224,11 +224,11 @@ public class SingleGameBordController implements Initializable {
                 if (player1Symbol.getText().equals("O")) {
                     winner_loser_txt.setText(player1.getText() + " is winner");
                      Data +=player1Symbol.getText()+"&"+  player1.getText()+ "@" + "O@"+player2.getText()+"@X@";
-                    path = "build/classes/Style/winningVideo.mp4";//winner
+                    path = "/screen/winningVideo.mp4";//winner
                 } else {
                     winner_loser_txt.setText(player1.getText() + " is loser");
                     Data +=player1Symbol.getText()+"&"+ player2.getText() + "@" + "O@"+player1.getText()+"@X@";
-                    path = "build/classes/Style/lossingVideo.mp4";//loser
+                    path = "/screen/lossingVideo.mp4";//loser
                 }
                 break;
             }
@@ -236,7 +236,7 @@ public class SingleGameBordController implements Initializable {
                 finalResult = "That's a Draw \n";
                 winner_loser_txt.setText("That's a Draw");
                 Data += player1Symbol.getText()+"&"+ player1.getText() + "@"+ player1Symbol.getText() +"@"+player2.getText()+"@"+ player2Symbol.getText()+"@";
-                path = "build/classes/Style/drawVideo.mp4";//draw
+                path = "/screen/drawVideo.mp4";//draw
                 break;
             }
         }
@@ -395,7 +395,8 @@ public class SingleGameBordController implements Initializable {
                         winner_loser_txt.setVisible(true);
                         mediaView.setVisible(true);
                         Btns.setVisible(false);   
-                        media = new Media(new File(path).toURI().toString());  
+                        
+                        media = new Media(this.getClass().getResource(path).toExternalForm());  
                         mediaPlayer = new MediaPlayer(media);
                         mediaView.setMediaPlayer(mediaPlayer);
                         mediaPlayer.setAutoPlay(true);

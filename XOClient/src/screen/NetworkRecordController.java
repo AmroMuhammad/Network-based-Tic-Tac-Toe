@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package xoClientView;
+package screen;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -89,7 +89,7 @@ public class NetworkRecordController implements Initializable {
         Button btn = (Button) event.getSource();
         String[] ID = btn.getId().split("n");
         int number = Integer.parseInt(ID[1]);
-        if (((lineParsedMsg.length - (number - 1)) > 0) ) {  //check==1 && 
+        if (((lineParsedMsg.length - (number - 1)) > 0) && lineParsedMsg != null) {  //check==1 && 
             lineDividerParser(lineParsedMsg[number - 1]);
             try {
                 recordParser(dividedLineMsg[2]);
@@ -97,7 +97,7 @@ public class NetworkRecordController implements Initializable {
                 loader.setLocation(getClass().getResource("/xoClientView/OnlineRecordBoard.fxml"));
                 Parent viewParent = loader.load();
                 Scene viewscene = new Scene(viewParent);
-                xoClientView.OnlineRecordBoardController controller = loader.getController();
+                OnlineRecordBoardController controller = loader.getController();
                 controller.setText(dividedLineMsg[0], dividedLineMsg[1], "X", "O");
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(viewscene);
@@ -185,7 +185,9 @@ public class NetworkRecordController implements Initializable {
     }
 
     public void recordParser(String msg) {
+        if(msg !=null){
         recordParsedMsg = msg.split("\\.");
+        }
     }
 
 }

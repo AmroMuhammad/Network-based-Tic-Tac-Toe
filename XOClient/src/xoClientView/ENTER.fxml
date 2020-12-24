@@ -13,18 +13,32 @@
          <font>
             <Font name="Cambria Math" size="26.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Style/newGame.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Button fx:id="record_txt" layoutX="245.0" layoutY="295.0" mnemonicParsing="false" onAction="#recordAction" prefHeight="60.0" prefWidth="230.0" style="-fx-background-color: #E5FCF6;">
+      <Button fx:id="record_txt" layoutX="245.0" layoutY="295.0" mnemonicParsing="false" onAction="#recordAction" prefHeight="60.0" prefWidth="234.0" style="-fx-background-color: #E5FCF6;">
          <font>
             <Font name="Cambria Math" size="25.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="41.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Style/recorded.PNG" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="record_txt1" alignment="CENTER" contentDisplay="CENTER" layoutX="245.0" layoutY="385.0" mnemonicParsing="false" onAction="#log_out" prefHeight="60.0" prefWidth="230.0" style="-fx-background-color: #E5FCF6;" textFill="#33415a">
          <font>
             <Font name="Comic Sans MS Bold" size="20.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="45.0" fitWidth="224.0" pickOnBounds="true">
+            <ImageView fitHeight="41.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Style/log.PNG" />
                </image>

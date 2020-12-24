@@ -211,20 +211,20 @@ public class HardSingleGameBordController implements Initializable {
                             winner_loser_txt.setText(player1.getText()+ " is loser");
                             Data += player1Symbol.getText()+"&"+ player2.getText()+ "@" + player2Symbol.getText()+"@"+player1.getText()+"@"+player1Symbol.getText()+"@";
                             set_color();
-                            path = "build/classes/Style/lossingVideo.mp4";//loser
+                            path = "/screen/lossingVideo.mp4";//loser
                             show_video(path);
                           } else if (result == -10) {
                             System.out.println("You won ^^");
                             winner_loser_txt.setText(player1.getText() + "is winner");//winner
                             Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + player1Symbol.getText()+"@"+player2.getText()+"@"+player2Symbol.getText()+"@";
                             set_color();
-                            path = "build/classes/Style/winningVideo.mp4";
+                            path = "/screen/winningVideo.mp4";
                             show_video(path);
                           } else if (HardLevel.isMoveLeft(board) == false) {
                             System.out.println("No One Wins !");
                             winner_loser_txt.setText("That's a Draw");//draw
                             Data += player1Symbol.getText()+"&"+ player1.getText()+ "@" + player1Symbol.getText()+"@"+player2.getText()+"@"+player2Symbol.getText()+"@";
-                            path = "build/classes/Style/drawVideo.mp4";
+                            path = "/screen/drawVideo.mp4";
                             show_video(path);
                           }
                           if(yes){
@@ -307,7 +307,7 @@ public class HardSingleGameBordController implements Initializable {
                         animateUsingScaleTransition(label_img);
                         mediaView.setVisible(true);
                         Btns.setVisible(false);   
-                        media = new Media(new File(path).toURI().toString());         
+                        media = new Media(this.getClass().getResource(path).toExternalForm());         
                         mediaPlayer = new MediaPlayer(media);
                         mediaView.setMediaPlayer(mediaPlayer);
                         mediaPlayer.setAutoPlay(true);

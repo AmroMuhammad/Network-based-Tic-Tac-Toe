@@ -122,7 +122,7 @@ public class SignINController implements Initializable {
 
     @FXML
     private void guest_click(ActionEvent event) throws IOException {
-
+        
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/xoClientView/newGame.fxml"));
         Parent viewParent = loader.load();
