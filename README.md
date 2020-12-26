@@ -1,8 +1,10 @@
 # Network-based-Tic-Tac-Toe
 This is network based tic tac toe game using Java programming language,Java Database Connectivity (apache derby) JavaFX and CSS for design of UI
 This project consists of two Parts
+
 1- Client side
-  -Allow the player to play in single mode( i.e. play with the computer
+ 
+ -Allow the player to play in single mode( i.e. play with the computer
   -Allow two players either to play locally on the same machine or on two different machines
       • For the online mode:
       The application displays a list of the online or available users. So, the player can choose any of them to send him a request to play.
@@ -14,6 +16,7 @@ This project consists of two Parts
   -The user can Register and Login to the server.
   
 2-Server side
+   
    -The Server application handles the connections, streams and exchanging the data among the users.
    -The server application has simple GUI.
    -Start / Stop Button to start or stop the service.
